@@ -2,4 +2,4 @@
 
 Work in progress.
 
-Contact [omer.hortig@gmail.com](omer.hortig@gmail.com) with questions.
+Contact [omer.hortig@gmail.com](mailto:omer.hortig@gmail.com) with questions.
