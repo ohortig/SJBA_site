@@ -60,6 +60,9 @@ const Home = () => {
         </Link>
       </div>
 
+      {/* Section Divider */}
+      <div className="section-divider"></div>
+
       <div className="content-section">
         <div className="content-grid">
           <div className="image-container">
@@ -89,10 +92,97 @@ const Home = () => {
                 members understand their cultural legacy while preparing them for 
                 successful careers in finance, consulting, technology, and beyond.
               </p>
+              
+              <div className="join-button-container">
+                <Link to="/contact" className="join-button">
+                  <span>Join us</span>
+                  <img src={arrowIcon} alt="Arrow" className="join-button-arrow" />
+                </Link>
+              </div>
             </div>
           </div>
         </div>
       </div>
+
+      {/* Footer Section */}
+      <footer className="footer-section">
+        <div className="footer-content">
+          <div className="footer-links">
+            <div className="footer-column">
+              <h3>Programs</h3>
+              <Link to="/programs">All Programs</Link>
+            </div>
+            
+            <div className="footer-column">
+              <h3>Events</h3>
+              <Link to="/events">Upcoming Events</Link>
+              <Link to="/events">Past Speakers</Link>
+            </div>
+            
+            <div className="footer-column">
+              <h3>About Us</h3>
+              <Link to="/about">Overview</Link>
+              <Link to="/our-mission">Our Mission</Link>
+              <Link to="/our-board">Our Board</Link>
+            </div>
+            
+            <div className="footer-column">
+              <h3>Connect</h3>
+              <Link to="/contact">Contact Us</Link>
+              <Link to="/contact">Join SJBA</Link>
+            </div>
+          </div>
+          
+          <div className="footer-social">
+            <h3>Where to find us</h3>
+            <div className="social-links">
+              <a 
+                href="https://www.linkedin.com/company/sjba/" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="social-link linkedin"
+              >
+                <div className="social-icon-placeholder">
+                  {/* LinkedIn logo will go here */}
+                </div>
+                <div className="social-text">
+                  <span className="social-name">LinkedIn</span>
+                  <span className="social-handle">@sjba</span>
+                </div>
+              </a>
+              
+              <a 
+                href="https://www.instagram.com/nyusjba/" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="social-link instagram"
+              >
+                <div className="social-icon-placeholder">
+                  {/* Instagram logo will go here */}
+                </div>
+                <div className="social-text">
+                  <span className="social-name">Instagram</span>
+                  <span className="social-handle">@nyusjba</span>
+                </div>
+              </a>
+            </div>
+          </div>
+        </div>
+        
+        <div className="footer-bottom">
+          <div className="footer-address">
+            <p>
+              Stern Jewish Business Association<br />
+              44 West 4th Street<br />
+              New York, NY 10012 USA
+            </p>
+          </div>
+          
+          <div className="footer-copyright">
+            <p>Copyright © 2025 Stern Jewish Business Association. All rights reserved.</p>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 };
