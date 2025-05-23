@@ -15,21 +15,31 @@
 .nav-button--default {
   background-color: transparent;
   color: #4C0D7F;
+  border: 2px solid transparent;
+  position: relative;
 }
 
 .nav-button--default:hover {
-  background-color: #ECDFF6;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  background: linear-gradient(135deg, rgba(76, 13, 127, 0.1), rgba(139, 92, 246, 0.1));
+  border: 2px solid rgba(76, 13, 127, 0.2);
+  box-shadow: 0 4px 12px rgba(76, 13, 127, 0.15);
+  transform: translateY(-1px);
+  color: #4C0D7F;
+  text-decoration: none;
 }
 
 .nav-button--primary {
-  background-color: #4C0D7F;
-  color: #FFFFFF;
+  background: linear-gradient(135deg, #4C0D7F, #8B5CF6);
+  color: white;
+  box-shadow: 0 4px 12px rgba(76, 13, 127, 0.2);
 }
 
 .nav-button--primary:hover {
-  background-color: #864AB6;
-  color: #FFFFFF;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(76, 13, 127, 0.3);
+  background: linear-gradient(135deg, #5A1A8A, #9F7AEA);
+  color: white;
+  text-decoration: none;
 }
 
 /* Mobile adjustments */

@@ -1,6 +1,6 @@
 .header {
   background-color: rgba(145, 78, 197, 0.23);
-  padding: clamp(0.1rem, 0.1vw, 0.2rem) clamp(0.5rem, 2vw, 1rem);
+  padding: 0;
   position: static;
   top: 0;
   left: 0;
@@ -13,24 +13,22 @@
 
 .nav-container {
   width: 100%;
-  padding-left: clamp(0.5rem, 2vw, 1rem);
-  padding-right: clamp(0.5rem, 2vw, 1rem);
-  margin: 0;
+  padding: clamp(0.11rem, 0.375vw, 0.225rem) 15vw;
+  margin: 0 auto;
   display: flex;
   justify-content: space-between;
   align-items: center;
   min-height: 25px;
+  max-width: none;
+  box-sizing: border-box;
+  position: relative;
 }
 
+/* Clean divider approach using shadow and subtle background */
 .logo {
   display: flex;
   align-items: center;
   flex-shrink: 0;
-}
-
-.logo-image {
-  height: clamp(65px, 10vw, 100px);
-  width: auto;
 }
 
 .nav-buttons {
@@ -38,6 +36,25 @@
   align-items: center;
   gap: clamp(0.75rem, 2vw, 1.5rem);
   flex-wrap: wrap;
+  padding-left: 2rem;
+  position: relative;
+}
+
+.nav-buttons::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  height: 100%;
+  width: 1px;
+  background: rgba(76, 13, 127, 0.25);
+  box-shadow: 1px 0 3px rgba(76, 13, 127, 0.1);
+}
+
+.logo-image {
+  height: clamp(65px, 10vw, 100px);
+  width: auto;
 }
 
 .mobile-menu-button {
@@ -88,6 +105,15 @@
     display: block;
   }
 
+  /* Hide divider on mobile and reset padding */
+  .nav-buttons {
+    padding-left: 0;
+  }
+  
+  .nav-buttons::before {
+    display: none;
+  }
+
   .nav-buttons {
     display: none;
     position: absolute;
@@ -106,22 +132,16 @@
     display: flex;
   }
   
-  .header {
-    padding: 0.25rem 1rem;
-  }
-  
   .nav-container {
+    padding: 0.1875rem 12vw;
     min-height: 25px;
   }
 }
 
 /* Small mobile breakpoint */
 @media (max-width: 480px) {
-  .header {
-    padding: 0.15rem 0.75rem;
-  }
-  
   .nav-container {
+    padding: 0.11rem 8vw;
     max-width: 100%;
     min-height: 22px;
   }
