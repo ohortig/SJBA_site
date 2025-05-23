@@ -1,4 +1,4 @@
-const EBoard = () => {
+const Our_Board = () => {
   return (
     <div className="page-container">
       <h1>Executive Board</h1>
@@ -7,4 +7,4 @@ const EBoard = () => {
   );
 };
 
-export default EBoard; 
+export default Our_Board; 

@@ -1,4 +1,4 @@
-const About = () => {
+const About_Us = () => {
   return (
     <div className="page-container">
       <h1>About SJBA</h1>
@@ -7,4 +7,4 @@ const About = () => {
   );
 };
 
-export default About; 
+export default About_Us;

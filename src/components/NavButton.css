@@ -1,0 +1,50 @@
+.nav-button {
+  display: inline-block;
+  padding: clamp(8px, 2vw, 12px) clamp(16px, 4vw, 24px);
+  border-radius: 10px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: clamp(0.875rem, 2vw, 1rem);
+  transition: all 0.3s ease;
+  border: none;
+  cursor: pointer;
+  white-space: nowrap;
+  text-align: center;
+}
+
+.nav-button--default {
+  background-color: transparent;
+  color: #4C0D7F;
+}
+
+.nav-button--default:hover {
+  background-color: #ECDFF6;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.nav-button--primary {
+  background-color: #4C0D7F;
+  color: #FFFFFF;
+}
+
+.nav-button--primary:hover {
+  background-color: #864AB6;
+  color: #FFFFFF;
+}
+
+/* Mobile adjustments */
+@media (max-width: 768px) {
+  .nav-button {
+    padding: 12px 20px;
+    font-size: 1rem;
+    width: 100%;
+    max-width: 200px;
+  }
+}
+
+@media (max-width: 480px) {
+  .nav-button {
+    padding: 10px 16px;
+    font-size: 0.9rem;
+  }
+} 

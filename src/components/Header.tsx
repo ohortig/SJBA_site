@@ -1,6 +1,8 @@
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
-import logo from '../assets/sjba_logo.jpeg';
+import logo from '../assets/sjba_logo_full.png';
+import NavButton from './NavButton';
+import AboutDropdown from './AboutDropdown';
 import './Header.css';
 
 const Header = () => {
@@ -23,13 +25,12 @@ const Header = () => {
           <span className="menu-icon"></span>
         </button>
 
-        <ul className={`nav-links ${isMenuOpen ? 'active' : ''}`}>
-          <li><Link to="/about">About</Link></li>
-          <li><Link to="/e-board">E-Board</Link></li>
-          <li><Link to="/programs">Programs</Link></li>
-          <li><Link to="/events">Events</Link></li>
-          <li><Link to="/contact">Contact Us</Link></li>
-        </ul>
+        <div className={`nav-buttons ${isMenuOpen ? 'active' : ''}`}>
+          <NavButton to="/events">EVENTS</NavButton>
+          <NavButton to="/programs">PROGRAMS</NavButton>
+          <AboutDropdown />
+          <NavButton to="/contact" variant="primary">CONTACT US</NavButton>
+        </div>
       </nav>
     </header>
   );
