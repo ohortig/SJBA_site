@@ -1,9 +1,16 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { useScrollAnimation } from '../hooks/useScrollAnimation';
 import arrowIcon from '../assets/icons/arrow_top_right.png';
 import './Home.css';
 
 const Home = () => {
+  // Scroll animation hooks for different sections
+  const heroAnimation = useScrollAnimation({ threshold: 0.2 });
+  const speakersAnimation = useScrollAnimation({ threshold: 0.3 });
+  const contentAnimation = useScrollAnimation({ threshold: 0.2 });
+  const footerAnimation = useScrollAnimation({ threshold: 0.1 });
+
   // Sample company logos - you can replace these with actual logo URLs
   const logos = [
     'Goldman Sachs',
@@ -30,7 +37,10 @@ const Home = () => {
 
   return (
     <div className="page-container">
-      <div className="hero-section">
+      <div 
+        ref={heroAnimation.elementRef}
+        className={`hero-section slide-up ${heroAnimation.isVisible ? 'visible' : ''}`}
+      >
         <h1 className="main-title">
           We bring together Jewish New York's professional community.
         </h1>
@@ -53,7 +63,10 @@ const Home = () => {
         </div>
       </div>
 
-      <div className="speakers-link-section">
+      <div 
+        ref={speakersAnimation.elementRef}
+        className={`speakers-link-section scale-in ${speakersAnimation.isVisible ? 'visible' : ''}`}
+      >
         <Link to="/events" className="speakers-link">
           <span>Learn about our previous speakers</span>
           <img src={arrowIcon} alt="Arrow" className="speakers-link-arrow" />
@@ -63,15 +76,18 @@ const Home = () => {
       {/* Section Divider */}
       <div className="section-divider"></div>
 
-      <div className="content-section">
+      <div 
+        ref={contentAnimation.elementRef}
+        className={`content-section ${contentAnimation.isVisible ? 'visible' : ''}`}
+      >
         <div className="content-grid">
-          <div className="image-container">
+          <div className={`image-container slide-right ${contentAnimation.isVisible ? 'visible' : ''}`}>
             <div className="placeholder-image">
               <span>Previous Session Image</span>
             </div>
           </div>
           
-          <div className="text-container">
+          <div className={`text-container slide-left ${contentAnimation.isVisible ? 'visible' : ''}`}>
             <h2 className="section-title">
               Come learn about the Jewish impact on the business world
             </h2>
@@ -105,35 +121,38 @@ const Home = () => {
       </div>
 
       {/* Footer Section */}
-      <footer className="footer-section">
+      <footer 
+        ref={footerAnimation.elementRef}
+        className={`footer-section fade-in ${footerAnimation.isVisible ? 'visible' : ''}`}
+      >
         <div className="footer-content">
-          <div className="footer-links">
-            <div className="footer-column">
+          <div className={`footer-links stagger-children ${footerAnimation.isVisible ? 'visible' : ''}`}>
+            <div className="footer-column stagger-item">
               <h3>Programs</h3>
               <Link to="/programs">All Programs</Link>
             </div>
             
-            <div className="footer-column">
+            <div className="footer-column stagger-item">
               <h3>Events</h3>
               <Link to="/events">Upcoming Events</Link>
               <Link to="/events">Past Speakers</Link>
             </div>
             
-            <div className="footer-column">
+            <div className="footer-column stagger-item">
               <h3>About Us</h3>
               <Link to="/about">Overview</Link>
               <Link to="/our-mission">Our Mission</Link>
               <Link to="/our-board">Our Board</Link>
             </div>
             
-            <div className="footer-column">
+            <div className="footer-column stagger-item">
               <h3>Connect</h3>
               <Link to="/contact">Contact Us</Link>
               <Link to="/contact">Join SJBA</Link>
             </div>
           </div>
           
-          <div className="footer-social">
+          <div className={`footer-social slide-left ${footerAnimation.isVisible ? 'visible' : ''}`}>
             <h3>Where to find us</h3>
             <div className="social-links">
               <a 
