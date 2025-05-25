@@ -2,6 +2,27 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { useScrollAnimation } from '../hooks/useScrollAnimation';
 import arrowIcon from '../assets/icons/arrow_top_right.png';
+import goldmanSachsLogo from '../assets/logos/goldman_sachs_logo.png';
+import jpmorganLogo from '../assets/logos/jpmorgan_logo.jpg';
+import morganStanleyLogo from '../assets/logos/morgan_stanley_logo.jpg';
+import blackstoneLogo from '../assets/logos/blackstone_logo.png';
+import sequoiaLogo from '../assets/logos/sequoia_logo.png';
+import mckinseyLogo from '../assets/logos/mckinsey_logo.jpg';
+import ackmanZiffLogo from '../assets/logos/ackman_ziff_logo.jpg';
+import axomPartnersLogo from '../assets/logos/axom_partners_logo.jpg';
+import bankOfAmericaLogo from '../assets/logos/bank_of_america_logo.png';
+import carterPierceLogo from '../assets/logos/carter_pierce_logo.png';
+import cushmanWakefieldLogo from '../assets/logos/cushman_and_wakefield_logo.png';
+import declarationPartnersLogo from '../assets/logos/declaration_partners_logo.jpg';
+import deutscheBankLogo from '../assets/logos/deutsche_bank_logo.png';
+import edenGlobalPartnersLogo from '../assets/logos/eden_global_partners_logo.jpeg';
+import ftiConsultingLogo from '../assets/logos/FTI_consulting_logo.png';
+import hsbcLogo from '../assets/logos/HSBC_logo.png';
+import ibmLogo from '../assets/logos/IBM_logo.png';
+import kkrLogo from '../assets/logos/KKR_logo.png';
+import logosCapitalLogo from '../assets/logos/logos_capital_logo.png';
+import palantirLogo from '../assets/logos/palantir.png';
+import ubsLogo from '../assets/logos/UBS_logo.png';
 import './Home.css';
 
 const Home = () => {
@@ -11,28 +32,29 @@ const Home = () => {
   const contentAnimation = useScrollAnimation({ threshold: 0.2 });
   const footerAnimation = useScrollAnimation({ threshold: 0.1 });
 
-  // Sample company logos - you can replace these with actual logo URLs
+  // Updated logos with all available logo files
   const logos = [
-    'Goldman Sachs',
-    'JPMorgan Chase', 
-    'Morgan Stanley',
-    'Blackstone',
-    'KKR',
-    'Apollo',
-    'Citigroup',
-    'Bank of America',
-    'Wells Fargo',
-    'Deutsche Bank',
-    'Barclays',
-    'Credit Suisse',
-    'UBS',
-    'Rothschild & Co',
-    'Lazard',
-    'Evercore',
-    'Moelis & Company',
-    'Centerview Partners',
-    'PJT Partners',
-    'Guggenheim Partners'
+    { name: 'Goldman Sachs', src: goldmanSachsLogo, hasImage: true },
+    { name: 'JPMorgan Chase', src: jpmorganLogo, hasImage: true },
+    { name: 'Morgan Stanley', src: morganStanleyLogo, hasImage: true },
+    { name: 'Blackstone', src: blackstoneLogo, hasImage: true },
+    { name: 'Sequoia Capital', src: sequoiaLogo, hasImage: true },
+    { name: 'McKinsey & Company', src: mckinseyLogo, hasImage: true },
+    { name: 'Ackman-Ziff', src: ackmanZiffLogo, hasImage: true },
+    { name: 'Axom Partners', src: axomPartnersLogo, hasImage: true },
+    { name: 'Bank of America', src: bankOfAmericaLogo, hasImage: true },
+    { name: 'Carter Pierce', src: carterPierceLogo, hasImage: true },
+    { name: 'Cushman & Wakefield', src: cushmanWakefieldLogo, hasImage: true },
+    { name: 'Declaration Partners', src: declarationPartnersLogo, hasImage: true },
+    { name: 'Deutsche Bank', src: deutscheBankLogo, hasImage: true },
+    { name: 'Eden Global Partners', src: edenGlobalPartnersLogo, hasImage: true },
+    { name: 'FTI Consulting', src: ftiConsultingLogo, hasImage: true },
+    { name: 'HSBC', src: hsbcLogo, hasImage: true },
+    { name: 'IBM', src: ibmLogo, hasImage: true },
+    { name: 'KKR', src: kkrLogo, hasImage: true },
+    { name: 'Logos Capital', src: logosCapitalLogo, hasImage: true },
+    { name: 'Palantir', src: palantirLogo, hasImage: true },
+    { name: 'UBS', src: ubsLogo, hasImage: true }
   ];
 
   return (
@@ -51,13 +73,60 @@ const Home = () => {
           {/* First set of logos */}
           {logos.map((logo, index) => (
             <div key={`set1-${index}`} className="logo-item">
-              {logo}
+              {logo.hasImage ? (
+                <>
+                  <img 
+                    src={logo.src} 
+                    alt={logo.name} 
+                    className="company-logo"
+                    onError={(e) => {
+                      // Fallback to text if image fails to load
+                      const target = e.currentTarget;
+                      const fallback = target.nextElementSibling as HTMLElement;
+                      if (fallback) {
+                        target.style.display = 'none';
+                        fallback.style.display = 'block';
+                      }
+                    }}
+                  />
+                  <span className="logo-fallback" style={{ display: 'none' }}>
+                    {logo.name}
+                  </span>
+                </>
+              ) : (
+                <span className="logo-text">
+                  {logo.name}
+                </span>
+              )}
             </div>
           ))}
           {/* Duplicate set for seamless loop */}
           {logos.map((logo, index) => (
             <div key={`set2-${index}`} className="logo-item">
-              {logo}
+              {logo.hasImage ? (
+                <>
+                  <img 
+                    src={logo.src} 
+                    alt={logo.name} 
+                    className="company-logo"
+                    onError={(e) => {
+                      const target = e.currentTarget;
+                      const fallback = target.nextElementSibling as HTMLElement;
+                      if (fallback) {
+                        target.style.display = 'none';
+                        fallback.style.display = 'block';
+                      }
+                    }}
+                  />
+                  <span className="logo-fallback" style={{ display: 'none' }}>
+                    {logo.name}
+                  </span>
+                </>
+              ) : (
+                <span className="logo-text">
+                  {logo.name}
+                </span>
+              )}
             </div>
           ))}
         </div>
