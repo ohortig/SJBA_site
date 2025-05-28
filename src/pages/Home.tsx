@@ -23,6 +23,8 @@ import kkrLogo from '../assets/logos/KKR_logo.png';
 import logosCapitalLogo from '../assets/logos/logos_capital_logo.png';
 import palantirLogo from '../assets/logos/palantir.png';
 import ubsLogo from '../assets/logos/UBS_logo.png';
+import linkedinLogo from '../assets/logos/linkedin_logo.png';
+import instagramLogo from '../assets/logos/instagram_logo.png';
 import './Home.css';
 
 const Home = () => {
@@ -32,7 +34,6 @@ const Home = () => {
   const contentAnimation = useScrollAnimation({ threshold: 0.2 });
   const footerAnimation = useScrollAnimation({ threshold: 0.1 });
 
-  // Updated logos with all available logo files
   const logos = [
     { name: 'Goldman Sachs', src: goldmanSachsLogo, hasImage: true },
     { name: 'JPMorgan Chase', src: jpmorganLogo, hasImage: true },
@@ -64,7 +65,7 @@ const Home = () => {
         className={`hero-section slide-up ${heroAnimation.isVisible ? 'visible' : ''}`}
       >
         <h1 className="main-title">
-          We bring together Jewish New York's professional community.
+          Building Jewish Community at NYU. Developing Future Leaders.
         </h1>
       </div>
       
@@ -231,7 +232,7 @@ const Home = () => {
                 className="social-link linkedin"
               >
                 <div className="social-icon-placeholder">
-                  {/* LinkedIn logo will go here */}
+                  <img src={linkedinLogo} alt="LinkedIn" className="social-icon" />
                 </div>
                 <div className="social-text">
                   <span className="social-name">LinkedIn</span>
@@ -246,7 +247,7 @@ const Home = () => {
                 className="social-link instagram"
               >
                 <div className="social-icon-placeholder">
-                  {/* Instagram logo will go here */}
+                  <img src={instagramLogo} alt="Instagram" className="social-icon" />
                 </div>
                 <div className="social-text">
                   <span className="social-name">Instagram</span>
