@@ -2,8 +2,8 @@
 .board-header {
   text-align: center;
   padding: 4rem 0 3rem 0;
-  border-bottom: 1px solid rgba(76, 13, 127, 0.15);
-  margin-bottom: 4rem;
+  /* border-bottom: 1px solid rgba(76, 13, 127, 0.15); */
+  /* margin-bottom: 4rem; */
 }
 
 .board-title {
@@ -19,7 +19,7 @@
   font-size: 1.2rem;
   color: #64748b;
   line-height: 1.6;
-  max-width: 800px;
+  max-width: 1100px;
   margin: 0 auto;
 }
 
@@ -216,16 +216,16 @@
   align-items: center;
   justify-content: center;
   z-index: 1000;
-  padding: 2rem;
+  padding: 1rem;
   backdrop-filter: blur(4px);
 }
 
 .modal-content {
   background: white;
   border-radius: 20px;
-  max-width: 1000px;
+  max-width: min(1050px, 90vw);
   width: 100%;
-  max-height: 85vh;
+  max-height: min(90vh, 800px);
   display: flex;
   flex-direction: column;
   position: relative;
@@ -283,36 +283,38 @@
   padding: 1rem 2rem 1.5rem 2rem;
   display: flex;
   flex-direction: column;
+  overflow-y: auto;
+  flex: 1;
+  min-height: 0;
 }
 
 .modal-content-layout {
   display: flex;
-  gap: 0;
-  align-items: flex-start;
+  gap: 2rem;
+  align-items: center;
+  min-height: 0;
 }
 
 .modal-photo-section {
   flex-shrink: 0;
-  width: 320px;
+  width: min(320px, 40%);
   display: flex;
   justify-content: flex-start;
   align-items: flex-start;
-  margin-right: 2rem;
-  margin-top: 4rem;
 }
 
 .modal-photo-section .photo-placeholder.large {
   width: 100%;
   max-width: 320px;
-  height: 360px;
+  height: min(360px, 40vh);
   border-radius: 12px;
-  font-size: 3.5rem;
+  font-size: clamp(2rem, 4vw, 3.5rem);
 }
 
 .modal-photo-section .member-headshot.large {
   width: 100%;
   max-width: 320px;
-  height: 360px;
+  height: min(360px, 40vh);
   border-radius: 12px;
   object-fit: cover;
   box-shadow: 0 4px 16px rgba(76, 13, 127, 0.3);
@@ -571,27 +573,54 @@
   }
 
   .modal-overlay {
-    padding: 1rem;
+    padding: 0.5rem;
   }
 
   .modal-header {
     flex-direction: column;
     text-align: center;
-    gap: 1.5rem;
-    padding: 2rem 1.5rem 1.5rem 1.5rem;
+    gap: 1rem;
+    padding: 1.5rem 1.5rem 1rem 1.5rem;
   }
 
   .modal-body {
-    padding: 1rem 1.5rem 2rem 1.5rem;
+    padding: 0.5rem 1.5rem 1.5rem 1.5rem;
+  }
+
+  .modal-content-layout {
+    flex-direction: column;
+    gap: 1rem;
+    align-items: center;
+  }
+
+  .modal-photo-section {
+    width: 100%;
+    max-width: 250px;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .modal-photo-section .photo-placeholder.large {
+    height: min(280px, 30vh);
+    font-size: clamp(1.5rem, 5vw, 2.5rem);
+  }
+
+  .modal-photo-section .member-headshot.large {
+    height: min(280px, 30vh);
+  }
+
+  .modal-text-section {
+    text-align: center;
   }
 
   .modal-info-grid {
     grid-template-columns: 1fr;
-    gap: 1.5rem;
+    gap: 1rem;
   }
 
   .modal-icon-buttons {
     gap: 0.25rem;
+    justify-content: center;
   }
 
   .join-board-section {
