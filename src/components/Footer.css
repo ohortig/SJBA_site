@@ -156,14 +156,16 @@
 
 .footer-address p {
   color: #64748b;
-  font-size: 0.9rem;
-  line-height: 1.6;
+  font-size: 14px !important;
+  line-height: 1.6 !important;
   margin: 0;
+  text-align: left;
 }
 
 .footer-copyright p {
   color: #6B7280;
-  font-size: 0.875rem;
+  font-size: 14px !important;
+  line-height: 1.6 !important; 
   margin: 0;
   text-align: right;
 }

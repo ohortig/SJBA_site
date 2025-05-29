@@ -86,7 +86,9 @@ const Footer = () => {
         </div>
         
         <div className="footer-copyright">
-          <p>Copyright © 2025 Stern Jewish Business Association. All rights reserved.</p>
+          <p>Copyright © 2025 Stern Jewish Business Association.<br />
+             All rights reserved.
+          </p>
         </div>
       </div>
     </footer>
