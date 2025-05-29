@@ -64,7 +64,17 @@ const OurBoard = () => {
                   )}
                 </div>
                 <div className="member-info">
-                  <h3 className="member-name">{member.name}</h3>
+                  <div className="member-name-row">
+                    <h3 className="member-name">{member.name}</h3>
+                    <div className="member-icon-buttons">
+                      <a href={`mailto:${member.email}`} className="member-icon-btn email-icon" title="Send Email" onClick={(e) => e.stopPropagation()}>
+                        <img src="/src/assets/icons/email_icon.png" alt="Email" />
+                      </a>
+                      <a href={formatLinkedInUrl(member.linkedin)} className="member-icon-btn linkedin-icon" target="_blank" rel="noopener noreferrer" title="Connect on LinkedIn" onClick={(e) => e.stopPropagation()}>
+                        <img src="/src/assets/logos/linkedin_logo.png" alt="LinkedIn" />
+                      </a>
+                    </div>
+                  </div>
                   <h4 className="member-position">{member.position}</h4>
                   <p className="member-details">{member.major} • {member.year}</p>
                   <div className="click-hint">Click to learn more</div>
@@ -100,44 +110,54 @@ const OurBoard = () => {
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
             <button className="modal-close" onClick={closeModal}>×</button>
             <div className="modal-header">
-              <div className="modal-photo">
-                {shouldShowPlaceholder(selectedMember) ? (
-                  <div className="photo-placeholder large">
-                    <span>{selectedMember.name.split(' ').map(n => n[0]).join('')}</span>
-                  </div>
-                ) : (
-                  <img 
-                    src={`/src/headshots/${selectedMember.headshot_file}`}
-                    alt={`${selectedMember.name} headshot`}
-                    className="member-headshot large"
-                    onError={() => handleImageError(selectedMember.name)}
-                  />
-                )}
-              </div>
               <div className="modal-title-section">
-                <h2 className="modal-name">{selectedMember.name}</h2>
+                <div className="modal-name-row">
+                  <h2 className="modal-name">{selectedMember.name}</h2>
+                  <div className="modal-icon-buttons">
+                    <a href={`mailto:${selectedMember.email}`} className="modal-icon-btn email-icon" title="Send Email">
+                      <img src="/src/assets/icons/email_icon.png" alt="Email" />
+                    </a>
+                    <a href={formatLinkedInUrl(selectedMember.linkedin)} className="modal-icon-btn linkedin-icon" target="_blank" rel="noopener noreferrer" title="Connect on LinkedIn">
+                      <img src="/src/assets/logos/linkedin_logo.png" alt="LinkedIn" />
+                    </a>
+                  </div>
+                </div>
                 <h3 className="modal-position">{selectedMember.position}</h3>
                 <p className="modal-details">{selectedMember.major} • {selectedMember.year}</p>
               </div>
             </div>
             <div className="modal-body">
-              <div className="modal-section">
-                <h4>About</h4>
-                <p>{selectedMember.bio}</p>
-              </div>
-              <div className="modal-info-grid">
-                <div className="modal-section">
-                  <h4>Hometown</h4>
-                  <p>{selectedMember.hometown}</p>
+              <div className="modal-content-layout">
+                <div className="modal-photo-section">
+                  {shouldShowPlaceholder(selectedMember) ? (
+                    <div className="photo-placeholder large">
+                      <span>{selectedMember.name.split(' ').map(n => n[0]).join('')}</span>
+                    </div>
+                  ) : (
+                    <img 
+                      src={`/src/headshots/${selectedMember.headshot_file}`}
+                      alt={`${selectedMember.name} headshot`}
+                      className="member-headshot large"
+                      onError={() => handleImageError(selectedMember.name)}
+                    />
+                  )}
                 </div>
-              </div>
-              <div className="modal-actions">
-                <a href={formatLinkedInUrl(selectedMember.linkedin)} className="modal-btn linkedin" target="_blank" rel="noopener noreferrer">
-                  Connect on LinkedIn
-                </a>
-                <a href={`mailto:${selectedMember.email}`} className="modal-btn email">
-                  Send Email
-                </a>
+                <div className="modal-text-section">
+                  <div className="modal-section">
+                    <h4>About</h4>
+                    <p>{selectedMember.bio}</p>
+                  </div>
+                  <div className="modal-info-grid">
+                    <div className="modal-section">
+                      <h4>Hometown</h4>
+                      <p>{selectedMember.hometown}</p>
+                    </div>
+                    <div className="modal-section">
+                      <h4>Email</h4>
+                      <p>{selectedMember.email}</p>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
