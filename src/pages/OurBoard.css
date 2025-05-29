@@ -100,6 +100,17 @@
   box-shadow: 0 4px 16px rgba(76, 13, 127, 0.3);
 }
 
+.member-headshot {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin: 0 auto;
+  display: block;
+  box-shadow: 0 4px 16px rgba(76, 13, 127, 0.3);
+  border: 3px solid rgba(76, 13, 127, 0.1);
+}
+
 .member-info {
   text-align: left;
 }
@@ -169,7 +180,7 @@
 .modal-content {
   background: white;
   border-radius: 20px;
-  max-width: 600px;
+  max-width: 900px;
   width: 100%;
   max-height: 90vh;
   overflow-y: auto;
@@ -193,7 +204,7 @@
   position: absolute;
   top: 1rem;
   right: 1rem;
-  background: rgba(76, 13, 127, 0.1);
+  background: transparent;
   border: none;
   border-radius: 50%;
   width: 40px;
@@ -206,11 +217,12 @@
   cursor: pointer;
   transition: all 0.3s ease;
   z-index: 1001;
+  font-weight: 600;
 }
 
 .modal-close:hover {
-  background: rgba(76, 13, 127, 0.2);
-  transform: scale(1.1);
+  background: rgba(76, 13, 127, 0.08);
+  color: #5A1A8A;
 }
 
 .modal-header {
@@ -225,6 +237,15 @@
   width: 100px;
   height: 100px;
   font-size: 2rem;
+}
+
+.modal-photo .member-headshot.large {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+  box-shadow: 0 4px 16px rgba(76, 13, 127, 0.3);
+  border: 3px solid rgba(76, 13, 127, 0.1);
 }
 
 .modal-title-section {
@@ -448,6 +469,11 @@
     font-size: 1.8rem;
   }
 
+  .member-headshot {
+    width: 100px;
+    height: 100px;
+  }
+
   .member-name {
     font-size: 1.2rem;
   }
@@ -526,6 +552,11 @@
     width: 80px;
     height: 80px;
     font-size: 1.5rem;
+  }
+
+  .member-headshot {
+    width: 80px;
+    height: 80px;
   }
 
   .member-bio {

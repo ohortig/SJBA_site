@@ -6,6 +6,21 @@ import './OurBoard.css';
 
 const OurBoard = () => {
   const [selectedMember, setSelectedMember] = useState<BoardMember | null>(null);
+  const [imageErrors, setImageErrors] = useState<Set<string>>(new Set());
+
+  const handleImageError = (memberName: string) => {
+    setImageErrors(prev => new Set(prev).add(memberName));
+  };
+
+  const shouldShowPlaceholder = (member: BoardMember) => {
+    return !member.headshot_file || member.headshot_file === "#" || imageErrors.has(member.name);
+  };
+
+  const formatLinkedInUrl = (url: string) => {
+    if (!url || url === "#") return "#";
+    if (url.startsWith("http://") || url.startsWith("https://")) return url;
+    return `https://${url}`;
+  };
 
   const openModal = (member: BoardMember) => {
     setSelectedMember(member);
@@ -35,15 +50,23 @@ const OurBoard = () => {
                 onClick={() => openModal(member)}
               >
                 <div className="member-photo">
-                  <div className="photo-placeholder">
-                    <span>{member.name.split(' ').map(n => n[0]).join('')}</span>
-                  </div>
+                  {shouldShowPlaceholder(member) ? (
+                    <div className="photo-placeholder">
+                      <span>{member.name.split(' ').map(n => n[0]).join('')}</span>
+                    </div>
+                  ) : (
+                    <img 
+                      src={`/src/headshots/${member.headshot_file}`}
+                      alt={`${member.name} headshot`}
+                      className="member-headshot"
+                      onError={() => handleImageError(member.name)}
+                    />
+                  )}
                 </div>
                 <div className="member-info">
                   <h3 className="member-name">{member.name}</h3>
                   <h4 className="member-position">{member.position}</h4>
                   <p className="member-details">{member.major} • {member.year}</p>
-                  <p className="member-bio">{member.bio}</p>
                   <div className="click-hint">Click to learn more</div>
                 </div>
               </div>
@@ -78,9 +101,18 @@ const OurBoard = () => {
             <button className="modal-close" onClick={closeModal}>×</button>
             <div className="modal-header">
               <div className="modal-photo">
-                <div className="photo-placeholder large">
-                  <span>{selectedMember.name.split(' ').map(n => n[0]).join('')}</span>
-                </div>
+                {shouldShowPlaceholder(selectedMember) ? (
+                  <div className="photo-placeholder large">
+                    <span>{selectedMember.name.split(' ').map(n => n[0]).join('')}</span>
+                  </div>
+                ) : (
+                  <img 
+                    src={`/src/headshots/${selectedMember.headshot_file}`}
+                    alt={`${selectedMember.name} headshot`}
+                    className="member-headshot large"
+                    onError={() => handleImageError(selectedMember.name)}
+                  />
+                )}
               </div>
               <div className="modal-title-section">
                 <h2 className="modal-name">{selectedMember.name}</h2>
@@ -91,20 +123,16 @@ const OurBoard = () => {
             <div className="modal-body">
               <div className="modal-section">
                 <h4>About</h4>
-                <p>{selectedMember.detailedBio}</p>
+                <p>{selectedMember.bio}</p>
               </div>
               <div className="modal-info-grid">
                 <div className="modal-section">
                   <h4>Hometown</h4>
                   <p>{selectedMember.hometown}</p>
                 </div>
-                <div className="modal-section">
-                  <h4>Interests</h4>
-                  <p>{selectedMember.interests}</p>
-                </div>
               </div>
               <div className="modal-actions">
-                <a href={selectedMember.linkedin} className="modal-btn linkedin" target="_blank" rel="noopener noreferrer">
+                <a href={formatLinkedInUrl(selectedMember.linkedin)} className="modal-btn linkedin" target="_blank" rel="noopener noreferrer">
                   Connect on LinkedIn
                 </a>
                 <a href={`mailto:${selectedMember.email}`} className="modal-btn email">
