@@ -36,8 +36,7 @@ const OurBoard = () => {
         <div className="board-header">
           <h1 className="board-title">Our Board</h1>
           <p className="board-subtitle">
-            Meet the dedicated leaders driving SJBA's mission to build Jewish community 
-            and develop future business leaders at NYU Stern.
+            Meet the dedicated leaders driving SJBA's mission.
           </p>
         </div>
 
@@ -76,7 +75,8 @@ const OurBoard = () => {
                     </div>
                   </div>
                   <h4 className="member-position">{member.position}</h4>
-                  <p className="member-details">{member.major} • {member.year}</p>
+                  {/* <p className="member-details">{member.major} • {member.year}</p> */}
+                  <p className="member-details">{member.major}</p>
                   <div className="click-hint">Click to learn more</div>
                 </div>
               </div>
