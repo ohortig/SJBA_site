@@ -20,8 +20,7 @@ const Footer = () => {
           
           <div className="footer-column stagger-item">
             <h3>Events</h3>
-            <Link to="/events">Upcoming Events</Link>
-            <Link to="/events">Past Speakers</Link>
+            <Link to="/events">Events & Speakers</Link>
           </div>
           
           <div className="footer-column stagger-item">
