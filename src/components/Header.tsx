@@ -1,6 +1,5 @@
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
-import logo from '../assets/sjba_logo_full.png';
 import NavButton from './NavButton';
 import AboutDropdown from './AboutDropdown';
 import './Header.css';
@@ -17,7 +16,7 @@ const Header = () => {
       <nav className="nav-container">
         <div className="logo">
           <Link to="/">
-            <img src={logo} alt="SJBA Logo" className="logo-image" />
+            <img src="/sjba_logo_full.png" alt="SJBA Logo" className="logo-image" />
           </Link>
         </div>
         

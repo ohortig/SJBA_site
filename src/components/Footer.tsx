@@ -1,8 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useScrollAnimation } from '../hooks/useScrollAnimation';
-import linkedinLogo from '../assets/logos/linkedin_logo.png';
-import instagramLogo from '../assets/logos/instagram_logo.png';
 import './Footer.css';
 
 const Footer = () => {
@@ -50,7 +48,7 @@ const Footer = () => {
               className="social-link linkedin"
             >
               <div className="social-icon-placeholder">
-                <img src={linkedinLogo} alt="LinkedIn" className="social-icon" />
+                <img src="/logos/linkedin_logo.png" alt="LinkedIn" className="social-icon" />
               </div>
               <div className="social-text">
                 <span className="social-name">LinkedIn</span>
@@ -65,7 +63,7 @@ const Footer = () => {
               className="social-link instagram"
             >
               <div className="social-icon-placeholder">
-                <img src={instagramLogo} alt="Instagram" className="social-icon" />
+                <img src="/logos/instagram_logo.png" alt="Instagram" className="social-icon" />
               </div>
               <div className="social-text">
                 <span className="social-name">Instagram</span>

@@ -55,7 +55,7 @@ const OurBoard = () => {
                     </div>
                   ) : (
                     <img 
-                      src={`/src/headshots/${member.headshot_file}`}
+                      src={`/headshots/${member.headshot_file}`}
                       alt={`${member.name} headshot`}
                       className="member-headshot"
                       onError={() => handleImageError(member.name)}
@@ -67,10 +67,10 @@ const OurBoard = () => {
                     <h3 className="member-name">{member.name}</h3>
                     <div className="member-icon-buttons">
                       <a href={`mailto:${member.email}`} className="member-icon-btn email-icon" title="Send Email" onClick={(e) => e.stopPropagation()}>
-                        <img src="/src/assets/icons/email_icon.png" alt="Email" />
+                        <img src="/icons/email_icon.png" alt="Email" />
                       </a>
                       <a href={formatLinkedInUrl(member.linkedin)} className="member-icon-btn linkedin-icon" target="_blank" rel="noopener noreferrer" title="Connect on LinkedIn" onClick={(e) => e.stopPropagation()}>
-                        <img src="/src/assets/logos/linkedin_logo.png" alt="LinkedIn" />
+                        <img src="/logos/linkedin_logo.png" alt="LinkedIn" />
                       </a>
                     </div>
                   </div>
@@ -115,10 +115,10 @@ const OurBoard = () => {
                   <h2 className="modal-name">{selectedMember.name}</h2>
                   <div className="modal-icon-buttons">
                     <a href={`mailto:${selectedMember.email}`} className="modal-icon-btn email-icon" title="Send Email">
-                      <img src="/src/assets/icons/email_icon.png" alt="Email" />
+                      <img src="/icons/email_icon.png" alt="Email" />
                     </a>
                     <a href={formatLinkedInUrl(selectedMember.linkedin)} className="modal-icon-btn linkedin-icon" target="_blank" rel="noopener noreferrer" title="Connect on LinkedIn">
-                      <img src="/src/assets/logos/linkedin_logo.png" alt="LinkedIn" />
+                      <img src="/logos/linkedin_logo.png" alt="LinkedIn" />
                     </a>
                   </div>
                 </div>
@@ -135,7 +135,7 @@ const OurBoard = () => {
                     </div>
                   ) : (
                     <img 
-                      src={`/src/headshots/${selectedMember.headshot_file}`}
+                      src={`/headshots/${selectedMember.headshot_file}`}
                       alt={`${selectedMember.name} headshot`}
                       className="member-headshot large"
                       onError={() => handleImageError(selectedMember.name)}

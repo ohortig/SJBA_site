@@ -2,28 +2,6 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { useScrollAnimation } from '../hooks/useScrollAnimation';
 import Footer from '../components/Footer';
-import arrowIcon from '../assets/icons/arrow_top_right.png';
-import goldmanSachsLogo from '../assets/logos/goldman_sachs_logo.png';
-import jpmorganLogo from '../assets/logos/jpmorgan_logo.jpg';
-import morganStanleyLogo from '../assets/logos/morgan_stanley_logo.jpg';
-import blackstoneLogo from '../assets/logos/blackstone_logo.png';
-import sequoiaLogo from '../assets/logos/sequoia_logo.png';
-import mckinseyLogo from '../assets/logos/mckinsey_logo.jpg';
-import ackmanZiffLogo from '../assets/logos/ackman_ziff_logo.jpg';
-import axomPartnersLogo from '../assets/logos/axom_partners_logo.jpg';
-import bankOfAmericaLogo from '../assets/logos/bank_of_america_logo.png';
-import carterPierceLogo from '../assets/logos/carter_pierce_logo.png';
-import cushmanWakefieldLogo from '../assets/logos/cushman_and_wakefield_logo.png';
-import declarationPartnersLogo from '../assets/logos/declaration_partners_logo.jpg';
-import deutscheBankLogo from '../assets/logos/deutsche_bank_logo.png';
-import edenGlobalPartnersLogo from '../assets/logos/eden_global_partners_logo.jpeg';
-import ftiConsultingLogo from '../assets/logos/FTI_consulting_logo.png';
-import hsbcLogo from '../assets/logos/HSBC_logo.png';
-import ibmLogo from '../assets/logos/IBM_logo.png';
-import kkrLogo from '../assets/logos/KKR_logo.png';
-import logosCapitalLogo from '../assets/logos/logos_capital_logo.png';
-import palantirLogo from '../assets/logos/palantir.png';
-import ubsLogo from '../assets/logos/UBS_logo.png';
 import './Home.css';
 
 const Home = () => {
@@ -33,27 +11,27 @@ const Home = () => {
   const contentAnimation = useScrollAnimation({ threshold: 0.2 });
 
   const logos = [
-    { name: 'Goldman Sachs', src: goldmanSachsLogo, hasImage: true },
-    { name: 'JPMorgan Chase', src: jpmorganLogo, hasImage: true },
-    { name: 'Morgan Stanley', src: morganStanleyLogo, hasImage: true },
-    { name: 'Blackstone', src: blackstoneLogo, hasImage: true },
-    { name: 'Sequoia Capital', src: sequoiaLogo, hasImage: true },
-    { name: 'McKinsey & Company', src: mckinseyLogo, hasImage: true },
-    { name: 'Ackman-Ziff', src: ackmanZiffLogo, hasImage: true },
-    { name: 'Axom Partners', src: axomPartnersLogo, hasImage: true },
-    { name: 'Bank of America', src: bankOfAmericaLogo, hasImage: true },
-    { name: 'Carter Pierce', src: carterPierceLogo, hasImage: true },
-    { name: 'Cushman & Wakefield', src: cushmanWakefieldLogo, hasImage: true },
-    { name: 'Declaration Partners', src: declarationPartnersLogo, hasImage: true },
-    { name: 'Deutsche Bank', src: deutscheBankLogo, hasImage: true },
-    { name: 'Eden Global Partners', src: edenGlobalPartnersLogo, hasImage: true },
-    { name: 'FTI Consulting', src: ftiConsultingLogo, hasImage: true },
-    { name: 'HSBC', src: hsbcLogo, hasImage: true },
-    { name: 'IBM', src: ibmLogo, hasImage: true },
-    { name: 'KKR', src: kkrLogo, hasImage: true },
-    { name: 'Logos Capital', src: logosCapitalLogo, hasImage: true },
-    { name: 'Palantir', src: palantirLogo, hasImage: true },
-    { name: 'UBS', src: ubsLogo, hasImage: true }
+    { name: 'Goldman Sachs', src: '/logos/goldman_sachs_logo.png', hasImage: true },
+    { name: 'JPMorgan Chase', src: '/logos/jpmorgan_logo.jpg', hasImage: true },
+    { name: 'Morgan Stanley', src: '/logos/morgan_stanley_logo.jpg', hasImage: true },
+    { name: 'Blackstone', src: '/logos/blackstone_logo.png', hasImage: true },
+    { name: 'Sequoia Capital', src: '/logos/sequoia_logo.png', hasImage: true },
+    { name: 'McKinsey & Company', src: '/logos/mckinsey_logo.jpg', hasImage: true },
+    { name: 'Ackman-Ziff', src: '/logos/ackman_ziff_logo.jpg', hasImage: true },
+    { name: 'Axom Partners', src: '/logos/axom_partners_logo.jpg', hasImage: true },
+    { name: 'Bank of America', src: '/logos/bank_of_america_logo.png', hasImage: true },
+    { name: 'Carter Pierce', src: '/logos/carter_pierce_logo.png', hasImage: true },
+    { name: 'Cushman & Wakefield', src: '/logos/cushman_and_wakefield_logo.png', hasImage: true },
+    { name: 'Declaration Partners', src: '/logos/declaration_partners_logo.jpg', hasImage: true },
+    { name: 'Deutsche Bank', src: '/logos/deutsche_bank_logo.png', hasImage: true },
+    { name: 'Eden Global Partners', src: '/logos/eden_global_partners_logo.jpeg', hasImage: true },
+    { name: 'FTI Consulting', src: '/logos/FTI_consulting_logo.png', hasImage: true },
+    { name: 'HSBC', src: '/logos/HSBC_logo.png', hasImage: true },
+    { name: 'IBM', src: '/logos/IBM_logo.png', hasImage: true },
+    { name: 'KKR', src: '/logos/KKR_logo.png', hasImage: true },
+    { name: 'Logos Capital', src: '/logos/logos_capital_logo.png', hasImage: true },
+    { name: 'Palantir', src: '/logos/palantir.png', hasImage: true },
+    { name: 'UBS', src: '/logos/UBS_logo.png', hasImage: true }
   ];
 
   return (
@@ -137,7 +115,7 @@ const Home = () => {
       >
         <Link to="/events" className="speakers-link">
           <span>Learn about our previous speakers</span>
-          <img src={arrowIcon} alt="Arrow" className="speakers-link-arrow" />
+          <img src="/icons/arrow_top_right.png" alt="Arrow" className="speakers-link-arrow" />
         </Link>
       </div>
 
@@ -180,7 +158,7 @@ const Home = () => {
               <div className="join-button-container">
                 <Link to="/contact" className="join-button">
                   <span>Join us</span>
-                  <img src={arrowIcon} alt="Arrow" className="join-button-arrow" />
+                  <img src="/icons/arrow_top_right.png" alt="Arrow" className="join-button-arrow" />
                 </Link>
               </div>
             </div>
