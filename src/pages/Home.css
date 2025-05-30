@@ -499,6 +499,24 @@ html {
   font-family: 'Inter', system-ui, sans-serif;
 }
 
+.newsletter-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.newsletter-logo {
+  width: 60px;
+  height: 60px;
+  object-fit: contain;
+}
+
+.newsletter-header h2 {
+  margin-bottom: 0;
+}
+
 .newsletter-content p {
   font-size: 1.1rem;
   color: #64748b;
@@ -625,6 +643,15 @@ html {
     font-size: 1.5rem;
   }
   
+  .newsletter-header {
+    gap: 0.75rem;
+  }
+  
+  .newsletter-logo {
+    width: 50px;
+    height: 50px;
+  }
+  
   .newsletter-content p {
     font-size: 1rem;
   }
@@ -648,5 +675,14 @@ html {
     width: 40px;
     height: 40px;
     right: 6px;
+  }
+  
+  .newsletter-header {
+    gap: 0.5rem;
+  }
+  
+  .newsletter-logo {
+    width: 40px;
+    height: 40px;
   }
 } 

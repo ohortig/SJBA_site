@@ -275,7 +275,10 @@ const Home = () => {
         className={`newsletter-section ${newsletterAnimation.isVisible ? 'visible' : ''}`}
       >
         <div className="newsletter-content">
-          <h2>Join Our Newsletter</h2>
+          <div className="newsletter-header">
+            <img src="sjba_logo_clear.png" alt="SJBA Logo" className="newsletter-logo" />
+            <h2>Join Our Newsletter</h2>
+          </div>
           <p>
             Stay connected with SJBA and receive updates about upcoming events, 
             speaker series, and opportunities exclusively for NYU students.
