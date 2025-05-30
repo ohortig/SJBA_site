@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useScrollAnimation } from '../hooks/useScrollAnimation';
 import Footer from '../components/Footer';
@@ -9,6 +9,109 @@ const Home = () => {
   const heroAnimation = useScrollAnimation({ threshold: 0.2 });
   const speakersAnimation = useScrollAnimation({ threshold: 0.3 });
   const contentAnimation = useScrollAnimation({ threshold: 0.2 });
+  const newsletterAnimation = useScrollAnimation({ threshold: 0.2 });
+
+  // Newsletter form state
+  const [formData, setFormData] = useState({
+    firstName: '',
+    lastName: '',
+    email: ''
+  });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitMessage, setSubmitMessage] = useState('');
+
+  // Newsletter form handlers
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
+  const validateNYUEmail = (email: string): boolean => {
+    const nyuEmailPattern = /^[a-zA-Z0-9._%+-]+@.*\.nyu\.edu$/;
+    return nyuEmailPattern.test(email);
+  };
+
+  const handleNewsletterSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    // Validate all fields are filled
+    if (!formData.firstName.trim() || !formData.lastName.trim() || !formData.email.trim()) {
+      setSubmitMessage('Please fill out all fields.');
+      return;
+    }
+
+    // Validate NYU email
+    if (!validateNYUEmail(formData.email)) {
+      setSubmitMessage('Please use a valid NYU email address.');
+      return;
+    }
+
+    setIsSubmitting(true);
+    setSubmitMessage('');
+
+    try {
+      // Define the signup type
+      interface NewsletterSignup {
+        firstName: string;
+        lastName: string;
+        email: string;
+        timestamp: string;
+        id: number;
+      }
+
+      // Get existing signups from localStorage
+      const existingSignupsJson = localStorage.getItem('sjba-newsletter-signups');
+      let signups: NewsletterSignup[] = [];
+      
+      if (existingSignupsJson) {
+        signups = JSON.parse(existingSignupsJson) as NewsletterSignup[];
+      }
+
+      // Check if email already exists
+      const emailExists = signups.some(signup => 
+        signup.email.toLowerCase() === formData.email.trim().toLowerCase()
+      );
+
+      if (emailExists) {
+        setSubmitMessage('This email is already subscribed to our newsletter.');
+        setIsSubmitting(false);
+        return;
+      }
+
+      // Add new signup with timestamp
+      const newSignup: NewsletterSignup = {
+        firstName: formData.firstName.trim(),
+        lastName: formData.lastName.trim(),
+        email: formData.email.trim().toLowerCase(),
+        timestamp: new Date().toISOString(),
+        id: Date.now() // Simple ID generation
+      };
+
+      signups.push(newSignup);
+
+      // Save to localStorage
+      localStorage.setItem('sjba-newsletter-signups', JSON.stringify(signups));
+
+      // Also log to console for development purposes
+      console.log('Newsletter signup:', newSignup);
+      console.log('All signups stored in localStorage:', signups);
+
+      setSubmitMessage('Successfully signed up for the newsletter!');
+      setFormData({ firstName: '', lastName: '', email: '' });
+    } catch (error) {
+      setSubmitMessage('An error occurred. Please try again.');
+      console.error('Newsletter signup error:', error);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const handleFormSubmit = (e: React.FormEvent) => {
+    handleNewsletterSubmit(e);
+  };
 
   const logos = [
     { name: 'Goldman Sachs', src: '/logos/goldman_sachs_logo.png', hasImage: true },
@@ -163,6 +266,70 @@ const Home = () => {
               </div>
             </div>
           </div>
+        </div>
+      </div>
+
+      {/* Newsletter Signup Section */}
+      <div 
+        ref={newsletterAnimation.elementRef}
+        className={`newsletter-section ${newsletterAnimation.isVisible ? 'visible' : ''}`}
+      >
+        <div className="newsletter-content">
+          <h2>Join Our Newsletter</h2>
+          <p>
+            Stay connected with SJBA and receive updates about upcoming events, 
+            speaker series, and opportunities exclusively for NYU students.
+          </p>
+          
+          <form onSubmit={handleFormSubmit} className="newsletter-form">
+            <div className="form-row">
+              <div className="form-group">
+                <input
+                  type="text"
+                  name="firstName"
+                  value={formData.firstName}
+                  onChange={handleInputChange}
+                  placeholder="First name"
+                  className="form-input"
+                  required
+                />
+              </div>
+              <div className="form-group">
+                <input
+                  type="text"
+                  name="lastName"
+                  value={formData.lastName}
+                  onChange={handleInputChange}
+                  placeholder="Last name"
+                  className="form-input"
+                  required
+                />
+              </div>
+            </div>
+            <div className="form-group email-group">
+              <input
+                type="email"
+                name="email"
+                value={formData.email}
+                onChange={handleInputChange}
+                placeholder="Email address"
+                className="form-input email-input"
+                required
+              />
+              <button 
+                type="submit" 
+                className="newsletter-submit-btn"
+                disabled={isSubmitting}
+              >
+                {isSubmitting ? 'Signing up...' : '→'}
+              </button>
+            </div>
+            {submitMessage && (
+              <div className={`submit-message ${submitMessage.includes('Successfully') ? 'success' : 'error'}`}>
+                {submitMessage}
+              </div>
+            )}
+          </form>
         </div>
       </div>
 
