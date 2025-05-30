@@ -70,7 +70,7 @@ const Home = () => {
   };
 
   const validateNYUEmail = (email: string): boolean => {
-    const nyuEmailPattern = /^[a-zA-Z0-9._%+-]+@.*\.nyu\.edu$/;
+    const nyuEmailPattern = /^[a-zA-Z0-9._%+-]+@(.*\.)?nyu\.edu$/;
     return nyuEmailPattern.test(email);
   };
 
