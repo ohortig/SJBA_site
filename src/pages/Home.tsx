@@ -220,50 +220,6 @@ const Home = () => {
           <div className="nav-dot" data-target="4" onClick={() => handleDotClick(4)}></div>
         </div>
       </div>
-      
-      <div 
-        ref={contentAnimation.elementRef}
-        className={`content-section ${contentAnimation.isVisible ? 'visible' : ''}`}
-      >
-        <div className="content-grid">
-          <div className={`image-container slide-right ${contentAnimation.isVisible ? 'visible' : ''}`}>
-            <div className="placeholder-image">
-              <span>Previous Session Image</span>
-            </div>
-          </div>
-          
-          <div className={`text-container slide-left ${contentAnimation.isVisible ? 'visible' : ''}`}>
-            <h2 className="section-title">
-              Come learn about the Jewish impact on the business world
-            </h2>
-            
-            <div className="section-content">
-              <p>
-                The Jewish community has played a pivotal role in shaping modern business 
-                and finance. From pioneering investment banking to revolutionary 
-                entrepreneurship, Jewish professionals have left an indelible mark on 
-                industries worldwide. At SJBA, we celebrate this rich heritage while 
-                building the next generation of Jewish business leaders.
-              </p>
-              
-              <p>
-                Our organization provides a platform for networking, mentorship, and 
-                professional development within NYU's vibrant Jewish community. Through 
-                exclusive events, speaker series, and industry connections, we help 
-                members understand their cultural legacy while preparing them for 
-                successful careers in finance, consulting, technology, and beyond.
-              </p>
-              
-              <div className="join-button-container">
-                <Link to="/contact" className="join-button">
-                  <span>Join us</span>
-                  <img src="/icons/arrow_top_right.png" alt="Arrow" className="join-button-arrow" />
-                </Link>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
 
       <div className="logo-gallery-container">
         <div className="logo-gallery">
@@ -338,6 +294,52 @@ const Home = () => {
           <img src="/icons/arrow_top_right.png" alt="Arrow" className="speakers-link-arrow" />
         </Link>
       </div>
+
+      <div className="section-divider"></div>
+
+      <div 
+        ref={contentAnimation.elementRef}
+        className={`content-section ${contentAnimation.isVisible ? 'visible' : ''}`}
+      >
+        <div className={`text-container slide-left ${contentAnimation.isVisible ? 'visible' : ''}`}>
+          <h2 className="section-title">
+            Come learn about the Jewish impact on the business world
+          </h2>
+          
+          <div className="section-content">
+            <p>
+              The Jewish community has played a pivotal role in shaping modern business 
+              and finance. From pioneering investment banking to revolutionary 
+              entrepreneurship, Jewish professionals have left an indelible mark on 
+              industries worldwide. At SJBA, we celebrate this rich heritage while 
+              building the next generation of Jewish business leaders.
+            </p>
+            
+            <p>
+              Our organization provides a platform for networking, mentorship, and 
+              professional development within NYU's vibrant Jewish community. Through 
+              exclusive events, speaker series, and industry connections, we help 
+              members understand their cultural legacy while preparing them for 
+              successful careers in finance, consulting, technology, and beyond.
+            </p>
+            
+            <div className="join-button-container">
+              <div className="join-board-buttons">
+                <Link to="/contact" className="join-board-btn primary">
+                  <span>Join Us</span>
+                  <img src="/icons/arrow_top_right.png" alt="Arrow" className="join-board-btn-arrow" />
+                </Link>
+                <Link to="/OurMission" className="join-board-btn secondary">
+                  <span>Our Mission</span>
+                  <img src="/icons/arrow_top_right.png" alt="Arrow" className="join-board-btn-arrow" />
+                </Link>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="section-divider"></div>
 
       {/* Newsletter Signup Section */}
       <div 
