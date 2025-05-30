@@ -1,7 +1,7 @@
 .header {
-  background-color: rgba(145, 78, 197, 0.23);
+  background-color: rgba(255, 255, 255, 0.27);
   padding: 0;
-  position: static;
+  position: fixed;
   top: 0;
   left: 0;
   right: 0;
@@ -9,6 +9,28 @@
   width: 100vw;
   margin-left: calc(-50vw + 50%);
   box-sizing: border-box;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.header:hover:not(.scrolled) {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(20px);
+  box-shadow: 0 8px 32px rgba(76, 13, 127, 0.12);
+  border-bottom: 1px solid rgba(76, 13, 127, 0.08);
+}
+
+.header:hover:not(.scrolled) .nav-buttons::before {
+  background: rgba(76, 13, 127, 0.15);
+  box-shadow: 1px 0 2px rgba(76, 13, 127, 0.05);
+}
+
+.header.scrolled {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(20px);
+  box-shadow: 0 8px 32px rgba(76, 13, 127, 0.12);
+  border-bottom: 1px solid rgba(76, 13, 127, 0.08);
 }
 
 .nav-container {
@@ -22,6 +44,11 @@
   max-width: none;
   box-sizing: border-box;
   position: relative;
+  transition: all 0.3s ease;
+}
+
+.header.scrolled .nav-container {
+  padding: clamp(0.08rem, 0.3vw, 0.18rem) 15vw;
 }
 
 /* Clean divider approach using shadow and subtle background */
@@ -50,11 +77,19 @@
   width: 1px;
   background: rgba(76, 13, 127, 0.25);
   box-shadow: 1px 0 3px rgba(76, 13, 127, 0.1);
+  transition: all 0.3s ease;
+}
+
+.header.scrolled .nav-buttons::before {
+  background: rgba(76, 13, 127, 0.15);
+  box-shadow: 1px 0 2px rgba(76, 13, 127, 0.05);
 }
 
 .logo-image {
-  height: clamp(65px, 10vw, 100px);
+  height: clamp(55px, 8vw, 85px);
   width: auto;
+  transition: all 0.3s ease;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
 }
 
 .mobile-menu-button {

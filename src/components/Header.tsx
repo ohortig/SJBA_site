@@ -1,18 +1,29 @@
 import { Link } from 'react-router-dom';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import NavButton from './NavButton';
 import AboutDropdown from './AboutDropdown';
 import './Header.css';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollTop = window.pageYOffset;
+      setIsScrolled(scrollTop > 50);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
 
   return (
-    <header className="header">
+    <header className={`header ${isScrolled ? 'scrolled' : ''}`}>
       <nav className="nav-container">
         <div className="logo">
           <Link to="/">
