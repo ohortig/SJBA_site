@@ -4,7 +4,7 @@ import { useScrollAnimation } from '../hooks/useScrollAnimation';
 import './Footer.css';
 
 const Footer = () => {
-  const footerAnimation = useScrollAnimation({ threshold: 0.1 });
+  const footerAnimation = useScrollAnimation({ threshold: 0.05 });
 
   return (
     <footer 

@@ -35,6 +35,14 @@
 /* Board Section */
 .board-section {
   margin-bottom: 5rem;
+  opacity: 0;
+  transform: translateY(40px);
+  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.board-section.visible {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .board-grid {
@@ -57,6 +65,55 @@
   position: relative;
   overflow: hidden;
   cursor: pointer;
+}
+
+/* Board Member Card Stagger Animation */
+.board-grid.stagger-children .board-member-card.stagger-item {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.board-grid.stagger-children.visible .board-member-card.stagger-item:nth-child(1) {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 0.05s;
+}
+
+.board-grid.stagger-children.visible .board-member-card.stagger-item:nth-child(2) {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 0.1s;
+}
+
+.board-grid.stagger-children.visible .board-member-card.stagger-item:nth-child(3) {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 0.15s;
+}
+
+.board-grid.stagger-children.visible .board-member-card.stagger-item:nth-child(4) {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 0.2s;
+}
+
+.board-grid.stagger-children.visible .board-member-card.stagger-item:nth-child(5) {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 0.25s;
+}
+
+.board-grid.stagger-children.visible .board-member-card.stagger-item:nth-child(6) {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 0.3s;
+}
+
+.board-grid.stagger-children.visible .board-member-card.stagger-item:nth-child(n+7) {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 0.35s;
 }
 
 .board-member-card::before {
@@ -451,6 +508,14 @@
   padding: 3rem;
   text-align: center;
   margin-bottom: 4rem;
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.4s ease;
+}
+
+.join-board-section.visible {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .join-board-content h2 {
@@ -706,5 +771,125 @@
 
   .join-board-content h2 {
     font-size: 1.4rem;
+  }
+}
+
+/* Scroll Animations */
+.animate-on-scroll {
+  opacity: 0;
+  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.animate-on-scroll.visible {
+  opacity: 1;
+}
+
+/* Fade In */
+.fade-in {
+  opacity: 0;
+  transition: opacity 0.4s ease-out;
+}
+
+.fade-in.visible {
+  opacity: 1;
+}
+
+/* Slide Up */
+.slide-up {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.slide-up.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Slide Left */
+.slide-left {
+  opacity: 0;
+  transform: translateX(40px);
+  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.slide-left.visible {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* Slide Right */
+.slide-right {
+  opacity: 0;
+  transform: translateX(-40px);
+  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.slide-right.visible {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* Staggered animations for child elements */
+.stagger-children .stagger-item {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.stagger-children.visible .stagger-item:nth-child(1) {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 0.05s;
+}
+
+.stagger-children.visible .stagger-item:nth-child(2) {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 0.1s;
+}
+
+.stagger-children.visible .stagger-item:nth-child(3) {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 0.15s;
+}
+
+.stagger-children.visible .stagger-item:nth-child(4) {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 0.2s;
+}
+
+/* Scale Animation */
+.scale-in {
+  opacity: 0;
+  transform: scale(0.8);
+  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.scale-in.visible {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* Smooth scrolling for entire page */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Reduce motion for users who prefer it */
+@media (prefers-reduced-motion: reduce) {
+  .animate-on-scroll,
+  .fade-in,
+  .slide-up,
+  .slide-left,
+  .slide-right,
+  .scale-in,
+  .stagger-children .stagger-item {
+    transition: none !important;
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
   }
 } 

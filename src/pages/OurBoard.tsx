@@ -1,10 +1,16 @@
 import React, { useState } from 'react';
 import Footer from '../components/Footer';
+import { useScrollAnimation } from '../hooks/useScrollAnimation';
 import type { BoardMember } from '../data/BoardMembers';
 import { boardMembers } from '../data/BoardMembers';
 import './OurBoard.css';
 
 const OurBoard = () => {
+  // Scroll animation hooks for different sections
+  const headerAnimation = useScrollAnimation({ threshold: 0.2 });
+  const boardAnimation = useScrollAnimation({ threshold: 0.2 });
+  const joinBoardAnimation = useScrollAnimation({ threshold: 0.2 });
+
   const [selectedMember, setSelectedMember] = useState<BoardMember | null>(null);
   const [imageErrors, setImageErrors] = useState<Set<string>>(new Set());
 
@@ -33,19 +39,25 @@ const OurBoard = () => {
   return (
     <>
       <div className="page-container">
-        <div className="board-header">
+        <div 
+          ref={headerAnimation.elementRef}
+          className={`board-header slide-up ${headerAnimation.isVisible ? 'visible' : ''}`}
+        >
           <h1 className="board-title">Our Board</h1>
           <p className="board-subtitle">
             Meet the dedicated leaders driving SJBA's mission.
           </p>
         </div>
 
-        <div className="board-section">
-          <div className="board-grid">
+        <div 
+          ref={boardAnimation.elementRef}
+          className={`board-section slide-up ${boardAnimation.isVisible ? 'visible' : ''}`}
+        >
+          <div className={`board-grid stagger-children ${boardAnimation.isVisible ? 'visible' : ''}`}>
             {boardMembers.map((member, index) => (
               <div 
                 key={index} 
-                className="board-member-card"
+                className="board-member-card stagger-item"
                 onClick={() => openModal(member)}
               >
                 <div className="member-photo">
@@ -84,7 +96,10 @@ const OurBoard = () => {
           </div>
         </div>
 
-        <div className="join-board-section">
+        <div 
+          ref={joinBoardAnimation.elementRef}
+          className={`join-board-section ${joinBoardAnimation.isVisible ? 'visible' : ''}`}
+        >
           <div className="join-board-content">
             <h2>Interested in Joining Our Board?</h2>
             <p>
