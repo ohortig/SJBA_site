@@ -1,0 +1,139 @@
+/* Logo Gallery */
+.logo-gallery-container {
+  width: 100vw;
+  margin-left: -12vw;
+  margin-right: -12vw;
+  margin-top: 4rem;
+  overflow: hidden;
+  padding: 2.5rem 0;
+  position: relative;
+  background: linear-gradient(135deg, 
+    rgba(248, 250, 252, 0.8) 0%, 
+    rgba(241, 245, 249, 0.9) 50%, 
+    rgba(248, 250, 252, 0.8) 100%);
+  border-top: 1px solid rgba(76, 13, 127, 0.08);
+  border-bottom: 1px solid rgba(76, 13, 127, 0.08);
+}
+
+.logo-gallery-container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, 
+    transparent 0%, 
+    rgba(76, 13, 127, 0.2) 50%, 
+    transparent 100%);
+}
+
+.logo-gallery-container::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, 
+    transparent 0%, 
+    rgba(76, 13, 127, 0.2) 50%, 
+    transparent 100%);
+}
+
+.logo-gallery {
+  display: flex;
+  gap: 3rem;
+  animation: scroll-left 60s linear infinite;
+  width: max-content;
+}
+
+.logo-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  min-width: 200px;
+  height: 120px;
+}
+
+.logo-item:hover {
+  transform: none;
+  box-shadow: none;
+}
+
+/* Company logo styles */
+.company-logo {
+  max-width: 180px;
+  max-height: 100px;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+}
+
+.logo-item:hover .company-logo {
+  filter: none;
+}
+
+.logo-fallback,
+.logo-text {
+  font-weight: 600;
+  color: #495057;
+  font-size: 0.9rem;
+}
+
+/* Infinite scroll animation */
+@keyframes scroll-left {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .logo-gallery-container {
+    margin-left: -12vw;
+    margin-right: -12vw;
+    margin-top: 4rem;
+    padding: 2.5rem 0;
+  }
+
+  .logo-gallery {
+    gap: 2rem;
+  }
+
+  .logo-item {
+    min-width: 160px;
+    height: 100px;
+  }
+
+  .company-logo {
+    max-width: 140px;
+    max-height: 80px;
+  }
+}
+
+@media (max-width: 480px) {
+  .logo-gallery-container {
+    margin-left: -8vw;
+    margin-right: -8vw;
+    padding: 2rem 0;
+  }
+
+  .logo-gallery {
+    gap: 1.5rem;
+  }
+
+  .logo-item {
+    min-width: 140px;
+    height: 80px;
+  }
+
+  .company-logo {
+    max-width: 120px;
+    max-height: 60px;
+  }
+} 
