@@ -103,7 +103,7 @@ export const boardMembers: BoardMember[] = [
     position: "Director of Mentorship",
     name: "Max Elmann",
     bio: "Max Elmann is a sophomore at NYU Stern pursuing a B.S. in Business with concentrations in Finance and Management. Born in Montreal and raised in Brooklyn’s Syrian Jewish community, Max is a proud Lebanese Jew with a deep commitment to Jewish values and service. He interned at the UJA Federation, served as Chairman of the Bnei Yitzhak Minyan in high school, and is an active member of Magen David of Manhattan. In high school, Max also founded Make Chesed Fun, a nonprofit that partners with grassroots Jewish organizations to create meaningful and engaging volunteer experiences for students. Max joined SJBA as a freshman and was immediately drawn to the club’s speakers and the strong sense of community being built at Stern. He now serves as Director of Mentorship, where he hopes to strengthen that community and ensure every underclassman feels supported. He also serves as Director of Operations for the Special Situations Investing Group (SSIG), where he helps lead club operations and event planning, including the annual Credit Symposium. \n\nMax is passionate about restructuring and special situations investing. He previously interned in real estate private credit at IceCap Group and will be interning this summer at Hilco Global, focusing on IP dispositions and distressed asset sales. In his free time, Max enjoys volunteering, reading, playing pickleball, and spending time with friends..",
-    major: "Management & Organizations",
+    major: "Finance & Management",
     year: "Sophomore",
     hometown: "Brooklyn, NY",
     linkedin: "www.linkedin.com/in/maxelmann",
