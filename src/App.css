@@ -52,6 +52,14 @@
   width: 100%;
 }
 
+.page-container {
+  width: 100%;
+  padding-left: 15vw;
+  padding-right: 15vw;
+  margin: 0;
+  padding-top: 100px; /* Account for fixed header */
+}
+
 .page-container h1 {
   margin-bottom: clamp(1rem, 3vw, 2rem);
   color: #333;
@@ -66,9 +74,17 @@
 
 /* Responsive breakpoints */
 @media (max-width: 768px) {
-  
+  .page-container {
+    padding-left: 12vw;
+    padding-right: 12vw;
+    padding-top: 90px; /* Smaller header on mobile */
+  }
 }
 
 @media (max-width: 480px) {
-  
+  .page-container {
+    padding-left: 8vw;
+    padding-right: 8vw;
+    padding-top: 80px; /* Even smaller header on small mobile */
+  }
 }

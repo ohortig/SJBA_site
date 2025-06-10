@@ -99,6 +99,13 @@
   cursor: pointer;
   padding: 0.5rem;
   flex-shrink: 0;
+  outline: none;
+}
+
+.mobile-menu-button:focus,
+.mobile-menu-button:active {
+  outline: none;
+  box-shadow: none;
 }
 
 .menu-icon {
@@ -142,25 +149,30 @@
 
   /* Hide divider on mobile and reset padding */
   .nav-buttons {
+    display: none;
+    position: fixed;
+    top: 80px; /* Start below the header */
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100vw;
+    height: calc(100vh - 80px); /* Adjust height to account for header */
+    background: rgba(255, 255, 255, 0.95); /* Match the header's scrolled/hovered white background */
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+    gap: 2rem;
+    backdrop-filter: blur(20px); /* Match the header's scrolled/hovered backdrop filter */
+    box-shadow: 0 8px 32px rgba(76, 13, 127, 0.12); /* Match the header's scrolled/hovered shadow */
+    border-bottom: 1px solid rgba(76, 13, 127, 0.08); /* Match the header's scrolled/hovered border */
+    z-index: 998; /* Lower than header so hamburger stays accessible */
     padding-left: 0;
+    padding-top: 0; /* Remove extra top padding since we're starting below header */
   }
   
   .nav-buttons::before {
     display: none;
-  }
-
-  .nav-buttons {
-    display: none;
-    position: absolute;
-    top: 100%;
-    left: 0;
-    right: 0;
-    background-color: rgba(145, 78, 197, 0.95);
-    flex-direction: column;
-    padding: 0.75rem;
-    gap: 0.75rem;
-    backdrop-filter: blur(10px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   }
 
   .nav-buttons.active {
@@ -184,4 +196,11 @@
   .nav-buttons {
     padding: 0.5rem;
   }
+}
+
+/* Prevent body scrolling when mobile menu is open */
+body.menu-open {
+  overflow: hidden !important;
+  position: fixed;
+  width: 100%;
 } 
