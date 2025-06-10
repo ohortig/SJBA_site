@@ -1,6 +1,6 @@
-import React from 'react';
 import { Link } from 'react-router-dom';
 import { useScrollAnimation } from '../hooks/useScrollAnimation';
+import SocialLink from './SocialLink';
 import './Footer.css';
 
 const Footer = () => {
@@ -40,35 +40,22 @@ const Footer = () => {
         <div className={`footer-social slide-left ${footerAnimation.isVisible ? 'visible' : ''}`}>
           <h3>Where to find us</h3>
           <div className="social-links">
-            <a 
-              href="https://www.linkedin.com/company/sjba/" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="social-link linkedin"
-            >
-              <div className="social-icon-placeholder">
-                <img src="/logos/linkedin_logo.png" alt="LinkedIn" className="social-icon" />
-              </div>
-              <div className="social-text">
-                <span className="social-name">LinkedIn</span>
-                <span className="social-handle">@sjba</span>
-              </div>
-            </a>
-            
-            <a 
-              href="https://www.instagram.com/nyusjba/" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="social-link instagram"
-            >
-              <div className="social-icon-placeholder">
-                <img src="/logos/instagram_logo.png" alt="Instagram" className="social-icon" />
-              </div>
-              <div className="social-text">
-                <span className="social-name">Instagram</span>
-                <span className="social-handle">@nyusjba</span>
-              </div>
-            </a>
+            <SocialLink
+              href="https://www.linkedin.com/company/sjba/"
+              platform="linkedin"
+              name="LinkedIn"
+              handle="@sjba"
+              iconSrc="/logos/linkedin_logo.png"
+              alt="LinkedIn"
+            />
+            <SocialLink
+              href="https://www.instagram.com/nyusjba/"
+              platform="instagram"
+              name="Instagram"
+              handle="@nyusjba"
+              iconSrc="/logos/instagram_logo.png"
+              alt="Instagram"
+            />
           </div>
         </div>
       </div>

@@ -331,7 +331,7 @@
 /* Speakers Link Section */
 .speakers-link-section {
   text-align: center;
-  padding: 4rem 0;
+  padding: 4rem 0 2rem 0;
   margin-top: 0;
   background: radial-gradient(ellipse at center, 
     rgba(76, 13, 127, 0.02) 0%, 
@@ -712,11 +712,6 @@
 .scale-in.visible {
   opacity: 1;
   transform: scale(1);
-}
-
-/* Smooth scrolling for entire page */
-html {
-  scroll-behavior: smooth;
 }
 
 /* Reduce motion for users who prefer it */

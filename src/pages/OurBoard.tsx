@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Footer from '../components/Footer';
 import { useScrollAnimation } from '../hooks/useScrollAnimation';
 import type { BoardMember } from '../data/BoardMembers';
@@ -6,13 +6,32 @@ import { boardMembers } from '../data/BoardMembers';
 import './OurBoard.css';
 
 const OurBoard = () => {
-  // Scroll animation hooks for different sections
-  const headerAnimation = useScrollAnimation({ threshold: 0.2 });
-  const boardAnimation = useScrollAnimation({ threshold: 0.2 });
-  const joinBoardAnimation = useScrollAnimation({ threshold: 0.2 });
+  // Scroll animation hooks for different sections with mobile-friendly settings
+  const headerAnimation = useScrollAnimation({ 
+    threshold: 0.1, 
+    rootMargin: '0px 0px -20px 0px' 
+  });
+  const boardAnimation = useScrollAnimation({ 
+    threshold: 0.05, 
+    rootMargin: '0px 0px 0px 0px' 
+  });
+  const joinBoardAnimation = useScrollAnimation({ 
+    threshold: 0.1,
+    rootMargin: '0px 0px -20px 0px'
+  });
 
   const [selectedMember, setSelectedMember] = useState<BoardMember | null>(null);
   const [imageErrors, setImageErrors] = useState<Set<string>>(new Set());
+  const [forceVisible, setForceVisible] = useState(false);
+
+  // Fallback mechanism for mobile - ensure animations trigger after a delay
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      setForceVisible(true);
+    }, 1000); // Show animations after 1 second if they haven't triggered naturally
+
+    return () => clearTimeout(timeout);
+  }, []);
 
   const handleImageError = (memberName: string) => {
     setImageErrors(prev => new Set(prev).add(memberName));
@@ -51,9 +70,9 @@ const OurBoard = () => {
 
         <div 
           ref={boardAnimation.elementRef}
-          className={`board-section slide-up ${boardAnimation.isVisible ? 'visible' : ''}`}
+          className={`board-section slide-up ${boardAnimation.isVisible || forceVisible ? 'visible' : ''}`}
         >
-          <div className={`board-grid stagger-children ${boardAnimation.isVisible ? 'visible' : ''}`}>
+          <div className={`board-grid stagger-children ${boardAnimation.isVisible || forceVisible ? 'visible' : ''}`}>
             {boardMembers.map((member, index) => (
               <div 
                 key={index} 
