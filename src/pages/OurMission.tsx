@@ -1,8 +1,22 @@
+import './OurMission.css';
+
 const OurMission = () => {
   return (
-    <div className="page-container">
-      <h1>Our Mission</h1>
-      <p>Stern Jewish Business Association (SJBA) is an Undergraduate club at New York University's Stern School of Business. SJBA aims to strengthen bonds among aspiring leaders through mentorship, networking, and professional development events that welcome all students interested in the Jewish community’s impact on the business world.</p>
+    <div className="mission-page-container">
+      <div className="mission-content">
+        <div className="mission-header">
+          <h1 className="board-title">Our Mission</h1>
+        </div>
+        
+        <div className="construction-container">
+          <h2>This page is currently under construction. Stay tuned for updates.</h2>
+          <div className="construction-buttons">
+            <a href="/contact" className="construction-btn">
+              Get Involved
+            </a>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
