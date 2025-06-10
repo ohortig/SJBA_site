@@ -60,7 +60,7 @@ const Contact = () => {
     <div className="contact-container">
       <div className="contact-content">
         <div className="contact-info">
-          <h1>Contact Us</h1>
+          <h1 className="board-title">Contact Us</h1>
           
           <p>Feel free to contact us if you have any questions or concerns!</p>
           
