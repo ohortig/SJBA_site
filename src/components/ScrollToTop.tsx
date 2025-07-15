@@ -1,7 +1,7 @@
 import { useLayoutEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 
-const ScrollToTop = () => {
+export const ScrollToTop = () => {
   const { pathname } = useLocation();
 
   // Reset scroll position on initial mount (first page load)
@@ -34,5 +34,3 @@ const ScrollToTop = () => {
 
   return null;
 };
-
-export default ScrollToTop; 

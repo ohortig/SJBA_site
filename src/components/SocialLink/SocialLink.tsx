@@ -10,7 +10,7 @@ interface SocialLinkProps {
   alt: string;
 }
 
-const SocialLink: React.FC<SocialLinkProps> = ({ 
+export const SocialLink: React.FC<SocialLinkProps> = ({ 
   href, 
   platform, 
   name, 
@@ -35,5 +35,3 @@ const SocialLink: React.FC<SocialLinkProps> = ({
     </a>
   );
 };
-
-export default SocialLink; 

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import SocialLink from '../components/SocialLink';
+import { SocialLink } from '@components';
 import './Contact.css';
 
 const Contact = () => {

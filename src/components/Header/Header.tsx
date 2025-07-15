@@ -1,10 +1,9 @@
 import { Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
-import NavButton from './NavButton';
-import AboutDropdown from './AboutDropdown';
+import { NavButton, AboutDropdown } from '@components';
 import './Header.css';
 
-const Header = () => {
+export const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
 
@@ -63,5 +62,3 @@ const Header = () => {
     </header>
   );
 };
-
-export default Header; 

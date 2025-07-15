@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
-import Footer from '../components/Footer';
-import { useScrollAnimation } from '../hooks/useScrollAnimation';
+import { Footer } from '@components';
+import { useScrollAnimation } from '@hooks';
 import type { BoardMember } from '../data/BoardMembers';
 import { boardMembers } from '../data/BoardMembers';
 import './OurBoard.css';

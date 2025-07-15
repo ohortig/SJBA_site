@@ -6,7 +6,7 @@ interface AboutDropdownProps {
   onClose?: () => void;
 }
 
-const AboutDropdown = ({ onClose }: AboutDropdownProps) => {
+export const AboutDropdown = ({ onClose }: AboutDropdownProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
 
@@ -81,5 +81,3 @@ const AboutDropdown = ({ onClose }: AboutDropdownProps) => {
     </div>
   );
 };
-
-export default AboutDropdown; 

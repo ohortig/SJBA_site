@@ -1,9 +1,9 @@
 import { Link } from 'react-router-dom';
-import { useScrollAnimation } from '../hooks/useScrollAnimation';
-import SocialLink from './SocialLink';
+import { useScrollAnimation } from '@hooks';
+import { SocialLink } from '@components';
 import './Footer.css';
 
-const Footer = () => {
+export const Footer = () => {
   const footerAnimation = useScrollAnimation({ threshold: 0.05 });
 
   return (
@@ -78,5 +78,3 @@ const Footer = () => {
     </footer>
   );
 };
-
-export default Footer; 

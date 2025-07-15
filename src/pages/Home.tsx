@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { useScrollAnimation } from '../hooks/useScrollAnimation';
-import Footer from '../components/Footer';
-import LogoGallery from '../components/LogoGallery';
+import { useScrollAnimation } from '@hooks';
+import { Footer, LogoGallery } from '@components';
 import './Home.css';
 
 const Home = () => {

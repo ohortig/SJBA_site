@@ -6,7 +6,7 @@ interface Logo {
   hasImage: boolean;
 }
 
-const LogoGallery = () => {
+export const LogoGallery = () => {
   const logos: Logo[] = [
     { name: 'Goldman Sachs', src: '/logos/goldman_sachs_logo.png', hasImage: true },
     { name: 'JPMorgan Chase', src: '/logos/jpmorgan_logo.jpg', hasImage: true },
@@ -97,5 +97,3 @@ const LogoGallery = () => {
     </div>
   );
 };
-
-export default LogoGallery; 
