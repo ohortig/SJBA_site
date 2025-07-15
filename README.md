@@ -17,5 +17,5 @@ SJBA_site is deployed on Vercel: [sjba-site.vercel.app](https://sjba-site.vercel
 
 ## Release Notes
 
-## Version 0.1
+### Version 0.1
 Initial release. Functional Home, Our Board, and Contact Us pages.
