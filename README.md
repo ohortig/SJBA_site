@@ -13,7 +13,7 @@ SJBA_site is deployed on Vercel: [sjba-site.vercel.app](https://sjba-site.vercel
 
 * Run `npm install` to install project dependencies
 
-* Run `npm run dev` to start the local development server (typically at http://localhost:5173/)
+* Run `npm run dev` to start the local development server (default at http://localhost:3000/)
 
 ## Release Notes
 
