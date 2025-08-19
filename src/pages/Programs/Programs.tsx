@@ -1,11 +1,11 @@
-import './OurMission.css';
+import './Programs.css';
 
-const OurMission = () => {
+export const Programs = () => {
   return (
-    <div className="mission-page-container">
-      <div className="mission-content">
-        <div className="mission-header">
-          <h1 className="board-title">Our Mission</h1>
+    <div className="programs-page-container">
+      <div className="programs-content">
+        <div className="programs-header">
+          <h1 className="board-title">Programs</h1>
         </div>
         
         <div className="construction-container">
@@ -20,5 +20,3 @@ const OurMission = () => {
     </div>
   );
 };
-
-export default OurMission; 

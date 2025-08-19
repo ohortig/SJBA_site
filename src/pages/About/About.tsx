@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import './About.css';
 
-const About = () => {
+export const About = () => {
   return (
     <div className="about-page-container">
       <div className="about-content">
@@ -36,5 +36,3 @@ const About = () => {
     </div>
   );
 };
-
-export default About; 

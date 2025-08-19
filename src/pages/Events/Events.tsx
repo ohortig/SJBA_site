@@ -1,6 +1,6 @@
 import './Events.css';
 
-const Events = () => {
+export const Events = () => {
   return (
     <div className="events-page-container">
       <div className="events-content">
@@ -20,5 +20,3 @@ const Events = () => {
     </div>
   );
 };
-
-export default Events; 

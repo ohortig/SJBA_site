@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { SocialLink } from '@components';
 import './Contact.css';
 
-const Contact = () => {
+export const Contact = () => {
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -187,5 +187,3 @@ const Contact = () => {
     </div>
   );
 };
-
-export default Contact; 

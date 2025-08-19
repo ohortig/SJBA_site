@@ -4,7 +4,7 @@ import { useScrollAnimation } from '@hooks';
 import { Footer, LogoGallery } from '@components';
 import './Home.css';
 
-const Home = () => {
+export const Home = () => {
   // Scroll animation hooks for different sections
   const heroAnimation = useScrollAnimation({ threshold: 0.2 });
   const speakersAnimation = useScrollAnimation({ threshold: 0.3 });
@@ -326,5 +326,3 @@ const Home = () => {
     </div>
   );
 };
-
-export default Home;

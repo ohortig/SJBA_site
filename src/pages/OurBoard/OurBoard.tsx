@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react';
 import { Footer } from '@components';
 import { useScrollAnimation } from '@hooks';
-import type { BoardMember } from '../data/BoardMembers';
-import { boardMembers } from '../data/BoardMembers';
+import type { BoardMember } from '../../data/BoardMembers';
+import { boardMembers } from '../../data/BoardMembers';
 import './OurBoard.css';
 
-const OurBoard = () => {
+export const OurBoard = () => {
   // Scroll animation hooks for different sections with mobile-friendly settings
   const headerAnimation = useScrollAnimation({ 
     threshold: 0.1, 
@@ -202,5 +202,3 @@ const OurBoard = () => {
     </>
   );
 };
-
-export default OurBoard; 
