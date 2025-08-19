@@ -1,1 +1,1 @@
-export { OurBoard } from './OurBoard';
+export * from './OurBoard';
