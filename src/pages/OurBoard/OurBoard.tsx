@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react';
 import { Footer } from '@components';
 import { useScrollAnimation } from '@hooks';
-import type { BoardMember } from '../../data/BoardMembers';
-import { boardMembers } from '../../data/BoardMembers';
+import { dataService } from '@api'; 
+import { BOARD_IMAGES_BUCKET } from '@constants';
+import type { BoardMember } from '@types';
 import './OurBoard.css';
 
 export const OurBoard = () => {
@@ -23,6 +24,20 @@ export const OurBoard = () => {
   const [selectedMember, setSelectedMember] = useState<BoardMember | null>(null);
   const [imageErrors, setImageErrors] = useState<Set<string>>(new Set());
   const [forceVisible, setForceVisible] = useState(false);
+  const [boardMembers, setBoardMembers] = useState<BoardMember[]>([]);
+
+  // Fetch board members data
+  useEffect(() => {
+    const fetchBoardMembers = async () => {
+      try {
+        const members = await dataService.boardMembers.getAll();
+        setBoardMembers(members);
+      } catch (error) {
+        console.error('Failed to fetch board members:', error);
+      }
+    };
+    void fetchBoardMembers();
+  }, []);
 
   // Fallback mechanism for mobile - ensure animations trigger after a delay
   useEffect(() => {
@@ -38,13 +53,7 @@ export const OurBoard = () => {
   };
 
   const shouldShowPlaceholder = (member: BoardMember) => {
-    return !member.headshot_file || member.headshot_file === "#" || imageErrors.has(member.name);
-  };
-
-  const formatLinkedInUrl = (url: string) => {
-    if (!url || url === "#") return "#";
-    if (url.startsWith("http://") || url.startsWith("https://")) return url;
-    return `https://${url}`;
+    return !member.headshotFile || imageErrors.has(member.fullName);
   };
 
   const openModal = (member: BoardMember) => {
@@ -82,25 +91,25 @@ export const OurBoard = () => {
                 <div className="member-photo">
                   {shouldShowPlaceholder(member) ? (
                     <div className="photo-placeholder">
-                      <span>{member.name.split(' ').map(n => n[0]).join('')}</span>
+                      <span>{member.fullName.split(' ').map((n: string) => n[0]).join('')}</span>
                     </div>
                   ) : (
                     <img 
                       src={`${BOARD_IMAGES_BUCKET}${member.headshotFile}`}
                       alt={`${member.fullName} headshot`}
                       className="member-headshot"
-                      onError={() => handleImageError(member.name)}
+                      onError={() => handleImageError(member.fullName)}
                     />
                   )}
                 </div>
                 <div className="member-info">
                   <div className="member-name-row">
-                    <h3 className="member-name">{member.name}</h3>
+                    <h3 className="member-name">{member.fullName}</h3>
                     <div className="member-icon-buttons">
                       <a href={`mailto:${member.email}`} className="member-icon-btn email-icon" title="Send Email" onClick={(e) => e.stopPropagation()}>
                         <img src="/icons/email_icon.png" alt="Email" />
                       </a>
-                      <a href={formatLinkedInUrl(member.linkedin)} className="member-icon-btn linkedin-icon" target="_blank" rel="noopener noreferrer" title="Connect on LinkedIn" onClick={(e) => e.stopPropagation()}>
+                      <a href={member.linkedinUrl} className="member-icon-btn linkedin-icon" target="_blank" rel="noopener noreferrer" title="Connect on LinkedIn" onClick={(e) => e.stopPropagation()}>
                         <img src="/logos/linkedin_logo.png" alt="LinkedIn" />
                       </a>
                     </div>
@@ -146,12 +155,12 @@ export const OurBoard = () => {
             <div className="modal-header">
               <div className="modal-title-section">
                 <div className="modal-name-row">
-                  <h2 className="modal-name">{selectedMember.name}</h2>
+                  <h2 className="modal-name">{selectedMember.fullName}</h2>
                   <div className="modal-icon-buttons">
                     <a href={`mailto:${selectedMember.email}`} className="modal-icon-btn email-icon" title="Send Email">
                       <img src="/icons/email_icon.png" alt="Email" />
                     </a>
-                    <a href={formatLinkedInUrl(selectedMember.linkedin)} className="modal-icon-btn linkedin-icon" target="_blank" rel="noopener noreferrer" title="Connect on LinkedIn">
+                    <a href={selectedMember.linkedinUrl} className="modal-icon-btn linkedin-icon" target="_blank" rel="noopener noreferrer" title="Connect on LinkedIn">
                       <img src="/logos/linkedin_logo.png" alt="LinkedIn" />
                     </a>
                   </div>
@@ -165,14 +174,14 @@ export const OurBoard = () => {
                 <div className="modal-photo-section">
                   {shouldShowPlaceholder(selectedMember) ? (
                     <div className="photo-placeholder large">
-                      <span>{selectedMember.name.split(' ').map(n => n[0]).join('')}</span>
+                      <span>{selectedMember.fullName.split(' ').map((n: string) => n[0]).join('')}</span>
                     </div>
                   ) : (
                     <img 
                       src={`${BOARD_IMAGES_BUCKET}${selectedMember.headshotFile}`}
                       alt={`${selectedMember.fullName} headshot`}
                       className="member-headshot large"
-                      onError={() => handleImageError(selectedMember.name)}
+                      onError={() => handleImageError(selectedMember.fullName)}
                     />
                   )}
                 </div>
