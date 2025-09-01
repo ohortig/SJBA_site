@@ -86,8 +86,8 @@ export const OurBoard = () => {
                     </div>
                   ) : (
                     <img 
-                      src={`/headshots/${member.headshot_file}`}
-                      alt={`${member.name} headshot`}
+                      src={`${BOARD_IMAGES_BUCKET}${member.headshotFile}`}
+                      alt={`${member.fullName} headshot`}
                       className="member-headshot"
                       onError={() => handleImageError(member.name)}
                     />
@@ -169,8 +169,8 @@ export const OurBoard = () => {
                     </div>
                   ) : (
                     <img 
-                      src={`/headshots/${selectedMember.headshot_file}`}
-                      alt={`${selectedMember.name} headshot`}
+                      src={`${BOARD_IMAGES_BUCKET}${selectedMember.headshotFile}`}
+                      alt={`${selectedMember.fullName} headshot`}
                       className="member-headshot large"
                       onError={() => handleImageError(selectedMember.name)}
                     />
