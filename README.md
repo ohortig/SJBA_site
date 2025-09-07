@@ -78,7 +78,7 @@ This project is actively maintained by the SJBA tech team. To contribute:
 Omer Hortig  
 📧 Email: [oh2065@nyu.edu](mailto:oh2065@nyu.edu)
 
-Feel free to reach out to report bugs, ask questions, or inquire about joining the development team!
+Feel free to reach out to report bugs, ask questions, or inquire about joining the development team.
 
 ## Release Notes
 
