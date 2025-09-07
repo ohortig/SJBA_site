@@ -1,13 +1,14 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Header from './components/Header';
-import ScrollToTop from './components/ScrollToTop';
-import Home from './pages/Home';
-import About from './pages/About';
-import OurMission from './pages/OurMission';
-import OurBoard from './pages/OurBoard';
-import Programs from './pages/Programs';
-import Events from './pages/Events';
-import Contact from './pages/Contact';
+import { Header, ScrollToTop } from '@components';
+import {
+  Home,
+  About,
+  OurMission,
+  OurBoard,
+  Programs,
+  Events,
+  Contact,
+} from './pages';
 import './App.css';
 
 function App() {

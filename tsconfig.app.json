@@ -15,6 +15,20 @@
     "noEmit": true,
     "jsx": "react-jsx",
 
+    /* Path mapping */
+    "baseUrl": "./src",
+    "paths": {
+      "@hooks": ["./hooks/index.ts"],
+      "@hooks/*": ["./hooks/*"],
+      "@components": ["./components/index.tsx"],
+      "@components/*": ["./components/*"],
+      "@api": ["./api/index.ts"],
+      "@api/*": ["./api/*"],
+      "@types": ["./types/index.ts"],
+      "@types/*": ["./types/*"],
+      "@constants": ["./constants.ts"]
+    },
+
     /* Linting */
     "strict": true,
     "noUnusedLocals": true,
