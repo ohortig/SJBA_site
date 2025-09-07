@@ -1,24 +1,56 @@
 import { apiClient } from './client';
 import type { ApiResponse, PaginatedResponse } from './client';
 import type { 
-     BoardMember,
-     Event,
-     EventsQueryParams,
-     NewsletterSignup,
-     NewsletterSignupResponse
+    BoardMember,
+    Event,
+    EventsQueryParams,
+    NewsletterSignup,
+    NewsletterSignupResponse
 } from '../types';
+
+// Type for the raw API response (snake_case)
+interface ApiBoardMember {
+    id: string;
+    position: string;
+    full_name: string;
+    bio: string;
+    major: string;
+    year: string;
+    hometown: string;
+    linkedin_url: string;
+    email: string;
+    headshot_file: string;
+    order_index: number;
+}
+
+// Helper function to transform snake_case API response to camelCase
+const transformBoardMember = (apiMember: ApiBoardMember): BoardMember => {
+  return {
+    id: apiMember.id,
+    position: apiMember.position,
+    fullName: apiMember.full_name,
+    bio: apiMember.bio,
+    major: apiMember.major,
+    year: apiMember.year,
+    hometown: apiMember.hometown,
+    linkedinUrl: apiMember.linkedin_url,
+    email: apiMember.email,
+    headshotFile: apiMember.headshot_file,
+    orderIndex: apiMember.order_index
+  };
+};
 
 // Board members API
 const boardMembersService = {
 
   async getAll(): Promise<BoardMember[]> {
-    const response = await apiClient.get<ApiResponse<BoardMember[]>>('/board-members');
-    return response.data;
+    const response = await apiClient.get<ApiResponse<ApiBoardMember[]>>('/board-members');
+    return response.data.map(transformBoardMember);
   },
 
   async getById(id: string): Promise<BoardMember> {
-    const response = await apiClient.get<ApiResponse<BoardMember>>(`/board-members/${id}`);
-    return response.data;
+    const response = await apiClient.get<ApiResponse<ApiBoardMember>>(`/board-members/${id}`);
+    return transformBoardMember(response.data);
   }
 };
 
