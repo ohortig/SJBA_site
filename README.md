@@ -31,17 +31,12 @@ A modern React website for the Stern Jewish Business Association at NYU, featuri
    cd SJBA_site
    ```
 
-2. **Switch to development branch**
-   ```bash
-   git checkout dev
-   ```
-
-3. **Install dependencies**
+2. **Install dependencies**
    ```bash
    npm install
    ```
 
-4. **Environment Configuration**
+3. **Environment Configuration**
    
    Create a `.env` file in the root directory and add:
    ```env
@@ -54,7 +49,7 @@ A modern React website for the Stern Jewish Business Association at NYU, featuri
      
    > 📝 For local backend setup, see: [SJBA Backend Repository](https://github.com/ohortig/SJBA_site_backend)
 
-5. **Start development server**
+4. **Start development server**
    ```bash
    npm run dev
    ```
