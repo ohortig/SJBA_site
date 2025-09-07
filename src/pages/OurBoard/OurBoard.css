@@ -41,6 +41,7 @@
   font-family: 'Inter', system-ui, sans-serif;
 }
 
+
 /* Board Section */
 .board-section {
   margin-bottom: 5rem;
@@ -150,6 +151,7 @@
 .member-photo {
   margin-bottom: 1.5rem;
 }
+
 
 .photo-placeholder {
   width: 120px;

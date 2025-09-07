@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Footer } from '@components';
+import { Footer, LoadingSpinner, ErrorDisplay } from '@components';
 import { useScrollAnimation } from '@hooks';
 import { dataService } from '@api'; 
 import { BOARD_IMAGES_BUCKET } from '@constants';
@@ -25,15 +25,35 @@ export const OurBoard = () => {
   const [imageErrors, setImageErrors] = useState<Set<string>>(new Set());
   const [forceVisible, setForceVisible] = useState(false);
   const [boardMembers, setBoardMembers] = useState<BoardMember[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   // Fetch board members data
   useEffect(() => {
     const fetchBoardMembers = async () => {
       try {
+        setIsLoading(true);
+        setError(null);
         const members = await dataService.boardMembers.getAll();
         setBoardMembers(members);
       } catch (error) {
         console.error('Failed to fetch board members:', error);
+        // Check if it's an API error with a message, otherwise use a generic message
+        let errorMessage = 'Failed to load board members. Please try again later.';
+        
+        if (error && typeof error === 'object') {
+          if ('response' in error && error.response && typeof error.response === 'object' && 
+              'data' in error.response && error.response.data && typeof error.response.data === 'object' &&
+              'message' in error.response.data && typeof error.response.data.message === 'string') {
+            errorMessage = error.response.data.message;
+          } else if ('message' in error && typeof error.message === 'string') {
+            errorMessage = error.message;
+          }
+        }
+        
+        setError(errorMessage);
+      } finally {
+        setIsLoading(false);
       }
     };
     void fetchBoardMembers();
@@ -49,8 +69,10 @@ export const OurBoard = () => {
   }, []);
 
   const handleImageError = (memberName: string) => {
+    if (!memberName) return;
     setImageErrors(prev => new Set(prev).add(memberName));
   };
+
 
   const shouldShowPlaceholder = (member: BoardMember) => {
     return !member.headshotFile || imageErrors.has(member.fullName);
@@ -63,6 +85,7 @@ export const OurBoard = () => {
   const closeModal = () => {
     setSelectedMember(null);
   };
+
 
   return (
     <>
@@ -81,8 +104,13 @@ export const OurBoard = () => {
           ref={boardAnimation.elementRef}
           className={`board-section slide-up ${boardAnimation.isVisible || forceVisible ? 'visible' : ''}`}
         >
-          <div className={`board-grid stagger-children ${boardAnimation.isVisible || forceVisible ? 'visible' : ''}`}>
-            {boardMembers.map((member, index) => (
+          {isLoading ? (
+            <LoadingSpinner />
+          ) : error ? (
+            <ErrorDisplay error={error} onRetry={() => window.location.reload()} />
+          ) : (
+            <div className={`board-grid stagger-children ${boardAnimation.isVisible || forceVisible ? 'visible' : ''}`}>
+              {boardMembers.filter(member => member && member.fullName).map((member, index) => (
               <div 
                 key={index} 
                 className="board-member-card stagger-item"
@@ -121,7 +149,8 @@ export const OurBoard = () => {
                 </div>
               </div>
             ))}
-          </div>
+            </div>
+          )}
         </div>
 
         <div 
