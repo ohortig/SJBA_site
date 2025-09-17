@@ -143,7 +143,6 @@ export const OurBoard = () => {
                     </div>
                   </div>
                   <h4 className="member-position">{member.position}</h4>
-                  {/* <p className="member-details">{member.major} • {member.year}</p> */}
                   <p className="member-details">{member.major}</p>
                   <div className="click-hint">Click to learn more</div>
                 </div>
@@ -217,7 +216,14 @@ export const OurBoard = () => {
                 <div className="modal-text-section">
                   <div className="modal-section">
                     <h4>About</h4>
-                    <p>{selectedMember.bio}</p>
+                    <p>
+                      {selectedMember.bio.split('\n').map((line, index, array) => (
+                        <span key={index}>
+                          {line}
+                          {index < array.length - 1 && <br />}
+                        </span>
+                      ))}
+                    </p>
                   </div>
                   <div className="modal-info-grid">
                     <div className="modal-section">

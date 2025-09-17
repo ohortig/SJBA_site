@@ -29,7 +29,7 @@ const transformBoardMember = (apiMember: ApiBoardMember): BoardMember => {
     id: apiMember.id,
     position: apiMember.position,
     fullName: apiMember.full_name,
-    bio: apiMember.bio,
+    bio: apiMember.bio.replace(/\\n/g, '\n'), // stop-gap fix: convert escaped newlines to actual newlines
     major: apiMember.major,
     year: apiMember.year,
     hometown: apiMember.hometown,
