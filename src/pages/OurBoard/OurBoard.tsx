@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Footer, LoadingSpinner, ErrorDisplay } from '@components';
+import { Footer, LoadingSpinner, ErrorDisplay, BoardMemberModal } from '@components';
 import { useScrollAnimation } from '@hooks';
 import { dataService } from '@api'; 
 import { BOARD_IMAGES_BUCKET } from '@constants';
@@ -7,7 +7,6 @@ import type { BoardMember } from '@types';
 import './OurBoard.css';
 
 export const OurBoard = () => {
-  // Scroll animation hooks for different sections with mobile-friendly settings
   const headerAnimation = useScrollAnimation({ 
     threshold: 0.1, 
     rootMargin: '0px 0px -20px 0px' 
@@ -175,72 +174,13 @@ export const OurBoard = () => {
         </div>
       </div>
 
-      {/* Modal Overlay */}
-      {selectedMember && (
-        <div className="modal-overlay" onClick={closeModal}>
-          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-            <button className="modal-close" onClick={closeModal}>×</button>
-            <div className="modal-header">
-              <div className="modal-title-section">
-                <div className="modal-name-row">
-                  <h2 className="modal-name">{selectedMember.fullName}</h2>
-                  <div className="modal-icon-buttons">
-                    <a href={`mailto:${selectedMember.email}`} className="modal-icon-btn email-icon" title="Send Email">
-                      <img src="/icons/email_icon.png" alt="Email" />
-                    </a>
-                    <a href={selectedMember.linkedinUrl} className="modal-icon-btn linkedin-icon" target="_blank" rel="noopener noreferrer" title="Connect on LinkedIn">
-                      <img src="/logos/linkedin_logo.png" alt="LinkedIn" />
-                    </a>
-                  </div>
-                </div>
-                <h3 className="modal-position">{selectedMember.position}</h3>
-                <p className="modal-details">{selectedMember.major} • {selectedMember.year}</p>
-              </div>
-            </div>
-            <div className="modal-body">
-              <div className="modal-content-layout">
-                <div className="modal-photo-section">
-                  {shouldShowPlaceholder(selectedMember) ? (
-                    <div className="photo-placeholder large">
-                      <span>{selectedMember.fullName.split(' ').map((n: string) => n[0]).join('')}</span>
-                    </div>
-                  ) : (
-                    <img 
-                      src={`${BOARD_IMAGES_BUCKET}${selectedMember.headshotFile}`}
-                      alt={`${selectedMember.fullName} headshot`}
-                      className="member-headshot large"
-                      onError={() => handleImageError(selectedMember.fullName)}
-                    />
-                  )}
-                </div>
-                <div className="modal-text-section">
-                  <div className="modal-section">
-                    <h4>About</h4>
-                    <p>
-                      {selectedMember.bio.split('\n').map((line, index, array) => (
-                        <span key={index}>
-                          {line}
-                          {index < array.length - 1 && <br />}
-                        </span>
-                      ))}
-                    </p>
-                  </div>
-                  <div className="modal-info-grid">
-                    <div className="modal-section">
-                      <h4>Hometown</h4>
-                      <p>{selectedMember.hometown}</p>
-                    </div>
-                    <div className="modal-section">
-                      <h4>Email</h4>
-                      <p>{selectedMember.email}</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
+      <BoardMemberModal
+        member={selectedMember}
+        isOpen={!!selectedMember}
+        onClose={closeModal}
+        onImageError={handleImageError}
+        shouldShowPlaceholder={shouldShowPlaceholder}
+      />
 
       <Footer />
     </>
