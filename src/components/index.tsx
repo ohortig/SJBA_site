@@ -6,5 +6,6 @@ export * from './Header';
 export * from './LoadingSpinner';
 export * from './LogoGallery';
 export * from './NavButton';
+export * from './NewsletterSignup';
 export * from './SocialLink';
 export * from './ScrollToTop';

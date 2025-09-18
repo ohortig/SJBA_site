@@ -57,11 +57,11 @@ const boardMembersService = {
 // Newsletter API
 const newsletterService = {
   async signup(data: NewsletterSignup): Promise<NewsletterSignupResponse> {
-    const response = await apiClient.post<ApiResponse<NewsletterSignupResponse>>(
+    const response = await apiClient.post<NewsletterSignupResponse>(
       '/newsletter-sign-ups',
       data
     );
-    return response.data;
+    return response;
   }
 };
 
