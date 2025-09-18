@@ -3,9 +3,9 @@
 }
 
 .dropdown-trigger {
-  display: flex;
-  align-items: center;
-  gap: clamp(4px, 1vw, 8px);
+  display: flex !important;
+  align-items: center !important;
+  gap: clamp(4px, 1vw, 8px) !important;
 }
 
 .dropdown-arrow {
