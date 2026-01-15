@@ -184,7 +184,7 @@ export const Home = () => {
           <h1 className="main-title">
             <span className="title-line-1">Building Jewish Community</span>
             <span className="title-connector">at</span>
-            <span className="title-line-2">NYU</span>
+            <span className="title-line-2">NYU Stern</span>
           </h1>
         </div>
 
@@ -201,124 +201,115 @@ export const Home = () => {
 
       <div 
         ref={speakersAnimation.elementRef}
-        className={`speakers-link-section scale-in ${speakersAnimation.isVisible ? 'visible' : ''}`}
+        className={`link-section scale-in ${speakersAnimation.isVisible ? 'visible' : ''}`}
       >
+        <Link to="/OurMission" className="our-mission-link">
+          <span>Our Mission</span>
+          <img src="/icons/arrow_top_right.png" alt="Arrow" className="our-mission-link-arrow" />
+        </Link>
         <Link to="/events" className="speakers-link">
-          <span>Learn about our previous speakers</span>
+          <span>Our previous speakers</span>
           <img src="/icons/arrow_top_right.png" alt="Arrow" className="speakers-link-arrow" />
         </Link>
       </div>
 
       <div className="section-divider"></div>
 
-      <div 
-        ref={contentAnimation.elementRef}
-        className={`content-section ${contentAnimation.isVisible ? 'visible' : ''}`}
-      >
-        <div className={`text-container slide-left ${contentAnimation.isVisible ? 'visible' : ''}`}>
-          <h2 className="section-title">
-            Come learn about the Jewish impact on the business world
-          </h2>
-          
-          <div className="section-content">
-            <p>
-              The Jewish community has played a pivotal role in shaping modern business 
-              and finance. From pioneering investment banking to revolutionary 
-              entrepreneurship, Jewish professionals have left an indelible mark on 
-              industries worldwide. At SJBA, we celebrate this rich heritage while 
-              building the next generation of Jewish business leaders.
-            </p>
+      <div className="split-content-container">
+        <div 
+          ref={contentAnimation.elementRef}
+          className={`content-section ${contentAnimation.isVisible ? 'visible' : ''}`}
+        >
+          <div className={`text-container slide-left ${contentAnimation.isVisible ? 'visible' : ''}`}>
+            <h2 className="section-title">
+              The Jewish impact on the business world
+            </h2>
             
-            <p>
-              Our organization provides a platform for networking, mentorship, and 
-              professional development within NYU's vibrant Jewish community. Through 
-              exclusive events, speaker series, and industry connections, we help 
-              members understand their cultural legacy while preparing them for 
-              successful careers in finance, consulting, technology, and beyond.
-            </p>
-            
-            <div className="join-button-container">
-              <div className="join-board-buttons">
-                <Link to="/contact" className="join-board-btn primary">
-                  <span>Join Us</span>
-                  <img src="/icons/arrow_top_right.png" alt="Arrow" className="join-board-btn-arrow" />
-                </Link>
-                <Link to="/OurMission" className="join-board-btn secondary">
-                  <span>Our Mission</span>
-                  <img src="/icons/arrow_top_right.png" alt="Arrow" className="join-board-btn-arrow" />
-                </Link>
-              </div>
+            <div className="section-content">
+              <p>
+                The Jewish community has played a pivotal role in shaping modern business 
+                and finance. From pioneering investment banking to revolutionary 
+                entrepreneurship, Jewish professionals have left an indelible mark on 
+                industries worldwide. At SJBA, we celebrate this rich heritage while 
+                building the next generation of Jewish business leaders.
+              </p>
+              
+              <p>
+                Our organization provides a platform for networking, mentorship, and 
+                professional development within NYU's vibrant Jewish community. Through 
+                exclusive events, speaker series, and industry connections, we help 
+                members understand their cultural legacy while preparing them for 
+                successful careers in finance, consulting, technology, and beyond.
+              </p>
             </div>
           </div>
         </div>
-      </div>
 
-      <div className="section-divider"></div>
-
-      {/* Newsletter Signup Section */}
-      <div 
-        ref={newsletterAnimation.elementRef}
-        className={`newsletter-section ${newsletterAnimation.isVisible ? 'visible' : ''}`}
-      >
-        <div className="newsletter-content">
-          <div className="newsletter-header">
-            <img src="sjba_logo_clear.png" alt="SJBA Logo" className="newsletter-logo" />
-            <h2>Join Our Newsletter</h2>
+        {/* Newsletter Signup Section */}
+        <div 
+          ref={newsletterAnimation.elementRef}
+          className={`newsletter-section ${newsletterAnimation.isVisible ? 'visible' : ''}`}
+        >
+          <div className="newsletter-content">
+            <div className="newsletter-header">
+              <img src="sjba_logo_clear.png" alt="SJBA Logo" className="newsletter-logo" />
+              <h2>Join Our Newsletter</h2>
+            </div>
+            <p>
+              Stay connected with SJBA and receive updates about upcoming events, 
+              speaker series, and opportunities exclusively for NYU students.
+            </p>
+            
+            <form onSubmit={handleFormSubmit} className="newsletter-form">
+              <div className="form-row">
+                <div className="form-group">
+                  <input
+                    type="text"
+                    name="firstName"
+                    value={formData.firstName}
+                    onChange={handleInputChange}
+                    placeholder="First name"
+                    className="form-input"
+                    required
+                  />
+                </div>
+                <div className="form-group">
+                  <input
+                    type="text"
+                    name="lastName"
+                    value={formData.lastName}
+                    onChange={handleInputChange}
+                    placeholder="Last name"
+                    className="form-input"
+                    required
+                  />
+                </div>
+              </div>
+              <div className="form-group email-group">
+                <input
+                  type="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleInputChange}
+                  placeholder="Email address"
+                  className="form-input email-input"
+                  required
+                />
+                <button 
+                  type="submit" 
+                  className="newsletter-submit-btn"
+                  disabled={isSubmitting}
+                >
+                  {isSubmitting ? 'Signing up...' : '→'}
+                </button>
+              </div>
+              {submitMessage && (
+                <div className={`submit-message ${submitMessage.includes('Successfully') ? 'success' : 'error'}`}>
+                  {submitMessage}
+                </div>
+              )}
+            </form>
           </div>
-          <p>
-            Stay connected with SJBA and receive updates about upcoming events, 
-            speaker series, and opportunities exclusively for NYU students.
-          </p>
-          
-          <form onSubmit={handleFormSubmit} className="newsletter-form">
-            <div className="form-row">
-              <div className="form-group">
-                <input
-                  type="text"
-                  name="firstName"
-                  value={formData.firstName}
-                  onChange={handleInputChange}
-                  placeholder="First name"
-                  className="form-input"
-                  required
-                />
-              </div>
-              <div className="form-group">
-                <input
-                  type="text"
-                  name="lastName"
-                  value={formData.lastName}
-                  onChange={handleInputChange}
-                  placeholder="Last name"
-                  className="form-input"
-                  required
-                />
-              </div>
-            </div>
-            <div className="form-group email-group">
-              <input
-                type="email"
-                name="email"
-                value={formData.email}
-                onChange={handleInputChange}
-                placeholder="Email address"
-                className="form-input email-input"
-                required
-              />
-              <button 
-                type="submit" 
-                className="newsletter-submit-btn"
-                disabled={isSubmitting}
-              >
-                {isSubmitting ? 'Signing up...' : '→'}
-              </button>
-            </div>
-            {submitMessage && (
-              <div className={`submit-message ${submitMessage.includes('Successfully') ? 'success' : 'error'}`}>
-                {submitMessage}
-              </div>
-            )}
-          </form>
         </div>
       </div>
 
