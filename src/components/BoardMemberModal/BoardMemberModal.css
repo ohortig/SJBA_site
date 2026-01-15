@@ -18,7 +18,6 @@
 
 .modal-content {
   background: white;
-  border-radius: 20px;
   max-width: min(1050px, 90vw);
   width: 100%;
   max-height: min(90vh, 800px);
@@ -35,6 +34,7 @@
     opacity: 0;
     transform: translateY(-20px) scale(0.95);
   }
+
   to {
     opacity: 1;
     transform: translateY(0) scale(1);
@@ -47,7 +47,6 @@
   right: 1rem;
   background: transparent;
   border: none;
-  border-radius: 50%;
   width: 40px;
   height: 40px;
   display: flex;
@@ -104,7 +103,6 @@
   width: 100%;
   max-width: 320px;
   height: min(360px, 40vh);
-  border-radius: 12px;
   font-size: clamp(2rem, 4vw, 3.5rem);
   background: linear-gradient(135deg, #4C0D7F, #8B5CF6);
   display: flex;
@@ -119,7 +117,6 @@
   width: 100%;
   max-width: 320px;
   height: min(360px, 40vh);
-  border-radius: 12px;
   object-fit: cover;
   box-shadow: 0 4px 16px rgba(76, 13, 127, 0.3);
   border: 3px solid rgba(76, 13, 127, 0.1);
@@ -149,7 +146,6 @@
   font-weight: 700;
   color: #374151;
   margin: 0;
-  font-family: 'Inter', system-ui, sans-serif;
 }
 
 .modal-position {
@@ -176,7 +172,6 @@
   font-weight: 700;
   color: #4C0D7F;
   margin-bottom: 0.5rem;
-  font-family: 'Inter', system-ui, sans-serif;
   text-align: left;
 }
 
@@ -206,7 +201,6 @@
   justify-content: center;
   width: 32px;
   height: 32px;
-  border-radius: 50%;
   text-decoration: none;
   font-size: 0.9rem;
   font-weight: 700;
@@ -301,10 +295,6 @@
 }
 
 @media (max-width: 480px) {
-  .modal-content {
-    border-radius: 16px;
-  }
-
   .modal-header {
     padding: 1.5rem 1rem 1rem 1rem;
   }

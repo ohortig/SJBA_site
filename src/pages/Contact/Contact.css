@@ -11,7 +11,6 @@
   color: #4C0D7F !important;
   line-height: 1.2;
   margin-bottom: 1.5rem;
-  font-family: 'Inter', system-ui, sans-serif;
 }
 
 .contact-content {
@@ -76,12 +75,11 @@
 }
 
 .contact-form {
-  background: linear-gradient(135deg, 
-    rgba(76, 13, 127, 0.03) 0%, 
-    rgba(139, 92, 246, 0.05) 50%, 
-    rgba(76, 13, 127, 0.03) 100%);
+  background: linear-gradient(135deg,
+      rgba(76, 13, 127, 0.03) 0%,
+      rgba(139, 92, 246, 0.05) 50%,
+      rgba(76, 13, 127, 0.03) 100%);
   border: 1px solid rgba(76, 13, 127, 0.12);
-  border-radius: 24px;
   padding: 2rem;
   position: relative;
   overflow: hidden;
@@ -95,10 +93,10 @@
   left: 0;
   right: 0;
   height: 1px;
-  background: linear-gradient(90deg, 
-    transparent 0%, 
-    rgba(76, 13, 127, 0.3) 50%, 
-    transparent 100%);
+  background: linear-gradient(90deg,
+      transparent 0%,
+      rgba(76, 13, 127, 0.3) 50%,
+      transparent 100%);
 }
 
 .form-group {
@@ -141,9 +139,7 @@
   width: 100%;
   padding: 0.875rem 1.1rem;
   border: 2px solid rgba(76, 13, 127, 0.2);
-  border-radius: 12px;
   font-size: 1rem;
-  font-family: 'Inter', system-ui, sans-serif;
   background: rgba(255, 255, 255, 0.8);
   transition: all 0.3s ease;
   outline: none;
@@ -172,7 +168,6 @@
   height: 44px;
   background: linear-gradient(135deg, #4C0D7F, #8B5CF6);
   border: none;
-  border-radius: 8px;
   color: white;
   font-size: 1.2rem;
   font-weight: 600;
@@ -200,7 +195,6 @@
 .submit-message {
   text-align: center;
   padding: 1rem;
-  border-radius: 8px;
   font-weight: 500;
   margin-top: 1rem;
 }
@@ -222,24 +216,24 @@
   .contact-container {
     padding: 100px 0 40px;
   }
-  
+
   .contact-content {
     grid-template-columns: 1fr;
     gap: 40px;
   }
-  
+
   .contact-info {
     padding-right: 0;
   }
-  
+
   .contact-info h1 {
     font-size: 2rem;
   }
-  
+
   .contact-form {
     padding: 2rem;
   }
-  
+
   .name-fields {
     grid-template-columns: 1fr;
     gap: 15px;
@@ -250,22 +244,22 @@
   .contact-container {
     padding: 80px 0 40px;
   }
-  
+
   .contact-content {
     padding: 0 15px;
   }
-  
+
   .contact-info h1 {
     font-size: 1.8rem;
   }
-  
+
   .contact-form {
     padding: 1.5rem;
   }
-  
+
   .form-group input,
   .form-group textarea {
     padding: 0.875rem 1rem;
     font-size: 0.95rem;
   }
-} 
+}

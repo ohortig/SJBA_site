@@ -23,7 +23,6 @@
   color: #4C0D7F !important;
   line-height: 1.2;
   margin-bottom: 1.5rem;
-  font-family: 'Inter', system-ui, sans-serif;
 }
 
 .programs-description {
@@ -38,7 +37,6 @@
 .construction-container {
   background: linear-gradient(135deg, rgba(76, 13, 127, 0.05), rgba(139, 92, 246, 0.08));
   border: 1px solid rgba(76, 13, 127, 0.15);
-  border-radius: 20px;
   padding: 3rem;
   text-align: center;
   margin: 4rem auto 0 auto;
@@ -51,7 +49,6 @@
   font-weight: 600;
   color: #374151;
   margin-bottom: 1.5rem;
-  font-family: 'Inter', system-ui, sans-serif;
   line-height: 1.4;
 }
 
@@ -75,7 +72,6 @@
   gap: 0.75rem;
   text-decoration: none;
   padding: 1rem 2rem;
-  border-radius: 8px;
   font-size: 1.1rem;
   font-weight: 600;
   transition: all 0.3s ease;
@@ -99,28 +95,28 @@
   .programs-page-container {
     padding: 100px 0 40px;
   }
-  
+
   .programs-content {
     padding: 0 15px;
   }
-  
+
   .board-title {
     font-size: 1.8rem;
   }
-  
+
   .programs-description {
     font-size: 1rem;
   }
-  
+
   .construction-container {
     padding: 2rem;
     margin: 3rem auto 0 auto;
   }
-  
+
   .construction-container h2 {
     font-size: 1.2rem;
   }
-  
+
   .construction-buttons {
     flex-direction: column;
     align-items: center;
@@ -136,21 +132,21 @@
   .programs-page-container {
     padding: 80px 0 40px;
   }
-  
+
   .board-title {
     font-size: 1.6rem;
   }
-  
+
   .construction-container {
     padding: 1.5rem;
   }
-  
+
   .construction-container h2 {
     font-size: 1.1rem;
   }
-  
+
   .construction-btn {
     width: 100%;
     max-width: 280px;
   }
-} 
+}
