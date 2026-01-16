@@ -71,6 +71,8 @@
   position: relative;
   overflow: hidden;
   cursor: pointer;
+  display: flex;
+  flex-direction: column;
 }
 
 /* Board Member Card Stagger Animation */
@@ -175,6 +177,9 @@
 
 .member-info {
   text-align: left;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
 }
 
 .member-name-row {
@@ -221,6 +226,7 @@
   padding: 0.5rem;
   background: rgba(139, 92, 246, 0.1);
   transition: all 0.3s ease;
+  margin-top: auto;
 }
 
 .board-member-card:hover .click-hint {
