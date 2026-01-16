@@ -12,10 +12,11 @@
   height: calc(84.24vh - 80px);
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
-  padding: 2rem 0 0 0;
+  justify-content: center;
+  align-items: center;
+  padding: 80px 0 0 0;
   text-align: center;
-  overflow: hidden;
+  overflow: visible;
   margin-left: -15vw;
   margin-right: -15vw;
   width: 100vw;
@@ -73,11 +74,6 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 8s ease-out;
-}
-
-.gallery-image.active img {
-  transform: scale(1.05);
 }
 
 .gallery-overlay {
@@ -96,16 +92,16 @@
   z-index: 10;
   max-width: 1200px;
   width: 100%;
-  padding: 2rem;
+  padding: 1rem;
   text-align: center;
-  margin: 120px auto 0 auto;
+  margin: 2rem auto 0 auto;
 }
 
 /* Main Title */
 .main-title {
   font-weight: 700;
   line-height: 1.2;
-  margin: 0 0 2rem 0;
+  margin: 0 0 1rem 0;
   text-align: center;
   position: relative;
 }
@@ -137,9 +133,9 @@
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  font-weight: 900;
+  -webkit-text-stroke: 0.25px white;
+  font-weight: 1000;
   margin: 0.5rem 0;
-  text-shadow: none;
   animation: titleSlideIn 1s ease-out 0.6s both;
   position: relative;
 }
@@ -158,11 +154,8 @@
 
 /* Gallery Navigation */
 .gallery-navigation {
-  position: absolute;
-  bottom: 2rem;
-  left: 50%;
+  position: relative;
   border-radius: 10px;
-  transform: translateX(-50%);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -174,6 +167,7 @@
   backdrop-filter: blur(15px);
   border: 1px solid rgba(255, 255, 255, 0.3);
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+  margin: 1.5rem auto 2rem auto;
 }
 
 .nav-dot {
@@ -204,12 +198,12 @@
 @keyframes navFadeIn {
   0% {
     opacity: 0;
-    transform: translateX(-50%) translateY(20px);
+    transform: translateY(20px);
   }
 
   100% {
     opacity: 1;
-    transform: translateX(-50%) translateY(0);
+    transform: translateY(0);
   }
 }
 
@@ -248,7 +242,6 @@
   }
 
   .gallery-navigation {
-    bottom: 1.5rem;
     padding: 0.61rem 0.875rem;
     gap: 0.61rem;
   }
@@ -265,6 +258,11 @@
 
   .main-title {
     margin-bottom: 1rem;
+  }
+
+  .link-section {
+    flex-direction: column;
+    gap: 1rem;
   }
 }
 
@@ -309,7 +307,6 @@
   }
 
   .gallery-navigation {
-    bottom: 1rem;
     padding: 0.525rem 0.7rem;
     gap: 0.525rem;
   }
@@ -332,12 +329,15 @@
 /* Link Section */
 .link-section {
   text-align: center;
-  padding: 4rem 0 2rem 0;
-  margin-top: 0;
+  padding: 0.5rem 0;
+  margin: 0 auto;
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 3rem;
+  position: relative;
+  z-index: 10;
+  width: 100%;
 }
 
 .speakers-link {
@@ -355,7 +355,7 @@
   box-shadow: 0 8px 24px rgba(76, 13, 127, 0.25);
   position: relative;
   overflow: hidden;
-  min-width: 250px;
+  width: 280px;
 }
 
 .speakers-link::before {
@@ -407,16 +407,36 @@
   transition: all 0.3s ease;
   background: transparent;
   color: #4C0D7F;
-  border: 1px solid #4C0D7F;
-  min-width: 250px;
+  background-color: white;
+  width: 280px;
   box-shadow: 0 8px 24px rgba(76, 13, 127, 0.25);
+  position: relative;
+  overflow: hidden;
+}
+
+.our-mission-link::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg,
+      transparent 0%,
+      rgba(76, 13, 127, 0.2) 50%,
+      transparent 100%);
+  transition: left 0.6s ease;
+}
+
+.our-mission-link:hover::before {
+  left: 100%;
 }
 
 .our-mission-link:hover {
-  background: #4C0D7F;
-  color: white;
+  box-shadow: 0 12px 32px rgba(76, 13, 127, 0.35);
   transform: translateX(2px) translateY(-2px);
   text-decoration: none;
+  color: #4C0D7F;
 }
 
 .our-mission-link-arrow {
@@ -427,10 +447,6 @@
 }
 
 .our-mission-link:hover .our-mission-link-arrow {
-  filter: brightness(0) invert(1);
-}
-
-.our-mission-link:hover {
   transform: translateX(2px) translateY(-2px);
 }
 
@@ -491,7 +507,7 @@
 
 .section-content {
   font-size: 1.05rem;
-  line-height: 1.6;
+  line-height: 1;
   color: #363a3f;
 }
 
@@ -548,7 +564,7 @@
 .newsletter-content p {
   font-size: 1rem;
   color: #64748b;
-  line-height: 1.5;
+  line-height: 1;
   margin: 0 auto 1.5rem auto;
 }
 
