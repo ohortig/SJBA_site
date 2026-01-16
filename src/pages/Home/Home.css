@@ -113,7 +113,7 @@
   font-weight: 700;
   margin-bottom: 0.5rem;
   text-shadow: 0 2px 10px rgba(0, 0, 0, 0.7);
-  animation: titleSlideIn 1s ease-out 0.2s both;
+  animation: titleSlideIn 0.5s ease-out both;
 }
 
 .title-connector {
@@ -123,7 +123,7 @@
   font-weight: 600;
   margin: 0.5rem 0;
   text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
-  animation: titleSlideIn 1s ease-out 0.4s both;
+  animation: titleSlideIn 0.5s ease-out 0.1s both;
 }
 
 .title-line-2 {
@@ -136,7 +136,7 @@
   -webkit-text-stroke: 0.25px white;
   font-weight: 1000;
   margin: 0.5rem 0;
-  animation: titleSlideIn 1s ease-out 0.6s both;
+  animation: titleSlideIn 0.5s ease-out 0.2s both;
   position: relative;
 }
 
@@ -160,7 +160,7 @@
   justify-content: center;
   align-items: center;
   gap: 0.7rem;
-  animation: navFadeIn 1s ease-out 1.4s both;
+  animation: navFadeIn 0.5s ease-out 0.7s both;
   z-index: 15;
   background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), rgba(76, 13, 127, 0.15));
   padding: 0.35em 0.90rem;
@@ -351,11 +351,12 @@
   padding: 1rem 2rem;
   font-size: 1.1rem;
   font-weight: 600;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.3s ease;
   box-shadow: 0 8px 24px rgba(76, 13, 127, 0.25);
   position: relative;
   overflow: hidden;
   width: 280px;
+  animation: linkFadeIn 0.5s ease-out 0.4s both;
 }
 
 .speakers-link::before {
@@ -412,6 +413,7 @@
   box-shadow: 0 8px 24px rgba(76, 13, 127, 0.25);
   position: relative;
   overflow: hidden;
+  animation: linkFadeIn 0.5s ease-out 0.4s both;
 }
 
 .our-mission-link::before {
@@ -448,6 +450,18 @@
 
 .our-mission-link:hover .our-mission-link-arrow {
   transform: translateX(2px) translateY(-2px);
+}
+
+@keyframes linkFadeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* Split Content Layout */
