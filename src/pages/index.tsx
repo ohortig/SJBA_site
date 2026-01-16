@@ -1,4 +1,3 @@
-export * from './About';
 export * from './Contact';
 export * from './Events';
 export * from './Home';
