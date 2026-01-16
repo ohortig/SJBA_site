@@ -136,9 +136,11 @@ export const OurBoard = () => {
                       <a href={`mailto:${member.email}`} className="member-icon-btn email-icon" title="Send Email" onClick={(e) => e.stopPropagation()}>
                         <img src="/icons/email_icon.png" alt="Email" />
                       </a>
-                      <a href={member.linkedinUrl} className="member-icon-btn linkedin-icon" target="_blank" rel="noopener noreferrer" title="Connect on LinkedIn" onClick={(e) => e.stopPropagation()}>
-                        <img src="/logos/linkedin_logo.png" alt="LinkedIn" />
-                      </a>
+                      {member.linkedinUrl && (
+                        <a href={member.linkedinUrl} className="member-icon-btn linkedin-icon" target="_blank" rel="noopener noreferrer" title="Connect on LinkedIn" onClick={(e) => e.stopPropagation()}>
+                          <img src="/logos/linkedin_logo.png" alt="LinkedIn" />
+                        </a>
+                      )}
                     </div>
                   </div>
                   <h4 className="member-position">{member.position}</h4>
