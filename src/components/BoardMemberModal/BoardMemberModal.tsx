@@ -70,9 +70,11 @@ export const BoardMemberModal: React.FC<BoardMemberModalProps> = ({
                 <a href={`mailto:${member.email}`} className="modal-icon-btn email-icon" title="Send Email">
                   <img src="/icons/email_icon.png" alt="Email" />
                 </a>
-                <a href={member.linkedinUrl} className="modal-icon-btn linkedin-icon" target="_blank" rel="noopener noreferrer" title="Connect on LinkedIn">
-                  <img src="/logos/linkedin_logo.png" alt="LinkedIn" />
-                </a>
+                {member.linkedinUrl && (
+                  <a href={member.linkedinUrl} className="modal-icon-btn linkedin-icon" target="_blank" rel="noopener noreferrer" title="Connect on LinkedIn">
+                    <img src="/logos/linkedin_logo.png" alt="LinkedIn" />
+                  </a>
+                )}
               </div>
             </div>
             <h3 className="modal-position">{member.position}</h3>
