@@ -26,7 +26,7 @@ export const LogoGallery = () => {
     { name: 'HSBC', src: '/logos/HSBC_logo.png', hasImage: true },
     { name: 'IBM', src: '/logos/IBM_logo.png', hasImage: true },
     { name: 'KKR', src: '/logos/KKR_logo.png', hasImage: true },
-    { name: 'Logos Capital', src: '/logos/logos_capital_logo.png', hasImage: true },
+    { name: 'Cantor Fitzgerald', src: '/logos/cantor_fitzgerald_logo.png', hasImage: true },
     { name: 'Palantir', src: '/logos/palantir.png', hasImage: true },
     { name: 'UBS', src: '/logos/UBS_logo.png', hasImage: true }
   ];

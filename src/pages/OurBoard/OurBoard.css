@@ -1,6 +1,5 @@
 /* Board Page Styles */
 .board-header {
-  border-radius: 16px;
   padding: 2rem;
   text-align: center;
   margin: 0 auto 2.5rem auto;
@@ -21,7 +20,6 @@
   color: #4C0D7F !important;
   line-height: 1.2;
   margin-bottom: 1.5rem;
-  font-family: 'Inter', system-ui, sans-serif;
 }
 
 .board-subtitle {
@@ -38,7 +36,6 @@
   color: #4C0D7F;
   margin-bottom: 2.5rem;
   text-align: center;
-  font-family: 'Inter', system-ui, sans-serif;
 }
 
 
@@ -67,7 +64,6 @@
 .board-member-card {
   background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(248, 250, 252, 0.95));
   border: 1px solid rgba(76, 13, 127, 0.15);
-  border-radius: 16px;
   padding: 2rem;
   text-align: center;
   transition: all 0.3s ease;
@@ -157,7 +153,6 @@
   width: 120px;
   height: 120px;
   background: linear-gradient(135deg, #4C0D7F, #8B5CF6);
-  border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -171,7 +166,6 @@
 .member-headshot {
   width: 120px;
   height: 120px;
-  border-radius: 50%;
   object-fit: cover;
   margin: 0 auto;
   display: block;
@@ -195,7 +189,6 @@
   font-weight: 700;
   color: #374151;
   margin: 0;
-  font-family: 'Inter', system-ui, sans-serif;
 }
 
 .member-position {
@@ -227,7 +220,6 @@
   text-align: center;
   padding: 0.5rem;
   background: rgba(139, 92, 246, 0.1);
-  border-radius: 8px;
   transition: all 0.3s ease;
 }
 
@@ -247,7 +239,6 @@
   justify-content: center;
   width: 28px;
   height: 28px;
-  border-radius: 50%;
   text-decoration: none;
   font-size: 0.8rem;
   font-weight: 700;
@@ -277,7 +268,6 @@
 .join-board-section {
   background: linear-gradient(135deg, rgba(76, 13, 127, 0.05), rgba(139, 92, 246, 0.05));
   border: 1px solid rgba(76, 13, 127, 0.15);
-  border-radius: 16px;
   padding: 3rem;
   text-align: center;
   margin-bottom: 4rem;
@@ -296,7 +286,6 @@
   font-weight: 700;
   color: #4C0D7F;
   margin-bottom: 1.5rem;
-  font-family: 'Inter', system-ui, sans-serif;
 }
 
 .join-board-content p {
@@ -320,7 +309,6 @@
   gap: 0.75rem;
   text-decoration: none;
   padding: 1rem 2rem;
-  border-radius: 8px;
   font-size: 1.1rem;
   font-weight: 600;
   transition: all 0.3s ease;
@@ -579,6 +567,7 @@
 
 /* Reduce motion for users who prefer it */
 @media (prefers-reduced-motion: reduce) {
+
   .animate-on-scroll,
   .fade-in,
   .slide-up,
@@ -591,4 +580,4 @@
     opacity: 1 !important;
     transform: none !important;
   }
-} 
+}
