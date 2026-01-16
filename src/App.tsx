@@ -2,7 +2,6 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Header, ScrollToTop } from '@components';
 import {
   Home,
-  About,
   OurMission,
   OurBoard,
   Programs,
@@ -20,7 +19,6 @@ function App() {
         <main className="main-content">
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="/about" element={<About />} />
             <Route path="/our-mission" element={<OurMission />} />
             <Route path="/our-board" element={<OurBoard />} />
             <Route path="/programs" element={<Programs />} />
