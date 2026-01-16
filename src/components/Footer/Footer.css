@@ -61,7 +61,7 @@
 
 .footer-column a {
   display: block;
-  color: #64748b;
+  color: #363a3f;
   text-decoration: none;
   margin-bottom: 0.75rem;
   font-size: 0.95rem;
@@ -232,7 +232,7 @@
 }
 
 .footer-address p {
-  color: #64748b;
+  color: #363a3f;
   font-size: 14px !important;
   line-height: 1.6 !important;
   margin: 0;
@@ -240,7 +240,7 @@
 }
 
 .footer-copyright p {
-  color: #6B7280;
+  color: #363a3f;
   font-size: 14px !important;
   line-height: 1.6 !important;
   margin: 0;

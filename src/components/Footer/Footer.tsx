@@ -70,7 +70,7 @@ export const Footer = () => {
         </div>
         
         <div className="footer-copyright">
-          <p>Copyright © 2025 Stern Jewish Business Association.<br />
+          <p>Copyright © {new Date().getFullYear()} Stern Jewish Business Association.<br />
              All rights reserved.
           </p>
         </div>

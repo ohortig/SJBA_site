@@ -8,8 +8,6 @@ export const Home = () => {
   // Scroll animation hooks for different sections
   const heroAnimation = useScrollAnimation({ threshold: 0.2 });
   const speakersAnimation = useScrollAnimation({ threshold: 0.3 });
-  const contentAnimation = useScrollAnimation({ threshold: 0.2 });
-  const newsletterAnimation = useScrollAnimation({ threshold: 0.2 });
 
   // Newsletter form state
   const [formData, setFormData] = useState({
@@ -188,6 +186,20 @@ export const Home = () => {
           </h1>
         </div>
 
+        <div 
+          ref={speakersAnimation.elementRef}
+          className={`link-section scale-in ${speakersAnimation.isVisible ? 'visible' : ''}`}
+        >
+          <Link to="/our-mission" className="our-mission-link">
+            <span>Our Mission</span>
+            <img src="/icons/arrow_top_right.png" alt="Arrow" className="our-mission-link-arrow" />
+          </Link>
+          <Link to="/events" className="speakers-link">
+            <span>Our Previous Speakers</span>
+            <img src="/icons/arrow_top_right.png" alt="Arrow" className="speakers-link-arrow" />
+          </Link>
+        </div>
+
         {/* Gallery Navigation Dots */}
         <div className="gallery-navigation">
           <div className="nav-dot active" data-target="1" onClick={() => handleDotClick(1)}></div>
@@ -199,28 +211,11 @@ export const Home = () => {
 
       <LogoGallery />
 
-      <div 
-        ref={speakersAnimation.elementRef}
-        className={`link-section scale-in ${speakersAnimation.isVisible ? 'visible' : ''}`}
-      >
-        <Link to="/OurMission" className="our-mission-link">
-          <span>Our Mission</span>
-          <img src="/icons/arrow_top_right.png" alt="Arrow" className="our-mission-link-arrow" />
-        </Link>
-        <Link to="/events" className="speakers-link">
-          <span>Our previous speakers</span>
-          <img src="/icons/arrow_top_right.png" alt="Arrow" className="speakers-link-arrow" />
-        </Link>
-      </div>
-
       <div className="section-divider"></div>
 
       <div className="split-content-container">
-        <div 
-          ref={contentAnimation.elementRef}
-          className={`content-section ${contentAnimation.isVisible ? 'visible' : ''}`}
-        >
-          <div className={`text-container slide-left ${contentAnimation.isVisible ? 'visible' : ''}`}>
+        <div className="content-section">
+          <div className="text-container">
             <h2 className="section-title">
               The Jewish impact on the business world
             </h2>
@@ -246,10 +241,7 @@ export const Home = () => {
         </div>
 
         {/* Newsletter Signup Section */}
-        <div 
-          ref={newsletterAnimation.elementRef}
-          className={`newsletter-section ${newsletterAnimation.isVisible ? 'visible' : ''}`}
-        >
+        <div className="newsletter-section">
           <div className="newsletter-content">
             <div className="newsletter-header">
               <img src="sjba_logo_clear.png" alt="SJBA Logo" className="newsletter-logo" />
