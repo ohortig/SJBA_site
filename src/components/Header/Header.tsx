@@ -5,17 +5,6 @@ import './Header.css';
 
 export const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isScrolled, setIsScrolled] = useState(false);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      const scrollTop = window.scrollY;
-      setIsScrolled(scrollTop > 50);
-    };
-
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
 
   useEffect(() => {
     // Prevent body scrolling when mobile menu is open
@@ -40,7 +29,7 @@ export const Header = () => {
   };
 
   return (
-    <header className={`header ${isScrolled ? 'scrolled' : ''}`}>
+    <header className="header">
       <nav className="nav-container">
         <div className="logo">
           <Link to="/" onClick={closeMenu}>

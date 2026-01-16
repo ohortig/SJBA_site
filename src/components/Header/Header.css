@@ -1,7 +1,7 @@
 .header {
   background-color: rgba(255, 255, 255, 0.27);
   padding: 0;
-  position: fixed;
+  position: absolute;
   top: 0;
   left: 0;
   right: 0;
@@ -14,23 +14,16 @@
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-.header:hover:not(.scrolled) {
+.header:hover {
   background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(20px);
   box-shadow: 0 8px 32px rgba(76, 13, 127, 0.12);
   border-bottom: 1px solid rgba(76, 13, 127, 0.08);
 }
 
-.header:hover:not(.scrolled) .nav-buttons::before {
+.header:hover .nav-buttons::before {
   background: rgba(76, 13, 127, 0.15);
   box-shadow: 1px 0 2px rgba(76, 13, 127, 0.05);
-}
-
-.header.scrolled {
-  background: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(20px);
-  box-shadow: 0 8px 32px rgba(76, 13, 127, 0.12);
-  border-bottom: 1px solid rgba(76, 13, 127, 0.08);
 }
 
 .nav-container {
@@ -45,10 +38,6 @@
   box-sizing: border-box;
   position: relative;
   transition: all 0.3s ease;
-}
-
-.header.scrolled .nav-container {
-  padding: clamp(0.08rem, 0.3vw, 0.18rem) 15vw;
 }
 
 /* Clean divider approach using shadow and subtle background */
@@ -78,11 +67,6 @@
   background: rgba(76, 13, 127, 0.25);
   box-shadow: 1px 0 3px rgba(76, 13, 127, 0.1);
   transition: all 0.3s ease;
-}
-
-.header.scrolled .nav-buttons::before {
-  background: rgba(76, 13, 127, 0.15);
-  box-shadow: 1px 0 2px rgba(76, 13, 127, 0.05);
 }
 
 .logo-image {
@@ -151,26 +135,26 @@
   .nav-buttons {
     display: none;
     position: fixed;
-    top: 80px; /* Start below the header */
+    top: 80px;
     left: 0;
     right: 0;
     bottom: 0;
     width: 100vw;
-    height: calc(100vh - 80px); /* Adjust height to account for header */
-    background: rgba(255, 255, 255, 0.95); /* Match the header's scrolled/hovered white background */
+    height: calc(100vh - 80px);
+    background: rgba(255, 255, 255, 0.95);
     flex-direction: column;
     justify-content: center;
     align-items: center;
     padding: 2rem;
     gap: 2rem;
-    backdrop-filter: blur(20px); /* Match the header's scrolled/hovered backdrop filter */
-    box-shadow: 0 8px 32px rgba(76, 13, 127, 0.12); /* Match the header's scrolled/hovered shadow */
-    border-bottom: 1px solid rgba(76, 13, 127, 0.08); /* Match the header's scrolled/hovered border */
-    z-index: 998; /* Lower than header so hamburger stays accessible */
+    backdrop-filter: blur(20px);
+    box-shadow: 0 8px 32px rgba(76, 13, 127, 0.12);
+    border-bottom: 1px solid rgba(76, 13, 127, 0.08);
+    z-index: 998;
     padding-left: 0;
-    padding-top: 0; /* Remove extra top padding since we're starting below header */
+    padding-top: 0;
   }
-  
+
   .nav-buttons::before {
     display: none;
   }
@@ -178,7 +162,7 @@
   .nav-buttons.active {
     display: flex;
   }
-  
+
   .nav-container {
     padding: 0.1875rem 12vw;
     min-height: 25px;
@@ -192,7 +176,7 @@
     max-width: 100%;
     min-height: 22px;
   }
-  
+
   .nav-buttons {
     padding: 0.5rem;
   }
@@ -203,4 +187,4 @@ body.menu-open {
   overflow: hidden !important;
   position: fixed;
   width: 100%;
-} 
+}
