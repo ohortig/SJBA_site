@@ -1,4 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { Toaster } from 'react-hot-toast';
 import { Header, ScrollToTop } from '@components';
 import {
   Home,
@@ -14,6 +15,35 @@ function App() {
   return (
     <Router>
       <ScrollToTop />
+      <Toaster 
+        position="top-right"
+        toastOptions={{
+          duration: 3000,
+          style: {
+            fontWeight: 500,
+          },
+          success: {
+            style: {
+              background: '#10b981',
+              color: '#fff',
+            },
+            iconTheme: {
+              primary: '#fff',
+              secondary: '#10b981',
+            },
+          },
+          error: {
+            style: {
+              background: '#dc2626',
+              color: '#fff',
+            },
+            iconTheme: {
+              primary: '#fff',
+              secondary: '#dc2626',
+            },
+          },
+        }}
+      />
       <div className="app">
         <Header />
         <main className="main-content">

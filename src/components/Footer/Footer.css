@@ -343,7 +343,7 @@
 /* Scroll Animations */
 .fade-in {
   opacity: 0;
-  transition: opacity 0.3s ease-out;
+  transition: opacity 0.1s ease-out;
 }
 
 .fade-in.visible {
@@ -353,7 +353,7 @@
 .slide-left {
   opacity: 0;
   transform: translateX(40px);
-  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  transition: all 0.1s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
 .slide-left.visible {
@@ -365,7 +365,7 @@
 .stagger-children .stagger-item {
   opacity: 0;
   transform: translateY(20px);
-  transition: all 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  transition: all 0.1s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
 .stagger-children.visible .stagger-item:nth-child(1) {

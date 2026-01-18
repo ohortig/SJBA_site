@@ -4,13 +4,12 @@
   background-color: #f8f9fa;
 }
 
-/* Board title styling to match Our Board page */
-.board-title {
+.contact-title {
   font-size: 2rem;
   font-weight: 700;
-  color: #4C0D7F !important;
+  color: #4C0D7F;
   line-height: 1.2;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1rem;
 }
 
 .contact-content {
@@ -19,7 +18,6 @@
   padding: 0 20px;
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 80px;
   align-items: start;
 }
 
@@ -27,18 +25,10 @@
   padding-right: 40px;
 }
 
-.contact-info h1 {
-  font-size: 2.5rem;
-  font-weight: 700;
-  color: #1a1a1a;
-  margin-bottom: 30px;
-  line-height: 1.2;
-}
-
 .contact-info p {
-  font-size: 1rem;
-  line-height: 1.6;
-  color: #666;
+  font-size: 1.05rem;
+  line-height: 1;
+  color: #363a3f;
   margin-bottom: 20px;
   text-align: left;
 }
@@ -62,8 +52,8 @@
 }
 
 .address p {
-  font-size: 1rem;
-  color: #666;
+  font-size: 1.05rem;
+  color: #363a3f;
   margin: 5px 0;
 }
 
@@ -106,14 +96,14 @@
 
 .form-group label {
   display: block;
-  font-size: 1rem;
+  font-size: 1.05rem;
   font-weight: 600;
-  color: #333;
+  color: #363a3f;
   margin-bottom: 8px;
 }
 
 .required {
-  color: #666;
+  color: #363a3f;
   font-weight: 400;
 }
 
@@ -128,9 +118,9 @@
 }
 
 .field-group label {
-  font-size: 0.9rem;
+  font-size: 1.05rem;
   font-weight: 400;
-  color: #666;
+  color: #363a3f;
   margin-bottom: 5px;
 }
 
@@ -192,29 +182,10 @@
   font-size: 0.8rem;
 }
 
-.submit-message {
-  text-align: center;
-  padding: 1rem;
-  font-weight: 500;
-  margin-top: 1rem;
-}
-
-.submit-message.success {
-  background: rgba(34, 197, 94, 0.1);
-  color: #16a34a;
-  border: 1px solid rgba(34, 197, 94, 0.2);
-}
-
-.submit-message.error {
-  background: rgba(239, 68, 68, 0.1);
-  color: #dc2626;
-  border: 1px solid rgba(239, 68, 68, 0.2);
-}
-
 /* Responsive Design */
 @media (max-width: 768px) {
   .contact-container {
-    padding: 100px 0 40px;
+    padding: 120px 0 40px;
   }
 
   .contact-content {
@@ -242,7 +213,7 @@
 
 @media (max-width: 480px) {
   .contact-container {
-    padding: 80px 0 40px;
+    padding: 100px 0 40px;
   }
 
   .contact-content {
@@ -262,4 +233,23 @@
     padding: 0.875rem 1rem;
     font-size: 0.95rem;
   }
+}
+
+/* Field Validation Error Styles */
+.field-error {
+  display: block;
+  color: #dc2626;
+  font-size: 0.85rem;
+  margin-top: 4px;
+  font-weight: 500;
+}
+
+.input-error {
+  border-color: #dc2626 !important;
+  background: rgba(239, 68, 68, 0.05) !important;
+}
+
+.input-error:focus {
+  border-color: #dc2626 !important;
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.15) !important;
 }

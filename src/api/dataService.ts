@@ -1,30 +1,20 @@
 import { apiClient } from './client';
 import type { ApiResponse, PaginatedResponse } from './client';
-import type { 
-    BoardMember,
-    Event,
-    EventsQueryParams,
-    NewsletterSignup,
-    NewsletterSignupResponse
-} from '../types';
+import type {
+  BoardMember,
+  BoardMemberResponse,
+  Event,
+  EventsQueryParams,
+  NewsletterSignup,
+  NewsletterSignupResponse,
+  ContactFormData,
+  ContactFormResponse
+} from '@types';
 
-// Type for the raw API response (snake_case)
-interface ApiBoardMember {
-    id: string;
-    position: string;
-    full_name: string;
-    bio: string;
-    major: string;
-    year: string;
-    hometown: string;
-    linkedin_url: string;
-    email: string;
-    headshot_file: string;
-    order_index: number;
-}
+/* Board Members Service */
 
 // Helper function to transform snake_case API response to camelCase
-const transformBoardMember = (apiMember: ApiBoardMember): BoardMember => {
+const transformBoardMember = (apiMember: BoardMemberResponse): BoardMember => {
   return {
     id: apiMember.id,
     position: apiMember.position,
@@ -40,21 +30,20 @@ const transformBoardMember = (apiMember: ApiBoardMember): BoardMember => {
   };
 };
 
-// Board members API
 const boardMembersService = {
-
   async getAll(): Promise<BoardMember[]> {
-    const response = await apiClient.get<ApiResponse<ApiBoardMember[]>>('/board-members');
+    const response = await apiClient.get<ApiResponse<BoardMemberResponse[]>>('/board-members');
     return response.data.map(transformBoardMember);
   },
 
   async getById(id: string): Promise<BoardMember> {
-    const response = await apiClient.get<ApiResponse<ApiBoardMember>>(`/board-members/${id}`);
+    const response = await apiClient.get<ApiResponse<BoardMemberResponse>>(`/board-members/${id}`);
     return transformBoardMember(response.data);
   }
 };
 
-// Newsletter API
+/* Newsletter Service */
+
 const newsletterService = {
   async signup(data: NewsletterSignup): Promise<NewsletterSignupResponse> {
     const response = await apiClient.post<ApiResponse<NewsletterSignupResponse>>(
@@ -65,7 +54,8 @@ const newsletterService = {
   }
 };
 
-// Events API
+/* Events Service */
+
 const eventsService = {
   async getAll(params: EventsQueryParams = {}): Promise<{
     events: Event[];
@@ -110,9 +100,21 @@ const eventsService = {
   },
 };
 
-// Export all services as a single object for convenience
+/* Contact Form Service */
+
+const contactService = {
+  async submitContactForm(data: ContactFormData): Promise<ContactFormResponse> {
+    const response = await apiClient.post<ApiResponse<ContactFormResponse>>(
+      '/contact',
+      data
+    );
+    return response.data;
+  }
+};
+
 export const dataService = {
   boardMembers: boardMembersService,
   newsletter: newsletterService,
-  events: eventsService
+  events: eventsService,
+  contact: contactService
 };

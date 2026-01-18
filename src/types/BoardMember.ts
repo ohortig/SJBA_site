@@ -11,3 +11,17 @@ export interface BoardMember {
     headshotFile: string;
     orderIndex: number;
 }
+
+export interface BoardMemberResponse {
+    id: string;
+    position: string;
+    full_name: string;
+    bio: string;
+    major: string;
+    year: string;
+    hometown: string;
+    linkedin_url: string;
+    email: string;
+    headshot_file: string;
+    order_index: number;
+}

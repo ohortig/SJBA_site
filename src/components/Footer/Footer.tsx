@@ -4,7 +4,7 @@ import { SocialLink } from '@components';
 import './Footer.css';
 
 export const Footer = () => {
-  const footerAnimation = useScrollAnimation({ threshold: 0.05 });
+  const footerAnimation = useScrollAnimation({ threshold: 0.02 });
 
   return (
     <footer 

@@ -29,7 +29,7 @@ export const Header = () => {
   };
 
   return (
-    <header className="header">
+    <header className={`header ${isMenuOpen ? 'menu-open' : ''}`}>
       <nav className="nav-container">
         <div className="logo">
           <Link to="/" onClick={closeMenu}>
