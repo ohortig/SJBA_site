@@ -7,11 +7,7 @@ interface UseScrollAnimationOptions {
 }
 
 export const useScrollAnimation = (options: UseScrollAnimationOptions = {}) => {
-  const {
-    threshold = 0.05,
-    rootMargin = '0px 0px -50px 0px',
-    triggerOnce = true
-  } = options;
+  const { threshold = 0.05, rootMargin = '0px 0px -50px 0px', triggerOnce = true } = options;
 
   const elementRef = useRef<HTMLDivElement>(null);
   const [isVisible, setIsVisible] = useState(false);
@@ -34,16 +30,17 @@ export const useScrollAnimation = (options: UseScrollAnimationOptions = {}) => {
       }
     );
 
-    if (elementRef.current) {
-      observer.observe(elementRef.current);
+    const element = elementRef.current;
+    if (element) {
+      observer.observe(element);
     }
 
     return () => {
-      if (elementRef.current) {
-        observer.unobserve(elementRef.current);
+      if (element) {
+        observer.unobserve(element);
       }
     };
   }, [threshold, rootMargin, triggerOnce]);
 
   return { elementRef, isVisible };
-}; 
+};

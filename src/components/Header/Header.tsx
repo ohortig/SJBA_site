@@ -36,16 +36,22 @@ export const Header = () => {
             <img src="/sjba_logo_full.png" alt="SJBA Logo" className="logo-image" />
           </Link>
         </div>
-        
+
         <button className="mobile-menu-button" onClick={toggleMenu}>
           <span className="menu-icon"></span>
         </button>
 
         <div className={`nav-buttons ${isMenuOpen ? 'active' : ''}`}>
-          <NavButton to="/events" onClick={closeMenu}>EVENTS</NavButton>
-          <NavButton to="/programs" onClick={closeMenu}>PROGRAMS</NavButton>
+          <NavButton to="/events" onClick={closeMenu}>
+            EVENTS
+          </NavButton>
+          <NavButton to="/programs" onClick={closeMenu}>
+            PROGRAMS
+          </NavButton>
           <AboutDropdown onClose={closeMenu} />
-          <NavButton to="/contact" variant="primary" onClick={closeMenu}>CONTACT US</NavButton>
+          <NavButton to="/contact" variant="primary" onClick={closeMenu}>
+            CONTACT US
+          </NavButton>
         </div>
       </nav>
     </header>

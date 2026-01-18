@@ -7,10 +7,12 @@
   overflow: hidden;
   padding: 1rem 0;
   position: relative;
-  background: linear-gradient(135deg,
-      rgba(248, 250, 252, 0.8) 0%,
-      rgba(241, 245, 249, 0.9) 50%,
-      rgba(248, 250, 252, 0.8) 100%);
+  background: linear-gradient(
+    135deg,
+    rgba(248, 250, 252, 0.8) 0%,
+    rgba(241, 245, 249, 0.9) 50%,
+    rgba(248, 250, 252, 0.8) 100%
+  );
   border-top: 1px solid rgba(76, 13, 127, 0.08);
   border-bottom: 1px solid rgba(76, 13, 127, 0.08);
 }
@@ -22,10 +24,7 @@
   left: 0;
   right: 0;
   height: 2px;
-  background: linear-gradient(90deg,
-      transparent 0%,
-      rgba(76, 13, 127, 0.2) 50%,
-      transparent 100%);
+  background: linear-gradient(90deg, transparent 0%, rgba(76, 13, 127, 0.2) 50%, transparent 100%);
 }
 
 .logo-gallery-container::after {
@@ -35,10 +34,7 @@
   left: 0;
   right: 0;
   height: 2px;
-  background: linear-gradient(90deg,
-      transparent 0%,
-      rgba(76, 13, 127, 0.2) 50%,
-      transparent 100%);
+  background: linear-gradient(90deg, transparent 0%, rgba(76, 13, 127, 0.2) 50%, transparent 100%);
 }
 
 .logo-gallery {

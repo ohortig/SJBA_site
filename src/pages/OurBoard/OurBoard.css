@@ -17,7 +17,7 @@
 .board-header .board-title {
   font-size: 2rem;
   font-weight: 700;
-  color: #4C0D7F !important;
+  color: #4c0d7f !important;
   line-height: 1.2;
   margin-bottom: 1rem;
 }
@@ -33,11 +33,10 @@
 .section-title {
   font-size: 2.2rem;
   font-weight: 700;
-  color: #4C0D7F;
+  color: #4c0d7f;
   margin-bottom: 2.5rem;
   text-align: center;
 }
-
 
 /* Board Section */
 .board-section {
@@ -118,7 +117,7 @@
   transition-delay: 0.3s;
 }
 
-.board-grid.stagger-children.visible .board-member-card.stagger-item:nth-child(n+7) {
+.board-grid.stagger-children.visible .board-member-card.stagger-item:nth-child(n + 7) {
   opacity: 1;
   transform: translateY(0);
   transition-delay: 0.35s;
@@ -131,7 +130,7 @@
   left: 0;
   right: 0;
   height: 4px;
-  background: linear-gradient(135deg, #4C0D7F, #8B5CF6);
+  background: linear-gradient(135deg, #4c0d7f, #8b5cf6);
   opacity: 0;
   transition: opacity 0.3s ease;
 }
@@ -150,11 +149,10 @@
   margin-bottom: 1.5rem;
 }
 
-
 .photo-placeholder {
   width: 180px;
   height: 180px;
-  background: linear-gradient(135deg, #4C0D7F, #8B5CF6);
+  background: linear-gradient(135deg, #4c0d7f, #8b5cf6);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -199,7 +197,7 @@
 .member-position {
   font-size: 1.1rem;
   font-weight: 600;
-  color: #4C0D7F;
+  color: #4c0d7f;
   margin-bottom: 0.75rem;
   line-height: 1.3;
 }
@@ -220,7 +218,7 @@
 
 .click-hint {
   font-size: 0.9rem;
-  color: #8B5CF6;
+  color: #8b5cf6;
   font-weight: 600;
   text-align: center;
   padding: 0.5rem;
@@ -231,7 +229,7 @@
 
 .board-member-card:hover .click-hint {
   background: rgba(139, 92, 246, 0.2);
-  color: #4C0D7F;
+  color: #4c0d7f;
 }
 
 .member-icon-buttons {
@@ -269,7 +267,6 @@
   box-shadow: none;
 }
 
-
 /* Join Board Section */
 .join-board-section {
   background: linear-gradient(135deg, rgba(76, 13, 127, 0.05), rgba(139, 92, 246, 0.05));
@@ -290,7 +287,7 @@
 .join-board-content h2 {
   font-size: 2rem;
   font-weight: 700;
-  color: #4C0D7F;
+  color: #4c0d7f;
   margin-bottom: 1.5rem;
 }
 
@@ -323,7 +320,7 @@
 }
 
 .join-board-btn.primary {
-  background: linear-gradient(135deg, #4C0D7F, #8B5CF6);
+  background: linear-gradient(135deg, #4c0d7f, #8b5cf6);
   color: white;
   box-shadow: 0 4px 12px rgba(76, 13, 127, 0.2);
 }
@@ -331,19 +328,19 @@
 .join-board-btn.primary:hover {
   transform: translateY(-2px);
   box-shadow: 0 6px 20px rgba(76, 13, 127, 0.3);
-  background: linear-gradient(135deg, #5A1A8A, #9F7AEA);
+  background: linear-gradient(135deg, #5a1a8a, #9f7aea);
   text-decoration: none;
   color: white;
 }
 
 .join-board-btn.secondary {
   background: transparent;
-  color: #4C0D7F;
-  border: 2px solid #4C0D7F;
+  color: #4c0d7f;
+  border: 2px solid #4c0d7f;
 }
 
 .join-board-btn.secondary:hover {
-  background: #4C0D7F;
+  background: #4c0d7f;
   color: white;
   transform: translateY(-2px);
   text-decoration: none;
@@ -404,7 +401,6 @@
     font-size: 1rem;
   }
 
-
   .join-board-section {
     padding: 2rem;
     margin-bottom: 3rem;
@@ -461,7 +457,6 @@
   .member-bio {
     font-size: 0.95rem;
   }
-
 
   .join-board-section {
     padding: 1.5rem;
@@ -573,7 +568,6 @@
 
 /* Reduce motion for users who prefer it */
 @media (prefers-reduced-motion: reduce) {
-
   .animate-on-scroll,
   .fade-in,
   .slide-up,

@@ -7,7 +7,7 @@ export const OurMission = () => {
         <div className="mission-header">
           <h1 className="board-title">Our Mission</h1>
         </div>
-        
+
         <div className="construction-container">
           <h2>This page is currently under construction. Stay tuned for updates.</h2>
           <div className="construction-buttons">

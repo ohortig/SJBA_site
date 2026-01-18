@@ -13,7 +13,7 @@
 
 .nav-button--default {
   background-color: transparent;
-  color: #4C0D7F;
+  color: #4c0d7f;
   border: 2px solid transparent;
   position: relative;
 }
@@ -23,12 +23,12 @@
   border: 2px solid rgba(76, 13, 127, 0.2);
   box-shadow: 0 4px 12px rgba(76, 13, 127, 0.15);
   transform: translateY(-1px);
-  color: #4C0D7F;
+  color: #4c0d7f;
   text-decoration: none;
 }
 
 .nav-button--primary {
-  background: linear-gradient(135deg, #4C0D7F, #8B5CF6);
+  background: linear-gradient(135deg, #4c0d7f, #8b5cf6);
   color: white;
   box-shadow: 0 4px 12px rgba(76, 13, 127, 0.2);
 }
@@ -36,7 +36,7 @@
 .nav-button--primary:hover {
   transform: translateY(-2px);
   box-shadow: 0 6px 20px rgba(76, 13, 127, 0.3);
-  background: linear-gradient(135deg, #5A1A8A, #9F7AEA);
+  background: linear-gradient(135deg, #5a1a8a, #9f7aea);
   color: white;
   text-decoration: none;
 }

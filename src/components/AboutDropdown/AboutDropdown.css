@@ -71,7 +71,7 @@
 .dropdown-item {
   display: block;
   padding: 0.75rem 1.25rem;
-  color: #4C0D7F;
+  color: #4c0d7f;
   text-decoration: none;
   font-weight: 500;
   font-size: clamp(0.875rem, 2vw, 1rem);
@@ -83,7 +83,7 @@
 
 .dropdown-item:hover {
   background: linear-gradient(135deg, rgba(76, 13, 127, 0.08), rgba(139, 92, 246, 0.08));
-  color: #2D0847;
+  color: #2d0847;
   text-decoration: none;
   transform: translateX(4px);
   box-shadow: 0 2px 8px rgba(76, 13, 127, 0.1);

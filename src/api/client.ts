@@ -43,7 +43,7 @@ class ApiClient {
       timeout: 10000, // 10 second timeout
       headers: {
         'Content-Type': 'application/json',
-        'Accept': 'application/json',
+        Accept: 'application/json',
       },
     });
 
@@ -71,7 +71,9 @@ class ApiClient {
         if (response.config.metadata) {
           const endTime = new Date();
           const duration = endTime.getTime() - response.config.metadata.startTime.getTime();
-          console.debug(`API ${response.config.method?.toUpperCase()} ${response.config.url} took ${duration}ms`);
+          console.debug(
+            `API ${response.config.method?.toUpperCase()} ${response.config.url} took ${duration}ms`
+          );
         }
         return response;
       },
@@ -83,7 +85,8 @@ class ApiClient {
         if (error.response) {
           status = error.response.status;
           const errorData = error.response.data as { message?: string; code?: string };
-          message = errorData?.message || error.message || `HTTP ${status}: ${error.response.statusText}`;
+          message =
+            errorData?.message || error.message || `HTTP ${status}: ${error.response.statusText}`;
           code = errorData?.code;
         } else if (error.request) {
           message = 'Network error - please check your connection';
@@ -97,10 +100,13 @@ class ApiClient {
     );
   }
 
-  async get<T>(endpoint: string, params?: Record<string, string | number | boolean | string[]>): Promise<T> {
+  async get<T>(
+    endpoint: string,
+    params?: Record<string, string | number | boolean | string[]>
+  ): Promise<T> {
     // Clean endpoint path
     const cleanEndpoint = endpoint.replace(/^\//, '');
-    
+
     // Convert params to string values for URL
     const stringParams: Record<string, string> = {};
     if (params) {

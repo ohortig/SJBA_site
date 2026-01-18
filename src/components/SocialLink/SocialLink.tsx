@@ -10,21 +10,16 @@ interface SocialLinkProps {
   alt: string;
 }
 
-export const SocialLink: React.FC<SocialLinkProps> = ({ 
-  href, 
-  platform, 
-  name, 
-  handle, 
-  iconSrc, 
-  alt 
+export const SocialLink: React.FC<SocialLinkProps> = ({
+  href,
+  platform,
+  name,
+  handle,
+  iconSrc,
+  alt,
 }) => {
   return (
-    <a 
-      href={href} 
-      target="_blank" 
-      rel="noopener noreferrer"
-      className={`social-link ${platform}`}
-    >
+    <a href={href} target="_blank" rel="noopener noreferrer" className={`social-link ${platform}`}>
       <div className="social-icon-placeholder">
         <img src={iconSrc} alt={alt} className="social-icon" />
       </div>

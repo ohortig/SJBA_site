@@ -10,7 +10,7 @@ export const ScrollToTop = () => {
     if ('scrollRestoration' in history) {
       history.scrollRestoration = 'manual';
     }
-    
+
     // Immediate scroll reset for first page load
     document.documentElement.scrollTop = 0;
     document.body.scrollTop = 0;

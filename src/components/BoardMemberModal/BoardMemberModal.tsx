@@ -22,18 +22,18 @@ export const BoardMemberModal: React.FC<BoardMemberModalProps> = ({
   useEffect(() => {
     if (isOpen) {
       const scrollY = window.scrollY;
-      
+
       document.body.style.position = 'fixed';
       document.body.style.top = `-${scrollY}px`;
       document.body.style.width = '100%';
       document.body.style.overflow = 'hidden';
-      
+
       return () => {
         document.body.style.position = '';
         document.body.style.top = '';
         document.body.style.width = '';
         document.body.style.overflow = '';
- 
+
         window.scrollTo(0, scrollY);
       };
     }
@@ -49,7 +49,7 @@ export const BoardMemberModal: React.FC<BoardMemberModalProps> = ({
 
     if (isOpen) {
       document.addEventListener('keydown', handleEscapeKey);
-      
+
       return () => {
         document.removeEventListener('keydown', handleEscapeKey);
       };
@@ -61,24 +61,38 @@ export const BoardMemberModal: React.FC<BoardMemberModalProps> = ({
   return (
     <div className="modal-overlay" onClick={onClose}>
       <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-        <button className="modal-close" onClick={onClose}>×</button>
+        <button className="modal-close" onClick={onClose}>
+          ×
+        </button>
         <div className="modal-header">
           <div className="modal-title-section">
             <div className="modal-name-row">
               <h2 className="modal-name">{member.fullName}</h2>
               <div className="modal-icon-buttons">
-                <a href={`mailto:${member.email}`} className="modal-icon-btn email-icon" title="Send Email">
+                <a
+                  href={`mailto:${member.email}`}
+                  className="modal-icon-btn email-icon"
+                  title="Send Email"
+                >
                   <img src="/icons/email_icon.png" alt="Email" />
                 </a>
                 {member.linkedinUrl && (
-                  <a href={member.linkedinUrl} className="modal-icon-btn linkedin-icon" target="_blank" rel="noopener noreferrer" title="Connect on LinkedIn">
+                  <a
+                    href={member.linkedinUrl}
+                    className="modal-icon-btn linkedin-icon"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    title="Connect on LinkedIn"
+                  >
                     <img src="/logos/linkedin_logo.png" alt="LinkedIn" />
                   </a>
                 )}
               </div>
             </div>
             <h3 className="modal-position">{member.position}</h3>
-            <p className="modal-details">{member.major} • {member.year}</p>
+            <p className="modal-details">
+              {member.major} • {member.year}
+            </p>
           </div>
         </div>
         <div className="modal-body">
@@ -86,10 +100,15 @@ export const BoardMemberModal: React.FC<BoardMemberModalProps> = ({
             <div className="modal-photo-section">
               {shouldShowPlaceholder(member) ? (
                 <div className="photo-placeholder large">
-                  <span>{member.fullName.split(' ').map((n: string) => n[0]).join('')}</span>
+                  <span>
+                    {member.fullName
+                      .split(' ')
+                      .map((n: string) => n[0])
+                      .join('')}
+                  </span>
                 </div>
               ) : (
-                <img 
+                <img
                   src={`${BOARD_IMAGES_BUCKET}${member.headshotFile}`}
                   alt={`${member.fullName} headshot`}
                   className="member-headshot large"

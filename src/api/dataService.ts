@@ -8,7 +8,7 @@ import type {
   NewsletterSignup,
   NewsletterSignupResponse,
   ContactFormData,
-  ContactFormResponse
+  ContactFormResponse,
 } from '@types';
 
 /* Board Members Service */
@@ -26,7 +26,7 @@ const transformBoardMember = (apiMember: BoardMemberResponse): BoardMember => {
     linkedinUrl: apiMember.linkedin_url,
     email: apiMember.email,
     headshotFile: apiMember.headshot_file,
-    orderIndex: apiMember.order_index
+    orderIndex: apiMember.order_index,
   };
 };
 
@@ -39,7 +39,7 @@ const boardMembersService = {
   async getById(id: string): Promise<BoardMember> {
     const response = await apiClient.get<ApiResponse<BoardMemberResponse>>(`/board-members/${id}`);
     return transformBoardMember(response.data);
-  }
+  },
 };
 
 /* Newsletter Service */
@@ -51,7 +51,7 @@ const newsletterService = {
       data
     );
     return response.data;
-  }
+  },
 };
 
 /* Events Service */
@@ -70,17 +70,14 @@ const eventsService = {
     const queryParams = {
       page: 1,
       limit: 10,
-      ...params
+      ...params,
     };
 
-    const response = await apiClient.get<PaginatedResponse<Event>>(
-      '/events',
-      queryParams
-    );
+    const response = await apiClient.get<PaginatedResponse<Event>>('/events', queryParams);
 
     return {
       events: response.data,
-      pagination: response.pagination
+      pagination: response.pagination,
     };
   },
 
@@ -94,7 +91,7 @@ const eventsService = {
     const { events } = await this.getAll({
       startDate: now,
       isPublic: true,
-      limit
+      limit,
     });
     return events;
   },
@@ -104,17 +101,14 @@ const eventsService = {
 
 const contactService = {
   async submitContactForm(data: ContactFormData): Promise<ContactFormResponse> {
-    const response = await apiClient.post<ApiResponse<ContactFormResponse>>(
-      '/contact',
-      data
-    );
+    const response = await apiClient.post<ApiResponse<ContactFormResponse>>('/contact', data);
     return response.data;
-  }
+  },
 };
 
 export const dataService = {
   boardMembers: boardMembersService,
   newsletter: newsletterService,
   events: eventsService,
-  contact: contactService
+  contact: contactService,
 };

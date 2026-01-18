@@ -9,7 +9,13 @@ interface NavButtonProps {
   onClick?: () => void;
 }
 
-export const NavButton = ({ to, children, variant = 'default', className = '', onClick }: NavButtonProps) => {
+export const NavButton = ({
+  to,
+  children,
+  variant = 'default',
+  className = '',
+  onClick,
+}: NavButtonProps) => {
   return (
     <Link to={to} className={`nav-button nav-button--${variant} ${className}`} onClick={onClick}>
       {children}

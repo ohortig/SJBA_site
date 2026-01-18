@@ -10,10 +10,7 @@ export const ErrorDisplay = ({ error, onRetry }: ErrorDisplayProps) => (
     <div className="error-icon">⚠️</div>
     <p className="error-text">{error}</p>
     {onRetry && (
-      <button 
-        className="retry-button" 
-        onClick={onRetry}
-      >
+      <button className="retry-button" onClick={onRetry}>
         Try Again
       </button>
     )}

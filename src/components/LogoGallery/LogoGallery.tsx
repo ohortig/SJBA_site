@@ -28,7 +28,7 @@ export const LogoGallery = () => {
     { name: 'KKR', src: '/logos/KKR_logo.png', hasImage: true },
     { name: 'Cantor Fitzgerald', src: '/logos/cantor_fitzgerald_logo.png', hasImage: true },
     { name: 'Palantir', src: '/logos/palantir.png', hasImage: true },
-    { name: 'UBS', src: '/logos/UBS_logo.png', hasImage: true }
+    { name: 'UBS', src: '/logos/UBS_logo.png', hasImage: true },
   ];
 
   return (
@@ -39,9 +39,9 @@ export const LogoGallery = () => {
           <div key={`set1-${index}`} className="logo-item">
             {logo.hasImage ? (
               <>
-                <img 
-                  src={logo.src} 
-                  alt={logo.name} 
+                <img
+                  src={logo.src}
+                  alt={logo.name}
                   className="company-logo"
                   onError={(e) => {
                     // Fallback to text if image fails to load
@@ -58,9 +58,7 @@ export const LogoGallery = () => {
                 </span>
               </>
             ) : (
-              <span className="logo-text">
-                {logo.name}
-              </span>
+              <span className="logo-text">{logo.name}</span>
             )}
           </div>
         ))}
@@ -69,9 +67,9 @@ export const LogoGallery = () => {
           <div key={`set2-${index}`} className="logo-item">
             {logo.hasImage ? (
               <>
-                <img 
-                  src={logo.src} 
-                  alt={logo.name} 
+                <img
+                  src={logo.src}
+                  alt={logo.name}
                   className="company-logo"
                   onError={(e) => {
                     const target = e.currentTarget;
@@ -87,9 +85,7 @@ export const LogoGallery = () => {
                 </span>
               </>
             ) : (
-              <span className="logo-text">
-                {logo.name}
-              </span>
+              <span className="logo-text">{logo.name}</span>
             )}
           </div>
         ))}

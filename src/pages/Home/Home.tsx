@@ -13,7 +13,7 @@ export const Home = () => {
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
-    email: ''
+    email: '',
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitMessage, setSubmitMessage] = useState('');
@@ -24,7 +24,7 @@ export const Home = () => {
   // Auto-rotate gallery images
   useEffect(() => {
     const interval = setInterval(() => {
-      setCurrentImage(prev => (prev >= 4 ? 1 : prev + 1));
+      setCurrentImage((prev) => (prev >= 4 ? 1 : prev + 1));
     }, 5000);
 
     return () => clearInterval(interval);
@@ -40,7 +40,7 @@ export const Home = () => {
     // Update gallery images
     const images = document.querySelectorAll('.gallery-image');
     const dots = document.querySelectorAll('.nav-dot');
-    
+
     images.forEach((img, index) => {
       if (index + 1 === currentImage) {
         img.classList.add('active');
@@ -61,9 +61,9 @@ export const Home = () => {
   // Newsletter form handlers
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      [name]: value
+      [name]: value,
     }));
   };
 
@@ -74,7 +74,7 @@ export const Home = () => {
 
   const handleNewsletterSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     // Validate all fields are filled
     if (!formData.firstName.trim() || !formData.lastName.trim() || !formData.email.trim()) {
       setSubmitMessage('Please fill out all fields.');
@@ -103,14 +103,14 @@ export const Home = () => {
       // Get existing signups from localStorage
       const existingSignupsJson = localStorage.getItem('sjba-newsletter-signups');
       let signups: NewsletterSignup[] = [];
-      
+
       if (existingSignupsJson) {
         signups = JSON.parse(existingSignupsJson) as NewsletterSignup[];
       }
 
       // Check if email already exists
-      const emailExists = signups.some(signup => 
-        signup.email.toLowerCase() === formData.email.trim().toLowerCase()
+      const emailExists = signups.some(
+        (signup) => signup.email.toLowerCase() === formData.email.trim().toLowerCase()
       );
 
       if (emailExists) {
@@ -125,7 +125,7 @@ export const Home = () => {
         lastName: formData.lastName.trim(),
         email: formData.email.trim().toLowerCase(),
         timestamp: new Date().toISOString(),
-        id: Date.now() // Simple ID generation
+        id: Date.now(), // Simple ID generation
       };
 
       signups.push(newSignup);
@@ -153,7 +153,7 @@ export const Home = () => {
 
   return (
     <div className="page-container">
-      <div 
+      <div
         ref={heroAnimation.elementRef}
         className={`hero-section slide-up ${heroAnimation.isVisible ? 'visible' : ''}`}
       >
@@ -186,7 +186,7 @@ export const Home = () => {
           </h1>
         </div>
 
-        <div 
+        <div
           ref={speakersAnimation.elementRef}
           className={`link-section scale-in ${speakersAnimation.isVisible ? 'visible' : ''}`}
         >
@@ -216,25 +216,23 @@ export const Home = () => {
       <div className="split-content-container">
         <div className="content-section">
           <div className="text-container">
-            <h2 className="section-title">
-              The Jewish impact on the business world
-            </h2>
-            
+            <h2 className="section-title">The Jewish impact on the business world</h2>
+
             <div className="section-content">
               <p>
-                The Jewish community has played a pivotal role in shaping modern business 
-                and finance. From pioneering investment banking to revolutionary 
-                entrepreneurship, Jewish professionals have left an indelible mark on 
-                industries worldwide. At SJBA, we celebrate this rich heritage while 
-                building the next generation of Jewish business leaders.
+                The Jewish community has played a pivotal role in shaping modern business and
+                finance. From pioneering investment banking to revolutionary entrepreneurship,
+                Jewish professionals have left an indelible mark on industries worldwide. At SJBA,
+                we celebrate this rich heritage while building the next generation of Jewish
+                business leaders.
               </p>
-              
+
               <p>
-                Our organization provides a platform for networking, mentorship, and 
-                professional development within NYU's vibrant Jewish community. Through 
-                exclusive events, speaker series, and industry connections, we help 
-                members understand their cultural legacy while preparing them for 
-                successful careers in finance, consulting, technology, and beyond.
+                Our organization provides a platform for networking, mentorship, and professional
+                development within NYU's vibrant Jewish community. Through exclusive events, speaker
+                series, and industry connections, we help members understand their cultural legacy
+                while preparing them for successful careers in finance, consulting, technology, and
+                beyond.
               </p>
             </div>
           </div>
@@ -248,10 +246,10 @@ export const Home = () => {
               <h2>Join Our Newsletter</h2>
             </div>
             <p>
-              Stay connected with SJBA and receive updates about upcoming events, 
-              speaker series, and opportunities exclusively for NYU students.
+              Stay connected with SJBA and receive updates about upcoming events, speaker series,
+              and opportunities exclusively for NYU students.
             </p>
-            
+
             <form onSubmit={handleFormSubmit} className="newsletter-form">
               <div className="form-row">
                 <div className="form-group">
@@ -287,16 +285,14 @@ export const Home = () => {
                   className="form-input email-input"
                   required
                 />
-                <button 
-                  type="submit" 
-                  className="newsletter-submit-btn"
-                  disabled={isSubmitting}
-                >
+                <button type="submit" className="newsletter-submit-btn" disabled={isSubmitting}>
                   {isSubmitting ? 'Signing up...' : '→'}
                 </button>
               </div>
               {submitMessage && (
-                <div className={`submit-message ${submitMessage.includes('Successfully') ? 'success' : 'error'}`}>
+                <div
+                  className={`submit-message ${submitMessage.includes('Successfully') ? 'success' : 'error'}`}
+                >
                   {submitMessage}
                 </div>
               )}

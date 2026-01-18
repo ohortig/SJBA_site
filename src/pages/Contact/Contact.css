@@ -7,7 +7,7 @@
 .contact-title {
   font-size: 2rem;
   font-weight: 700;
-  color: #4C0D7F;
+  color: #4c0d7f;
   line-height: 1.2;
   margin-bottom: 1rem;
 }
@@ -65,10 +65,12 @@
 }
 
 .contact-form {
-  background: linear-gradient(135deg,
-      rgba(76, 13, 127, 0.03) 0%,
-      rgba(139, 92, 246, 0.05) 50%,
-      rgba(76, 13, 127, 0.03) 100%);
+  background: linear-gradient(
+    135deg,
+    rgba(76, 13, 127, 0.03) 0%,
+    rgba(139, 92, 246, 0.05) 50%,
+    rgba(76, 13, 127, 0.03) 100%
+  );
   border: 1px solid rgba(76, 13, 127, 0.12);
   padding: 2rem;
   position: relative;
@@ -83,10 +85,7 @@
   left: 0;
   right: 0;
   height: 1px;
-  background: linear-gradient(90deg,
-      transparent 0%,
-      rgba(76, 13, 127, 0.3) 50%,
-      transparent 100%);
+  background: linear-gradient(90deg, transparent 0%, rgba(76, 13, 127, 0.3) 50%, transparent 100%);
 }
 
 .form-group {
@@ -137,7 +136,7 @@
 
 .form-group input:focus,
 .form-group textarea:focus {
-  border-color: #4C0D7F;
+  border-color: #4c0d7f;
   background: white;
   box-shadow: 0 0 0 3px rgba(76, 13, 127, 0.1);
 }
@@ -156,7 +155,7 @@
 .submit-btn {
   width: 44px;
   height: 44px;
-  background: linear-gradient(135deg, #4C0D7F, #8B5CF6);
+  background: linear-gradient(135deg, #4c0d7f, #8b5cf6);
   border: none;
   color: white;
   font-size: 1.2rem;
@@ -171,7 +170,7 @@
 }
 
 .submit-btn:hover:not(:disabled) {
-  background: linear-gradient(135deg, #5A1A8A, #9F7AEA);
+  background: linear-gradient(135deg, #5a1a8a, #9f7aea);
   transform: scale(1.05);
   box-shadow: 0 4px 12px rgba(76, 13, 127, 0.3);
 }

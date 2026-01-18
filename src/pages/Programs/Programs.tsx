@@ -7,7 +7,7 @@ export const Programs = () => {
         <div className="programs-header">
           <h1 className="board-title">Programs</h1>
         </div>
-        
+
         <div className="construction-container">
           <h2>This page is currently under construction. Stay tuned for updates.</h2>
           <div className="construction-buttons">

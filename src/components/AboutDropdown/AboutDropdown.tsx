@@ -43,7 +43,11 @@ export const AboutDropdown = ({ onClose }: AboutDropdownProps) => {
   if (isMobile) {
     return (
       <>
-        <Link to="/our-mission" className="nav-button nav-button--default" onClick={handleLinkClick}>
+        <Link
+          to="/our-mission"
+          className="nav-button nav-button--default"
+          onClick={handleLinkClick}
+        >
           OUR MISSION
         </Link>
         <Link to="/our-board" className="nav-button nav-button--default" onClick={handleLinkClick}>
@@ -55,16 +59,12 @@ export const AboutDropdown = ({ onClose }: AboutDropdownProps) => {
 
   // On desktop, render dropdown
   return (
-    <div 
-      className="about-dropdown"
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
-    >
+    <div className="about-dropdown" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
       <span className="nav-button nav-button--default dropdown-trigger">
         ABOUT US
         <span className="dropdown-arrow">▼</span>
       </span>
-      
+
       {isOpen && (
         <div className="dropdown-menu">
           <Link to="/our-mission" className="dropdown-item" onClick={handleLinkClick}>
