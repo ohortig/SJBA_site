@@ -161,16 +161,16 @@ export const Home = () => {
         <div className="rotating-gallery-background">
           <div className="gallery-image-container">
             <div className="gallery-image active" data-image="1">
-              <img src="/gallery/sjba-gallery-1.JPG" alt="SJBA Community Building" />
+              <img src="/gallery/sjba-gallery-1.JPG" />
             </div>
             <div className="gallery-image" data-image="2">
-              <img src="/gallery/sjba-gallery-2.JPG" alt="SJBA Professional Development" />
+              <img src="/gallery/sjba-gallery-2.JPG" />
             </div>
             <div className="gallery-image" data-image="3">
-              <img src="/gallery/sjba-gallery-3.JPG" alt="SJBA Networking Excellence" />
+              <img src="/gallery/sjba-gallery-3.JPG" />
             </div>
             <div className="gallery-image" data-image="4">
-              <img src="/gallery/sjba-gallery-4.JPG" alt="SJBA Leadership Growth" />
+              <img src="/gallery/sjba-gallery-4.JPG" />
             </div>
           </div>
           <div className="gallery-overlay"></div>
