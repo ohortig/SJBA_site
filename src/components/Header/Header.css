@@ -28,12 +28,12 @@
 
 .nav-container {
   width: 100%;
-  padding: clamp(0.11rem, 0.375vw, 0.225rem) 15vw;
+  padding: clamp(0.088rem, 0.3vw, 0.18rem) 15vw;
   margin: 0 auto;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  min-height: 25px;
+  min-height: 20px;
   max-width: none;
   box-sizing: border-box;
   position: relative;
@@ -70,7 +70,7 @@
 }
 
 .logo-image {
-  height: clamp(55px, 8vw, 85px);
+  height: clamp(44px, 6.4vw, 68px);
   width: auto;
   transition: all 0.3s ease;
   filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
@@ -163,7 +163,7 @@
 
   .nav-container {
     padding: 0.1875rem 12vw;
-    min-height: 25px;
+    min-height: 20px;
   }
 }
 
@@ -179,7 +179,7 @@
   .nav-container {
     padding: 0.11rem 8vw;
     max-width: 100%;
-    min-height: 22px;
+    min-height: 18px;
   }
 
   .nav-buttons {

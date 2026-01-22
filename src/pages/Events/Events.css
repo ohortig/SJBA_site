@@ -1,152 +1,666 @@
 /* Events Page Styles */
-.events-page-container {
-  min-height: 100vh;
-  padding: 120px 0 40px;
-  background-color: #f8f9fa;
-}
 
-.events-content {
-  max-width: 1200px;
+.events-page-layout {
+  display: flex;
+  gap: 2rem;
+  max-width: 1600px;
   margin: 0 auto;
-  padding: 0 20px;
+  position: relative;
 }
 
+.events-main-content {
+  flex: 1;
+  min-width: 0;
+}
+
+/* Header */
 .events-header {
+  padding: 1rem 2rem;
   text-align: center;
-  margin-bottom: 2rem;
+  margin: 0 auto 0 auto;
+  width: fit-content;
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.4s ease;
 }
 
-/* Board title styling to match Our Board page */
-.board-title {
+.events-header.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.events-header .events-title {
   font-size: 2rem;
   font-weight: 700;
   color: #4c0d7f !important;
   line-height: 1.2;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1rem;
 }
 
-.events-description {
-  font-size: 1.1rem;
-  color: #64748b;
-  line-height: 1.6;
-  max-width: 800px;
-  margin: 0 auto;
+/* Semester Sidebar */
+.semester-sidebar {
+  position: fixed;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 160px;
+  z-index: 99;
 }
 
-/* Simple container - no animations */
-.construction-container {
-  background: linear-gradient(135deg, rgba(76, 13, 127, 0.05), rgba(139, 92, 246, 0.08));
+.semester-nav {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(248, 250, 252, 0.98));
   border: 1px solid rgba(76, 13, 127, 0.15);
-  padding: 3rem;
-  text-align: center;
-  margin: 4rem auto 0 auto;
-  max-width: 800px;
-  box-shadow: 0 4px 20px rgba(76, 13, 127, 0.1);
+  padding: 1.25rem;
+  box-shadow: 0 4px 12px rgba(76, 13, 127, 0.1);
 }
 
-.construction-container h2 {
-  font-size: 1.3rem;
+.semester-nav-title {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #000000;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin: 0 0 1rem 0;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid rgba(76, 13, 127, 0.1);
+}
+
+.semester-nav-item {
+  display: block;
+  width: 100%;
+  padding: 0.75rem 1rem;
+  font-size: 0.95rem;
   font-weight: 600;
-  color: #374151;
-  margin-bottom: 1.5rem;
-  line-height: 1.4;
-}
-
-.construction-container p {
-  font-size: 1rem;
-  color: #64748b;
-  line-height: 1.6;
-  margin-bottom: 2rem;
-}
-
-.construction-buttons {
-  display: flex;
-  gap: 1rem;
-  justify-content: center;
-  flex-wrap: wrap;
-}
-
-.construction-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.75rem;
-  text-decoration: none;
-  padding: 1rem 2rem;
-  font-size: 1.1rem;
-  font-weight: 600;
+  border: none;
+  background: transparent;
+  color: #6b7280;
+  cursor: pointer;
   transition: all 0.3s ease;
-  min-width: 160px;
+  text-align: left;
+  margin-bottom: 0.25rem;
+  position: relative;
+}
+
+.semester-nav-item::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 3px;
+  height: 0;
+  background: linear-gradient(135deg, #4c0d7f, #8b5cf6);
+  transition: height 0.3s ease;
+}
+
+.semester-nav-item:hover {
+  color: #4c0d7f;
+  background: rgba(76, 13, 127, 0.05);
+}
+
+.semester-nav-item.active {
+  color: #4c0d7f;
+  background: rgba(76, 13, 127, 0.08);
+}
+
+.semester-nav-item.active::before {
+  height: 60%;
+}
+
+/* Events Section */
+.events-section {
+  margin-bottom: 1rem;
+  padding-bottom: 1rem;
+  opacity: 0;
+  transform: translateY(40px);
+  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.events-section.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Semester Sections */
+.events-by-semester {
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+}
+
+.semester-section {
+  scroll-margin-top: 120px;
+}
+
+.semester-heading {
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: #4c0d7f;
+  margin: 0 0 1.25rem 0;
+  padding-bottom: 0.75rem;
+  text-align: center;
+  position: relative;
+}
+
+.semester-heading::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60px;
+  height: 3px;
+  background: linear-gradient(135deg, #4c0d7f, #8b5cf6);
+  border-radius: 2px;
+}
+
+/* Events Grid */
+.events-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+/* Event Cards */
+.event-card {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(248, 250, 252, 0.95));
+  border: 1px solid rgba(76, 13, 127, 0.15);
+  padding: 0;
+  text-align: left;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(76, 13, 127, 0.1);
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+}
+
+/* Event Card Stagger Animation */
+.events-grid.stagger-children .event-card.stagger-item {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.events-grid.stagger-children.visible .event-card.stagger-item:nth-child(1) {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 0.05s;
+}
+
+.events-grid.stagger-children.visible .event-card.stagger-item:nth-child(2) {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 0.1s;
+}
+
+.events-grid.stagger-children.visible .event-card.stagger-item:nth-child(3) {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 0.15s;
+}
+
+.events-grid.stagger-children.visible .event-card.stagger-item:nth-child(4) {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 0.2s;
+}
+
+.events-grid.stagger-children.visible .event-card.stagger-item:nth-child(5) {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 0.25s;
+}
+
+.events-grid.stagger-children.visible .event-card.stagger-item:nth-child(6) {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 0.3s;
+}
+
+.events-grid.stagger-children.visible .event-card.stagger-item:nth-child(n + 7) {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 0.35s;
+}
+
+.event-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(135deg, #4c0d7f, #8b5cf6);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.event-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 8px 24px rgba(76, 13, 127, 0.2);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 1), rgba(248, 250, 252, 1));
+}
+
+.event-card:hover::before {
+  opacity: 1;
+}
+
+/* Event Flyer */
+.event-flyer {
+  width: 40%;
+  min-width: 40%;
+  max-width: 40%;
+  min-height: 330px;
+  align-self: stretch;
+  overflow: hidden;
+  background: linear-gradient(135deg, rgba(76, 13, 127, 0.05), rgba(139, 92, 246, 0.08));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  position: relative;
+}
+
+/* Background box for flyer hint */
+.event-flyer.has-image::before {
+  content: '';
+  position: absolute;
+  bottom: 8px;
+  right: 8px;
+  width: 32px;
+  height: 32px;
+  background-color: rgba(76, 13, 127, 0.9);
+  border-radius: 4px;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  z-index: 1;
+}
+
+/* Icon for flyer hint */
+.event-flyer.has-image::after {
+  content: '';
+  position: absolute;
+  bottom: 8px;
+  right: 8px;
+  width: 32px;
+  height: 32px;
+  background-image: url('/icons/expand.svg');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 16px;
+  filter: brightness(0) invert(1);
+  /* Make white */
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  z-index: 2;
+}
+
+.event-flyer.has-image:hover::before,
+.event-flyer.has-image:hover::after {
+  opacity: 1;
+}
+
+.event-flyer-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.flyer-placeholder {
+  width: 100%;
+  height: 100%;
+  min-height: 330px;
+  display: flex;
+  align-items: center;
   justify-content: center;
   background: linear-gradient(135deg, #4c0d7f, #8b5cf6);
   color: white;
-  box-shadow: 0 4px 12px rgba(76, 13, 127, 0.2);
+  font-size: 3rem;
+  cursor: default;
 }
 
-.construction-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(76, 13, 127, 0.3);
-  background: linear-gradient(135deg, #5a1a8a, #9f7aea);
-  text-decoration: none;
+.flyer-placeholder-icon {
+  width: 75px;
+  height: 75px;
+  object-fit: contain;
+}
+
+/* Flyer Modal */
+.flyer-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.85);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 2rem;
+  cursor: pointer;
+  animation: fadeIn 0.2s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+.flyer-modal-content {
+  max-width: 90vw;
+  max-height: 90vh;
+  position: relative;
+  cursor: default;
+  animation: zoomIn 0.2s ease;
+}
+
+@keyframes zoomIn {
+  from {
+    transform: scale(0.9);
+    opacity: 0;
+  }
+
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.flyer-modal-image {
+  max-width: 100%;
+  max-height: 85vh;
+  object-fit: contain;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+}
+
+.flyer-modal-close {
+  position: absolute;
+  top: -40px;
+  right: 0;
+  background: none;
+  border: none;
   color: white;
+  font-size: 2rem;
+  cursor: pointer;
+  padding: 0.5rem;
+  line-height: 1;
+  opacity: 0.8;
+  transition: opacity 0.2s ease;
+}
+
+.flyer-modal-close:hover {
+  opacity: 1;
+}
+
+/* Event Info */
+.event-info {
+  padding: 1.25rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  justify-content: center;
+}
+
+.event-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #000000;
+  margin: 0 0 0.5rem 0;
+  line-height: 1.3;
+}
+
+.event-company {
+  font-size: 1rem;
+  color: #000000;
+}
+
+.event-company span {
+  color: #000000;
+}
+
+.event-datetime {
+  font-size: 1rem;
+  color: #000000;
+}
+
+.event-datetime span {
+  color: #000000;
+}
+
+.event-location {
+  font-size: 1rem;
+  color: #000000;
+  margin: 0 0 0.75rem 0;
+}
+
+.event-location span {
+  color: #000000;
+}
+
+.event-icon {
+  width: 16px;
+  height: 16px;
+  object-fit: contain;
+  flex-shrink: 0;
+  filter: brightness(0) saturate(100%) invert(13%) sepia(61%) saturate(3942%) hue-rotate(269deg)
+    brightness(88%) contrast(106%);
+  /* #4c0d7f */
+}
+
+.event-description {
+  font-size: 0.9rem;
+  color: #4b5563;
+  line-height: 1.5;
+  margin: 0 0 1rem 0;
+  flex: 1;
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.event-description.expanded {
+  display: block;
+  -webkit-line-clamp: unset;
+  line-clamp: unset;
+  overflow: visible;
+}
+
+/* Expanded card state */
+.event-card.expanded {
+  min-height: auto;
+}
+
+.event-card.expanded .event-flyer {
+  min-height: auto;
+  align-self: flex-start;
+}
+
+/* RSVP Button */
+.event-rsvp-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.75rem 1.5rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  text-decoration: none;
+  background: linear-gradient(135deg, #4c0d7f, #8b5cf6);
+  color: white;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(76, 13, 127, 0.2);
+  margin-top: auto;
+}
+
+.event-rsvp-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(76, 13, 127, 0.3);
+  background: linear-gradient(135deg, #5a1a8a, #9f7aea);
+  color: white;
+  text-decoration: none;
+}
+
+/* Disabled RSVP button for past events */
+.event-rsvp-btn.disabled {
+  background: #9ca3af;
+  cursor: not-allowed;
+  opacity: 0.7;
+  box-shadow: none;
+}
+
+.event-rsvp-btn.disabled:hover {
+  transform: none;
+  box-shadow: none;
+  background: #9ca3af;
+}
+
+/* No Events Message */
+.no-events-message {
+  text-align: center;
+  padding: 4rem 2rem;
+  background: linear-gradient(135deg, rgba(76, 13, 127, 0.05), rgba(139, 92, 246, 0.05));
+  border: 1px solid rgba(76, 13, 127, 0.15);
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.no-events-message p {
+  font-size: 1.1rem;
+  color: #6b7280;
+  margin: 0;
+}
+
+/* Scroll Animations */
+.slide-up {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.slide-up.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Staggered animations for child elements */
+.stagger-children .stagger-item {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
 /* Responsive Design */
+@media (max-width: 1200px) {
+  .events-grid {
+    gap: 1.5rem;
+  }
+}
+
+@media (max-width: 1024px) {
+  /* Hide sidebar on tablet and below */
+  .semester-sidebar {
+    display: none;
+  }
+
+  .events-page-layout {
+    display: block;
+  }
+}
+
 @media (max-width: 768px) {
-  .events-page-container {
-    padding: 100px 0 40px;
+  .events-header {
+    padding: 2rem 0 1.5rem 0;
+    margin-bottom: 1rem;
   }
 
-  .events-content {
-    padding: 0 15px;
-  }
-
-  .board-title {
+  .events-title {
     font-size: 1.8rem;
   }
 
-  .events-description {
-    font-size: 1rem;
+  .events-controls {
+    gap: 1rem;
   }
 
-  .construction-container {
-    padding: 2rem;
-    margin: 3rem auto 0 auto;
+  .events-grid {
+    gap: 1.5rem;
   }
 
-  .construction-container h2 {
-    font-size: 1.2rem;
+  .semester-heading {
+    font-size: 1.3rem;
   }
 
-  .construction-buttons {
+  .event-card {
     flex-direction: column;
-    align-items: center;
   }
 
-  .construction-btn {
+  .event-flyer {
     width: 100%;
-    max-width: 280px;
+    min-width: 100%;
+    max-width: 100%;
+    height: 220px;
+    min-height: 220px;
+    max-height: 220px;
+    align-self: auto;
+    flex-shrink: 0;
+  }
+
+  .event-flyer.has-image::before,
+  .event-flyer.has-image::after {
+    opacity: 1;
+  }
+
+  .event-title {
+    font-size: 1.15rem;
   }
 }
 
 @media (max-width: 480px) {
-  .events-page-container {
-    padding: 80px 0 40px;
+  .events-header {
+    padding: 1.5rem 0 1rem 0;
   }
 
-  .board-title {
+  .events-title {
     font-size: 1.6rem;
   }
 
-  .construction-container {
-    padding: 1.5rem;
+  .event-info {
+    padding: 1.25rem;
   }
 
-  .construction-container h2 {
+  .event-title {
     font-size: 1.1rem;
   }
 
-  .construction-btn {
-    width: 100%;
-    max-width: 280px;
+  .event-rsvp-btn {
+    padding: 0.625rem 1.25rem;
+    font-size: 0.9rem;
+  }
+
+  .no-events-message {
+    padding: 3rem 1.5rem;
+  }
+}
+
+/* Reduce motion for users who prefer it */
+@media (prefers-reduced-motion: reduce) {
+  .slide-up,
+  .stagger-children .stagger-item,
+  .event-flyer-image,
+  .event-card {
+    transition: none !important;
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
   }
 }

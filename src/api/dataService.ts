@@ -2,7 +2,6 @@ import { apiClient } from './client';
 import type { ApiResponse, PaginatedResponse } from './client';
 import type {
   BoardMember,
-  BoardMemberResponse,
   Event,
   EventsQueryParams,
   NewsletterSignup,
@@ -13,32 +12,15 @@ import type {
 
 /* Board Members Service */
 
-// Helper function to transform snake_case API response to camelCase
-const transformBoardMember = (apiMember: BoardMemberResponse): BoardMember => {
-  return {
-    id: apiMember.id,
-    position: apiMember.position,
-    fullName: apiMember.full_name,
-    bio: apiMember.bio.replace(/\\n/g, '\n'), // stop-gap fix: convert escaped newlines to actual newlines
-    major: apiMember.major,
-    year: apiMember.year,
-    hometown: apiMember.hometown,
-    linkedinUrl: apiMember.linkedin_url,
-    email: apiMember.email,
-    headshotFile: apiMember.headshot_file,
-    orderIndex: apiMember.order_index,
-  };
-};
-
 const boardMembersService = {
   async getAll(): Promise<BoardMember[]> {
-    const response = await apiClient.get<ApiResponse<BoardMemberResponse[]>>('/board-members');
-    return response.data.map(transformBoardMember);
+    const response = await apiClient.get<ApiResponse<BoardMember[]>>('/board-members');
+    return response.data;
   },
 
   async getById(id: string): Promise<BoardMember> {
-    const response = await apiClient.get<ApiResponse<BoardMemberResponse>>(`/board-members/${id}`);
-    return transformBoardMember(response.data);
+    const response = await apiClient.get<ApiResponse<BoardMember>>(`/board-members/${id}`);
+    return response.data;
   },
 };
 
@@ -69,7 +51,7 @@ const eventsService = {
     // Set default pagination values
     const queryParams = {
       page: 1,
-      limit: 10,
+      limit: 50,
       ...params,
     };
 
@@ -90,7 +72,6 @@ const eventsService = {
     const now = new Date().toISOString();
     const { events } = await this.getAll({
       startDate: now,
-      isPublic: true,
       limit,
     });
     return events;
