@@ -1,22 +1,495 @@
+import { useState, useEffect, useMemo, useRef, useCallback } from 'react';
+import { Footer, LoadingSpinner, ErrorDisplay } from '@components';
+import { useScrollAnimation } from '@hooks';
+import { dataService } from '@api';
+import { EVENT_FLYERS_BUCKET, getSemesterForDate } from '@constants';
+import type { Semester } from '@constants';
+import type { Event } from '@types';
 import './Events.css';
 
-export const Events = () => {
-  return (
-    <div className="events-page-container">
-      <div className="events-content">
-        <div className="events-header">
-          <h1 className="board-title">Events</h1>
-        </div>
+// Format date for display
+const formatEventDate = (startTime: string, endTime: string | null): string => {
+  const start = new Date(startTime);
+  const options: Intl.DateTimeFormatOptions = {
+    weekday: 'short',
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric',
+  };
+  const dateStr = start.toLocaleDateString('en-US', options);
 
-        <div className="construction-container">
-          <h2>This page is currently under construction. Stay tuned for updates.</h2>
-          <div className="construction-buttons">
-            <a href="/contact" className="construction-btn">
-              Get Involved
-            </a>
-          </div>
+  const timeOptions: Intl.DateTimeFormatOptions = {
+    hour: 'numeric',
+    minute: '2-digit',
+    hour12: true,
+  };
+  const startTimeStr = start.toLocaleTimeString('en-US', timeOptions);
+
+  if (endTime) {
+    const end = new Date(endTime);
+    const endTimeStr = end.toLocaleTimeString('en-US', timeOptions);
+    return `${dateStr} • ${startTimeStr} - ${endTimeStr}`;
+  }
+
+  return `${dateStr} • ${startTimeStr}`;
+};
+
+// Helper to get semester identifier from a date string
+const getSemesterFromDate = (dateString: string): Semester | null => {
+  const date = new Date(dateString);
+  const result = getSemesterForDate(date);
+  if (!result) return null;
+  return `${result.semester}${result.year}`;
+};
+
+// Helper to format semester for display
+const formatSemesterLabel = (semester: Semester): string => {
+  const match = semester.match(/^(fall|spring)(\d{4})$/);
+  if (!match) return semester;
+  const type = match[1] === 'fall' ? 'Fall' : 'Spring';
+  return `${type} ${match[2]}`;
+};
+
+// Section type for Upcoming/Past grouping
+type EventSection = 'upcoming' | 'past';
+
+export const Events = () => {
+  const headerAnimation = useScrollAnimation({
+    threshold: 0.1,
+    rootMargin: '0px 0px -20px 0px',
+  });
+  const eventsAnimation = useScrollAnimation({
+    threshold: 0.05,
+    rootMargin: '0px 0px 0px 0px',
+  });
+
+  const [events, setEvents] = useState<Event[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  const [activeSemester, setActiveSemester] = useState<Semester | null>(null);
+  const [forceVisible, setForceVisible] = useState(false);
+  const [imageErrors, setImageErrors] = useState<Set<string>>(new Set());
+  const [modalFlyer, setModalFlyer] = useState<{ src: string; title: string } | null>(null);
+  const [expandedCards, setExpandedCards] = useState<Set<string>>(new Set());
+
+  // Refs for event cards to track which semester is in view
+  const eventCardRefs = useRef<Map<string, HTMLDivElement>>(new Map());
+  const footerRef = useRef<HTMLDivElement | null>(null);
+  const sidebarRef = useRef<HTMLElement | null>(null);
+
+  // Refs for Upcoming/Past sections for scroll navigation
+  const sectionRefs = useRef<Record<EventSection, HTMLDivElement | null>>({
+    upcoming: null,
+    past: null,
+  });
+
+  // Fetch events data
+  useEffect(() => {
+    const fetchEvents = async () => {
+      try {
+        setIsLoading(true);
+        setError(null);
+        const { events: fetchedEvents } = await dataService.events.getAll({
+          limit: 100,
+        });
+        setEvents(fetchedEvents);
+      } catch (error) {
+        console.error('Failed to fetch events:', error);
+        let errorMessage = 'Failed to load events. Please try again later.';
+
+        if (error && typeof error === 'object') {
+          if (
+            'response' in error &&
+            error.response &&
+            typeof error.response === 'object' &&
+            'data' in error.response &&
+            error.response.data &&
+            typeof error.response.data === 'object' &&
+            'message' in error.response.data &&
+            typeof error.response.data.message === 'string'
+          ) {
+            errorMessage = error.response.data.message;
+          } else if ('message' in error && typeof error.message === 'string') {
+            errorMessage = error.message;
+          }
+        }
+
+        setError(errorMessage);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    void fetchEvents();
+  }, []);
+
+  // Fallback mechanism for mobile - ensure animations trigger after a delay
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      setForceVisible(true);
+    }, 1000);
+
+    return () => clearTimeout(timeout);
+  }, []);
+
+  // Track scroll position to update active semester based on visible events and footer proximity
+  useEffect(() => {
+    let rafId: number;
+
+    const handleScroll = () => {
+      // Cancel any pending animation frame
+      if (rafId) cancelAnimationFrame(rafId);
+
+      rafId = requestAnimationFrame(() => {
+        const scrollPosition = window.scrollY + 300; // Offset for header
+
+        // Find which event card is currently in view and get its semester
+        let foundSemester: Semester | null = null;
+        eventCardRefs.current.forEach((element, eventId) => {
+          if (element && !foundSemester) {
+            const { offsetTop, offsetHeight } = element;
+            if (scrollPosition >= offsetTop && scrollPosition < offsetTop + offsetHeight + 100) {
+              // Find the event and get its semester
+              const event = events.find((e) => e.id === eventId);
+              if (event) {
+                const semester = getSemesterFromDate(event.startTime);
+                if (semester) {
+                  foundSemester = semester;
+                }
+              }
+            }
+          }
+        });
+
+        if (foundSemester) {
+          setActiveSemester(foundSemester);
+        }
+
+        // Check if we're near the footer and calculate offset - direct DOM manipulation
+        if (footerRef.current) {
+          const footerTop = footerRef.current.getBoundingClientRect().top;
+          const windowHeight = window.innerHeight;
+
+          if (footerTop < windowHeight) {
+            const offset = windowHeight - footerTop;
+            // Update sidebar position directly
+            if (sidebarRef.current) {
+              sidebarRef.current.style.transform = `translateY(calc(-50% - ${offset}px))`;
+            }
+          } else {
+            // Reset to default positions
+            if (sidebarRef.current) {
+              sidebarRef.current.style.transform = 'translateY(-50%)';
+            }
+          }
+        }
+      });
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll(); // Check on mount
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      if (rafId) cancelAnimationFrame(rafId);
+    };
+  }, [events]);
+
+  // Group events by Upcoming/Past
+  const eventsBySection = useMemo(() => {
+    const now = new Date();
+    const grouped: Record<EventSection, Event[]> = {
+      upcoming: [],
+      past: [],
+    };
+
+    // Sort events by start time
+    const sortedEvents = [...events].sort(
+      (a, b) => new Date(a.startTime).getTime() - new Date(b.startTime).getTime()
+    );
+
+    sortedEvents.forEach((event) => {
+      const eventDate = new Date(event.startTime);
+      if (eventDate >= now) {
+        grouped.upcoming.push(event);
+      } else {
+        // Sort past events most recent first
+        grouped.past.unshift(event);
+      }
+    });
+
+    return grouped;
+  }, [events]);
+
+  // Derive available semesters from events
+  const availableSemesters = useMemo(() => {
+    const semesterSet = new Set<Semester>();
+    events.forEach((event) => {
+      const semester = getSemesterFromDate(event.startTime);
+      if (semester) semesterSet.add(semester);
+    });
+    // Sort semesters chronologically
+    return Array.from(semesterSet).sort((a, b) => {
+      const [, aType, aYear] = a.match(/^(fall|spring)(\d{4})$/) || [];
+      const [, , bYear] = b.match(/^(fall|spring)(\d{4})$/) || [];
+      if (aYear !== bYear) return Number(bYear) - Number(aYear);
+      // Same year: fall should appear first
+      return aType === 'fall' ? -1 : 1;
+    });
+  }, [events]);
+
+  const handleImageError = (eventId: string) => {
+    setImageErrors((prev) => new Set(prev).add(eventId));
+  };
+
+  const shouldShowPlaceholder = (event: Event) => {
+    return !event.flyerFile || imageErrors.has(event.id);
+  };
+
+  const scrollToSemester = useCallback(
+    (semester: Semester) => {
+      // Find the first event card that belongs to this semester
+      let targetElement: HTMLDivElement | undefined = undefined;
+
+      eventCardRefs.current.forEach((element, eventId) => {
+        if (!targetElement) {
+          const event = events.find((e) => e.id === eventId);
+          if (event) {
+            const eventSemester = getSemesterFromDate(event.startTime);
+            if (eventSemester === semester) {
+              targetElement = element;
+            }
+          }
+        }
+      });
+
+      if (targetElement) {
+        const offset = 120; // Account for fixed header
+        const top = (targetElement as HTMLDivElement).offsetTop - offset;
+        window.scrollTo({ top, behavior: 'smooth' });
+      }
+    },
+    [events]
+  );
+
+  // Helper to set event card ref
+  const setEventCardRef = (eventId: string) => (el: HTMLDivElement | null) => {
+    if (el) {
+      eventCardRefs.current.set(eventId, el);
+    } else {
+      eventCardRefs.current.delete(eventId);
+    }
+  };
+
+  // Render an event card
+  const renderEventCard = (event: Event) => {
+    const isPastEvent = new Date(event.startTime) < new Date();
+    const isExpanded = expandedCards.has(event.id);
+
+    const toggleExpand = () => {
+      setExpandedCards((prev) => {
+        const newSet = new Set(prev);
+        if (newSet.has(event.id)) {
+          newSet.delete(event.id);
+        } else {
+          newSet.add(event.id);
+        }
+        return newSet;
+      });
+    };
+
+    return (
+      <div
+        key={event.id}
+        ref={setEventCardRef(event.id)}
+        className={`event-card stagger-item ${isExpanded ? 'expanded' : ''}`}
+        onClick={toggleExpand}
+        style={{ cursor: 'pointer' }}
+      >
+        <div
+          className={`event-flyer ${!shouldShowPlaceholder(event) ? 'has-image' : ''}`}
+          onClick={(e) => {
+            if (!shouldShowPlaceholder(event)) {
+              e.stopPropagation();
+              setModalFlyer({
+                src: `${EVENT_FLYERS_BUCKET}${event.flyerFile}`,
+                title: event.title,
+              });
+            }
+          }}
+        >
+          {shouldShowPlaceholder(event) ? (
+            <div className="flyer-placeholder">
+              <img
+                src="/icons/profile-round.svg"
+                alt="Event placeholder"
+                className="flyer-placeholder-icon"
+              />
+            </div>
+          ) : (
+            <img
+              src={`${EVENT_FLYERS_BUCKET}${event.flyerFile}`}
+              alt={`${event.title} flyer`}
+              className="event-flyer-image"
+              onError={() => handleImageError(event.id)}
+            />
+          )}
+        </div>
+        <div className="event-info">
+          <h3 className="event-title">{event.title}</h3>
+          {event.company && (
+            <p
+              className="event-company"
+              style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}
+            >
+              <img src="/icons/briefcase.svg" alt="" className="event-icon" />
+              <span>{event.company}</span>
+            </p>
+          )}
+          <p
+            className="event-datetime"
+            style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}
+          >
+            <img src="/icons/clock.svg" alt="" className="event-icon" />
+            <span>{formatEventDate(event.startTime, event.endTime)}</span>
+          </p>
+          {event.location && (
+            <p
+              className="event-location"
+              style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}
+            >
+              <img src="/icons/location-pin.svg" alt="" className="event-icon" />
+              <span>{event.location}</span>
+            </p>
+          )}
+          {event.description && (
+            <p className={`event-description ${isExpanded ? 'expanded' : ''}`}>
+              {event.description}
+            </p>
+          )}
+          {event.rsvpLink &&
+            (isPastEvent ? (
+              <span className="event-rsvp-btn disabled">RSVP Closed</span>
+            ) : (
+              <a
+                href={event.rsvpLink}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="event-rsvp-btn"
+                onClick={(e) => e.stopPropagation()}
+              >
+                RSVP
+              </a>
+            ))}
         </div>
       </div>
-    </div>
+    );
+  };
+
+  return (
+    <>
+      <div className="page-container events-page-layout">
+        <div className="events-main-content">
+          <div
+            ref={headerAnimation.elementRef}
+            className={`events-header slide-up ${headerAnimation.isVisible ? 'visible' : ''}`}
+          >
+            <h1 className="events-title">Events</h1>
+          </div>
+
+          <div
+            ref={eventsAnimation.elementRef}
+            className={`events-section slide-up ${eventsAnimation.isVisible || forceVisible ? 'visible' : ''}`}
+          >
+            {isLoading ? (
+              <LoadingSpinner />
+            ) : error ? (
+              <ErrorDisplay error={error} onRetry={() => window.location.reload()} />
+            ) : events.length === 0 ? (
+              <div className="no-events-message">
+                <p>No events scheduled yet.</p>
+              </div>
+            ) : (
+              <div className="events-by-semester">
+                {/* Upcoming Events Section */}
+                {eventsBySection.upcoming.length > 0 && (
+                  <div
+                    ref={(el) => {
+                      sectionRefs.current.upcoming = el;
+                    }}
+                    className="semester-section"
+                    id="section-upcoming"
+                  >
+                    <h2 className="semester-heading">Upcoming</h2>
+                    <div
+                      className={`events-grid stagger-children ${eventsAnimation.isVisible || forceVisible ? 'visible' : ''}`}
+                    >
+                      {eventsBySection.upcoming.map(renderEventCard)}
+                    </div>
+                  </div>
+                )}
+
+                {/* Past Events Section */}
+                {eventsBySection.past.length > 0 && (
+                  <div
+                    ref={(el) => {
+                      sectionRefs.current.past = el;
+                    }}
+                    className="semester-section"
+                    id="section-past"
+                  >
+                    <h2 className="semester-heading">Past</h2>
+                    <div
+                      className={`events-grid stagger-children ${eventsAnimation.isVisible || forceVisible ? 'visible' : ''}`}
+                    >
+                      {eventsBySection.past.map(renderEventCard)}
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Sidebar Semester Navigation */}
+        <aside ref={sidebarRef} className="semester-sidebar">
+          <nav className="semester-nav">
+            <h3 className="semester-nav-title">Semester</h3>
+            {availableSemesters.map((semester) => (
+              <button
+                key={semester}
+                className={`semester-nav-item ${activeSemester === semester ? 'active' : ''}`}
+                onClick={() => scrollToSemester(semester)}
+              >
+                {formatSemesterLabel(semester)}
+              </button>
+            ))}
+          </nav>
+        </aside>
+      </div>
+
+      <div ref={footerRef}>
+        <Footer />
+      </div>
+
+      {/* Flyer Modal */}
+      {modalFlyer && (
+        <div className="flyer-modal-overlay" onClick={() => setModalFlyer(null)}>
+          <div className="flyer-modal-content" onClick={(e) => e.stopPropagation()}>
+            <button
+              className="flyer-modal-close"
+              onClick={() => setModalFlyer(null)}
+              aria-label="Close modal"
+            >
+              ×
+            </button>
+            <img
+              src={modalFlyer.src}
+              alt={`${modalFlyer.title} flyer`}
+              className="flyer-modal-image"
+            />
+          </div>
+        </div>
+      )}
+    </>
   );
 };

@@ -1,16 +1,15 @@
 export interface Event {
   id: string;
-  title: string;
-  description: string;
-  date: string; // ISO 8601 date string
-  time?: string;
-  location?: string;
-  imageUrl?: string;
-  registrationUrl?: string;
-  isPublic: boolean;
-  tags?: string[];
   createdAt: string;
   updatedAt: string;
+  title: string;
+  company: string | null;
+  startTime: string;
+  endTime: string | null;
+  location: string | null;
+  flyerFile: string | null;
+  rsvpLink: string | null;
+  description: string | null;
 }
 
 export interface EventsQueryParams {
@@ -19,6 +18,4 @@ export interface EventsQueryParams {
   search?: string;
   startDate?: string;
   endDate?: string;
-  isPublic?: boolean;
-  tags?: string[];
 }

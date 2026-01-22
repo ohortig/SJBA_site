@@ -69,7 +69,7 @@ const eventsService = {
     // Set default pagination values
     const queryParams = {
       page: 1,
-      limit: 10,
+      limit: 50,
       ...params,
     };
 
