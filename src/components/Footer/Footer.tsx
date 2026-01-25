@@ -27,7 +27,6 @@ export const Footer = () => {
 
           <div className="footer-column stagger-item">
             <h3>About Us</h3>
-            <Link to="/about">Overview</Link>
             <Link to="/our-mission">Our Mission</Link>
             <Link to="/our-board">Our Board</Link>
           </div>
