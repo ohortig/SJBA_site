@@ -195,7 +195,7 @@ export const Home = () => {
             <img src="/icons/arrow_top_right.png" alt="Arrow" className="our-mission-link-arrow" />
           </Link>
           <Link to="/events" className="speakers-link">
-            <span>Our Previous Speakers</span>
+            <span>Our Speakers</span>
             <img src="/icons/arrow_top_right.png" alt="Arrow" className="speakers-link-arrow" />
           </Link>
         </div>
