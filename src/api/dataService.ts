@@ -34,7 +34,7 @@ const newsletterService = {
       last_name: data.lastName,
     };
     const response = await apiClient.post<ApiResponse<NewsletterSignupResponse>>(
-      'newsletter-sign-ups',
+      '/newsletter-sign-ups',
       payload
     );
     return response.data;
