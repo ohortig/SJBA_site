@@ -1,8 +1,6 @@
 export interface NewsletterSignup {
   firstName: string;
   lastName: string;
-  year: string;
-  college: string;
   email: string;
 }
 

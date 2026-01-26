@@ -28,9 +28,14 @@ const boardMembersService = {
 
 const newsletterService = {
   async signup(data: NewsletterSignup): Promise<NewsletterSignupResponse> {
+    const payload = {
+      email: data.email,
+      first_name: data.firstName,
+      last_name: data.lastName,
+    };
     const response = await apiClient.post<ApiResponse<NewsletterSignupResponse>>(
-      '/newsletter-sign-ups',
-      data
+      'newsletter-sign-ups',
+      payload
     );
     return response.data;
   },

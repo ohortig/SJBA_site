@@ -8,3 +8,4 @@ export * from './LogoGallery';
 export * from './NavButton';
 export * from './SocialLink';
 export * from './ScrollToTop';
+export * from './NewsletterSignup';
