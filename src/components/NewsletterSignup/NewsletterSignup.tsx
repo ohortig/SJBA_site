@@ -69,7 +69,7 @@ export const NewsletterSignup = () => {
       await dataService.newsletter.signup({
         firstName: formData.firstName.trim(),
         lastName: formData.lastName.trim(),
-        email: formData.email.trim(),
+        email: formData.email.trim().toLowerCase(),
       });
 
       toast.success('Successfully signed up for the newsletter!');
