@@ -106,8 +106,12 @@ export const NewsletterSignup = () => {
         >
           <div className="form-row">
             <div className="form-group">
+              <label htmlFor="newsletter-firstName" className="visually-hidden">
+                First Name
+              </label>
               <input
                 type="text"
+                id="newsletter-firstName"
                 name="firstName"
                 value={formData.firstName}
                 onChange={handleInputChange}
@@ -117,8 +121,12 @@ export const NewsletterSignup = () => {
               {errors.firstName && <span className="field-error">{errors.firstName}</span>}
             </div>
             <div className="form-group">
+              <label htmlFor="newsletter-lastName" className="visually-hidden">
+                Last Name
+              </label>
               <input
                 type="text"
+                id="newsletter-lastName"
                 name="lastName"
                 value={formData.lastName}
                 onChange={handleInputChange}
@@ -129,9 +137,13 @@ export const NewsletterSignup = () => {
             </div>
           </div>
           <div className="form-group email-group">
+            <label htmlFor="newsletter-email" className="visually-hidden">
+              Email Address
+            </label>
             <div className="input-wrapper">
               <input
                 type="email"
+                id="newsletter-email"
                 name="email"
                 value={formData.email}
                 onChange={handleInputChange}
