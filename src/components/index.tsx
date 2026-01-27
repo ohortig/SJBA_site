@@ -9,3 +9,4 @@ export * from './NavButton';
 export * from './SocialLink';
 export * from './ScrollToTop';
 export * from './NewsletterSignup';
+export * from './ConstructionNotice';
