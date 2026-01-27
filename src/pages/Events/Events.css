@@ -451,8 +451,7 @@
   height: 16px;
   object-fit: contain;
   flex-shrink: 0;
-  filter: brightness(0) saturate(100%) invert(13%) sepia(61%) saturate(3942%) hue-rotate(269deg)
-    brightness(88%) contrast(106%);
+  filter: brightness(0) saturate(100%) invert(13%) sepia(61%) saturate(3942%) hue-rotate(269deg) brightness(88%) contrast(106%);
   /* #4c0d7f */
 }
 
@@ -462,19 +461,6 @@
   line-height: 1.5;
   margin: 0 0 1rem 0;
   flex: 1;
-  display: -webkit-box;
-  -webkit-line-clamp: 4;
-  line-clamp: 4;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.event-description.expanded {
-  display: block;
-  -webkit-line-clamp: unset;
-  line-clamp: unset;
-  overflow: visible;
 }
 
 /* Expanded card state */
@@ -568,6 +554,7 @@
 }
 
 @media (max-width: 1024px) {
+
   /* Hide sidebar on tablet and below */
   .semester-sidebar {
     display: none;
@@ -654,6 +641,7 @@
 
 /* Reduce motion for users who prefer it */
 @media (prefers-reduced-motion: reduce) {
+
   .slide-up,
   .stagger-children .stagger-item,
   .event-flyer-image,

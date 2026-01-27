@@ -71,7 +71,6 @@ export const Events = () => {
   const [forceVisible, setForceVisible] = useState(false);
   const [imageErrors, setImageErrors] = useState<Set<string>>(new Set());
   const [modalFlyer, setModalFlyer] = useState<{ src: string; title: string } | null>(null);
-  const [expandedCards, setExpandedCards] = useState<Set<string>>(new Set());
 
   // Refs for event cards to track which semester is in view
   const eventCardRefs = useRef<Map<string, HTMLDivElement>>(new Map());
@@ -280,30 +279,16 @@ export const Events = () => {
     }
   };
 
+
   // Render an event card
   const renderEventCard = (event: Event) => {
     const isPastEvent = new Date(event.startTime) < new Date();
-    const isExpanded = expandedCards.has(event.id);
-
-    const toggleExpand = () => {
-      setExpandedCards((prev) => {
-        const newSet = new Set(prev);
-        if (newSet.has(event.id)) {
-          newSet.delete(event.id);
-        } else {
-          newSet.add(event.id);
-        }
-        return newSet;
-      });
-    };
 
     return (
       <div
         key={event.id}
         ref={setEventCardRef(event.id)}
-        className={`event-card stagger-item ${isExpanded ? 'expanded' : ''}`}
-        onClick={toggleExpand}
-        style={{ cursor: 'pointer' }}
+        className="event-card stagger-item"
       >
         <div
           className={`event-flyer ${!shouldShowPlaceholder(event) ? 'has-image' : ''}`}
@@ -362,7 +347,7 @@ export const Events = () => {
             </p>
           )}
           {event.description && (
-            <p className={`event-description ${isExpanded ? 'expanded' : ''}`}>
+            <p className="event-description">
               {event.description}
             </p>
           )}
@@ -451,20 +436,22 @@ export const Events = () => {
         </div>
 
         {/* Sidebar Semester Navigation */}
-        <aside ref={sidebarRef} className="semester-sidebar">
-          <nav className="semester-nav">
-            <h3 className="semester-nav-title">Semester</h3>
-            {availableSemesters.map((semester) => (
-              <button
-                key={semester}
-                className={`semester-nav-item ${activeSemester === semester ? 'active' : ''}`}
-                onClick={() => scrollToSemester(semester)}
-              >
-                {formatSemesterLabel(semester)}
-              </button>
-            ))}
-          </nav>
-        </aside>
+        {!isLoading && !error && availableSemesters.length > 0 && (
+          <aside ref={sidebarRef} className="semester-sidebar">
+            <nav className="semester-nav">
+              <h3 className="semester-nav-title">Semester</h3>
+              {availableSemesters.map((semester) => (
+                <button
+                  key={semester}
+                  className={`semester-nav-item ${activeSemester === semester ? 'active' : ''}`}
+                  onClick={() => scrollToSemester(semester)}
+                >
+                  {formatSemesterLabel(semester)}
+                </button>
+              ))}
+            </nav>
+          </aside>
+        )}
       </div>
 
       <div ref={footerRef}>
