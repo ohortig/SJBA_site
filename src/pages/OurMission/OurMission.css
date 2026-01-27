@@ -1,40 +1,21 @@
 /* Our Mission Page Styles */
-.mission-page-container {
-  min-height: 100vh;
-  padding: 120px 0 40px;
-  background-color: #f8f9fa;
-}
 
-.mission-content {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 20px;
-}
-
+/* Header */
 .mission-header {
   padding: 2rem;
   text-align: center;
-  margin-bottom: 2rem;
+  margin: 0 auto 0 auto;
+  width: fit-content;
 }
 
-/* Board title styling to match Our Board page */
-.board-title {
+.mission-header .mission-title {
   font-size: 2rem;
   font-weight: 700;
   color: #4c0d7f !important;
   line-height: 1.2;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1rem;
 }
 
-.mission-description {
-  font-size: 1.1rem;
-  color: #64748b;
-  line-height: 1.6;
-  max-width: 800px;
-  margin: 0 auto;
-}
-
-/* Simple container - no animations */
 .construction-container {
   background: linear-gradient(135deg, rgba(76, 13, 127, 0.05), rgba(139, 92, 246, 0.08));
   border: 1px solid rgba(76, 13, 127, 0.15);
@@ -93,20 +74,13 @@
 
 /* Responsive Design */
 @media (max-width: 768px) {
-  .mission-page-container {
-    padding: 100px 0 40px;
+  .mission-header {
+    padding: 2rem 0 1.5rem 0;
+    margin-bottom: 2rem;
   }
 
-  .mission-content {
-    padding: 0 15px;
-  }
-
-  .board-title {
+  .mission-title {
     font-size: 1.8rem;
-  }
-
-  .mission-description {
-    font-size: 1rem;
   }
 
   .construction-container {
@@ -130,11 +104,12 @@
 }
 
 @media (max-width: 480px) {
-  .mission-page-container {
-    padding: 80px 0 40px;
+  .mission-header {
+    padding: 1.5rem 0 1rem 0;
+    margin-bottom: 1.5rem;
   }
 
-  .board-title {
+  .mission-title {
     font-size: 1.6rem;
   }
 
