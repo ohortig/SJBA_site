@@ -279,17 +279,12 @@ export const Events = () => {
     }
   };
 
-
   // Render an event card
   const renderEventCard = (event: Event) => {
     const isPastEvent = new Date(event.startTime) < new Date();
 
     return (
-      <div
-        key={event.id}
-        ref={setEventCardRef(event.id)}
-        className="event-card stagger-item"
-      >
+      <div key={event.id} ref={setEventCardRef(event.id)} className="event-card stagger-item">
         <div
           className={`event-flyer ${!shouldShowPlaceholder(event) ? 'has-image' : ''}`}
           onClick={(e) => {
@@ -346,11 +341,7 @@ export const Events = () => {
               <span>{event.location}</span>
             </p>
           )}
-          {event.description && (
-            <p className="event-description">
-              {event.description}
-            </p>
-          )}
+          {event.description && <p className="event-description">{event.description}</p>}
           {event.rsvpLink &&
             (isPastEvent ? (
               <span className="event-rsvp-btn disabled">RSVP Closed</span>

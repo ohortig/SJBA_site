@@ -15,7 +15,7 @@
 
 /* Header */
 .events-header {
-  padding: 1rem 2rem;
+  padding: 2rem;
   text-align: center;
   margin: 0 auto 0 auto;
   width: fit-content;
@@ -451,7 +451,8 @@
   height: 16px;
   object-fit: contain;
   flex-shrink: 0;
-  filter: brightness(0) saturate(100%) invert(13%) sepia(61%) saturate(3942%) hue-rotate(269deg) brightness(88%) contrast(106%);
+  filter: brightness(0) saturate(100%) invert(13%) sepia(61%) saturate(3942%) hue-rotate(269deg)
+    brightness(88%) contrast(106%);
   /* #4c0d7f */
 }
 
@@ -554,7 +555,6 @@
 }
 
 @media (max-width: 1024px) {
-
   /* Hide sidebar on tablet and below */
   .semester-sidebar {
     display: none;
@@ -641,7 +641,6 @@
 
 /* Reduce motion for users who prefer it */
 @media (prefers-reduced-motion: reduce) {
-
   .slide-up,
   .stagger-children .stagger-item,
   .event-flyer-image,
