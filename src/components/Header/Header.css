@@ -70,10 +70,19 @@
 }
 
 .logo-image {
-  height: clamp(44px, 6.4vw, 68px);
+  height: clamp(50px, 6vw, 75px);
   width: auto;
   transition: all 0.3s ease;
   filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+}
+
+/* Desktop logo visible by default, mobile logo hidden */
+.logo-desktop {
+  display: block;
+}
+
+.logo-mobile {
+  display: none;
 }
 
 .mobile-menu-button {
@@ -122,6 +131,24 @@
 @media (max-width: 1024px) {
   .mobile-menu-button {
     display: block;
+    padding: 0;
+  }
+
+  /* Show mobile logo, hide desktop logo on tablet/mobile */
+  .logo-desktop {
+    display: none;
+  }
+
+  .logo-mobile {
+    display: block;
+    filter: none;
+    height: 68px;
+  }
+
+  .header,
+  .header:hover {
+    width: 100% !important;
+    margin-left: 0 !important;
   }
 
   /* Hide divider on tablet/mobile and reset padding */
@@ -135,14 +162,7 @@
     width: 100vw;
     height: calc(100vh - 80px);
     background: rgb(255, 255, 255);
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    padding: 2rem;
-    gap: 2rem;
     z-index: 998;
-    padding-left: 0;
-    padding-top: 0;
   }
 
   .nav-buttons::before {
@@ -151,6 +171,12 @@
 
   .nav-buttons.active {
     display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    gap: 2rem;
+    padding-bottom: 15vh;
   }
 
   /* Make header fully opaque when menu is open */
@@ -162,7 +188,7 @@
   }
 
   .nav-container {
-    padding: 0.1875rem 12vw;
+    padding: 0.5rem 44px 0.5rem 32px;
     min-height: 20px;
   }
 }
@@ -170,14 +196,14 @@
 /* Mobile breakpoint - smaller adjustments */
 @media (max-width: 768px) {
   .nav-container {
-    padding: 0.1875rem 10vw;
+    padding: 0.5rem 44px 0.5rem 32px;
   }
 }
 
 /* Small mobile breakpoint */
 @media (max-width: 480px) {
   .nav-container {
-    padding: 0.11rem 8vw;
+    padding: 0.5rem 44px 0.5rem 32px;
     max-width: 100%;
     min-height: 18px;
   }
