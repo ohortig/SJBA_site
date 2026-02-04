@@ -1,5 +1,6 @@
 export * from './AboutDropdown';
 export * from './BoardMemberModal';
+export * from './CallToAction';
 export * from './ErrorDisplay';
 export * from './Footer';
 export * from './Header';

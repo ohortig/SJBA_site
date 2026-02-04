@@ -46,7 +46,7 @@ export const Footer = () => {
               platform="linkedin"
               name="LinkedIn"
               handle="@sjba"
-              iconSrc="/logos/linkedin_logo.png"
+              iconSrc="/icons/linkedin-logo.png"
               alt="LinkedIn"
             />
             <SocialLink
@@ -54,7 +54,7 @@ export const Footer = () => {
               platform="instagram"
               name="Instagram"
               handle="@nyusjba"
-              iconSrc="/logos/instagram_logo.png"
+              iconSrc="/icons/instagram-logo.png"
               alt="Instagram"
             />
           </div>

@@ -90,7 +90,7 @@ export const NewsletterSignup = () => {
     <div className="newsletter-section">
       <div className="newsletter-content">
         <div className="newsletter-header">
-          <img src="/sjba_logo_clear.png" alt="SJBA Logo" className="newsletter-logo" />
+          <img src="/sjba/sjba-logo-clear.png" alt="SJBA Logo" className="newsletter-logo" />
           <h2>Join Our Newsletter</h2>
         </div>
         <p>

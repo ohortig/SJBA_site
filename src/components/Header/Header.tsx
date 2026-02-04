@@ -33,7 +33,7 @@ export const Header = () => {
       <nav className="nav-container">
         <div className="logo">
           <Link to="/" onClick={closeMenu}>
-            <img src="/sjba_logo_full.png" alt="SJBA Logo" className="logo-image" />
+            <img src="/sjba/sjba-logo-full.png" alt="SJBA Logo" className="logo-image" />
           </Link>
         </div>
 

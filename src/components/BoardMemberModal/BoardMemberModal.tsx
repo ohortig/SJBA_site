@@ -74,7 +74,7 @@ export const BoardMemberModal: React.FC<BoardMemberModalProps> = ({
                   className="modal-icon-btn email-icon"
                   title="Send Email"
                 >
-                  <img src="/icons/email_icon.png" alt="Email" />
+                  <img src="/icons/email-icon.png" alt="Email" />
                 </a>
                 {member.linkedinUrl && (
                   <a
@@ -84,7 +84,7 @@ export const BoardMemberModal: React.FC<BoardMemberModalProps> = ({
                     rel="noopener noreferrer"
                     title="Connect on LinkedIn"
                   >
-                    <img src="/logos/linkedin_logo.png" alt="LinkedIn" />
+                    <img src="/icons/linkedin-logo.png" alt="LinkedIn" />
                   </a>
                 )}
               </div>
