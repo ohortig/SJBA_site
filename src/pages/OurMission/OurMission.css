@@ -133,8 +133,8 @@
 /* Responsive Design */
 @media (max-width: 768px) {
   .mission-header {
-    padding: 2rem 0 1.5rem 0;
-    margin-bottom: 2rem;
+    padding: 2rem 0 0.5rem 0;
+    margin-bottom: 0.5rem;
   }
 
   .mission-title {
