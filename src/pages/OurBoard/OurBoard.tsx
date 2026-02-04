@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Footer, LoadingSpinner, ErrorDisplay, BoardMemberModal } from '@components';
+import { Footer, LoadingSpinner, ErrorDisplay, BoardMemberModal, CallToAction } from '@components';
 import { useScrollAnimation } from '@hooks';
 import { dataService } from '@api';
 import { BOARD_IMAGES_BUCKET } from '@constants';
@@ -14,10 +14,6 @@ export const OurBoard = () => {
   const boardAnimation = useScrollAnimation({
     threshold: 0.05,
     rootMargin: '0px 0px 0px 0px',
-  });
-  const joinBoardAnimation = useScrollAnimation({
-    threshold: 0.1,
-    rootMargin: '0px 0px -20px 0px',
   });
 
   const [selectedMember, setSelectedMember] = useState<BoardMember | null>(null);
@@ -151,7 +147,7 @@ export const OurBoard = () => {
                             title="Send Email"
                             onClick={(e) => e.stopPropagation()}
                           >
-                            <img src="/icons/email_icon.png" alt="Email" />
+                            <img src="/icons/email-icon.png" alt="Email" />
                           </a>
                           {member.linkedinUrl && (
                             <a
@@ -162,7 +158,7 @@ export const OurBoard = () => {
                               title="Connect on LinkedIn"
                               onClick={(e) => e.stopPropagation()}
                             >
-                              <img src="/logos/linkedin_logo.png" alt="LinkedIn" />
+                              <img src="/icons/linkedin-logo.png" alt="LinkedIn" />
                             </a>
                           )}
                         </div>
@@ -177,27 +173,14 @@ export const OurBoard = () => {
           )}
         </div>
 
-        <div
-          ref={joinBoardAnimation.elementRef}
-          className={`join-board-section ${joinBoardAnimation.isVisible ? 'visible' : ''}`}
-        >
-          <div className="join-board-content">
-            <h2>Interested in Joining Our Board?</h2>
-            <p>
-              SJBA is always looking for passionate students who want to make a difference in the
-              Jewish community at NYU Stern. Board positions become available each academic year
-              through our application process.
-            </p>
-            <div className="join-board-buttons">
-              <a href="/contact" className="join-board-btn primary">
-                Get Involved
-              </a>
-              <a href="/events" className="join-board-btn secondary">
-                Attend Our Events
-              </a>
-            </div>
-          </div>
-        </div>
+        <CallToAction
+          title="Interested in Joining Our Board?"
+          bodyText="SJBA is always looking for passionate students who want to make a difference in the Jewish community at NYU Stern. Board positions become available each academic year through our application process."
+          primaryButtonText="Get Involved"
+          primaryButtonHref="/contact"
+          secondaryButtonText="Attend Our Events"
+          secondaryButtonHref="/events"
+        />
       </div>
 
       <BoardMemberModal
