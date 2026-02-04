@@ -1,11 +1,17 @@
-/* Our Mission Page Styles */
-
 /* Header */
 .mission-header {
   padding: 2rem;
   text-align: center;
   margin: 0 auto 0 auto;
   width: fit-content;
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.4s ease;
+}
+
+.mission-header.visible {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .mission-header .mission-title {
@@ -14,6 +20,113 @@
   color: #4c0d7f !important;
   line-height: 1.2;
   margin-bottom: 1rem;
+}
+
+/* Zigzag Section */
+.mission-zigzag {
+  display: flex;
+  flex-direction: column;
+  gap: 4rem;
+  margin-bottom: 4rem;
+}
+
+.zigzag-row {
+  display: flex;
+  gap: 3rem;
+  align-items: stretch;
+  opacity: 0;
+  transform: translateY(40px);
+  transition: all 0.5s ease;
+  position: relative;
+  background: white;
+}
+
+.zigzag-row.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.zigzag-row-reverse {
+  flex-direction: row-reverse;
+}
+
+.zigzag-row-reverse .zigzag-text {
+  justify-content: flex-end;
+}
+
+.zigzag-row-reverse .zigzag-text p {
+  text-align: right;
+}
+
+.zigzag-text {
+  flex: 1;
+  display: flex;
+  align-items: center;
+}
+
+.zigzag-text p {
+  font-size: 1.1rem;
+  color: #363a3f;
+  line-height: 1.8;
+  text-align: justify;
+}
+
+.zigzag-image {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.zigzag-image img {
+  max-width: 100%;
+  max-height: 550px;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  border-radius: 4px;
+  box-shadow: 0 4px 16px rgba(76, 13, 127, 0.15);
+}
+
+.zigzag-image img.sjba-logo {
+  max-width: 420px;
+  max-height: 320px;
+  width: 100%;
+  height: auto;
+}
+
+/* Where Our Members End Up Section */
+.members-section {
+  margin: 4rem 0;
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.5s ease;
+}
+
+.members-section.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.members-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #4c0d7f;
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+/* Wrapper for logo galleries to prevent clipping */
+.logo-galleries-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* Adjust LogoGallery spacing when stacked */
+.members-section .logo-gallery-container {
+  margin-top: 0;
+  margin-bottom: 0;
 }
 
 /* Responsive Design */
@@ -26,6 +139,29 @@
   .mission-title {
     font-size: 1.8rem;
   }
+
+  .mission-zigzag {
+    gap: 3rem;
+    margin-bottom: 3rem;
+  }
+
+  .zigzag-row {
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .zigzag-row-reverse {
+    flex-direction: column;
+  }
+
+  .zigzag-text p {
+    font-size: 1rem;
+    text-align: left;
+  }
+
+  .members-title {
+    font-size: 1.6rem;
+  }
 }
 
 @media (max-width: 480px) {
@@ -37,4 +173,29 @@
   .mission-title {
     font-size: 1.6rem;
   }
+
+  .mission-zigzag {
+    gap: 2rem;
+    margin-bottom: 2rem;
+  }
+
+  .zigzag-text p {
+    font-size: 0.95rem;
+  }
+
+  .members-title {
+    font-size: 1.4rem;
+  }
+}
+
+/* Slide Up Animation */
+.slide-up {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.slide-up.visible {
+  opacity: 1;
+  transform: translateY(0);
 }
