@@ -91,8 +91,9 @@
 .zigzag-image img.sjba-logo {
   max-width: 420px;
   max-height: 320px;
-  width: 100%;
+  width: auto;
   height: auto;
+  display: block;
 }
 
 /* Where Our Members End Up Section */
