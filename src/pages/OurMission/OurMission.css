@@ -157,7 +157,11 @@
 
   .zigzag-text p {
     font-size: 1rem;
-    text-align: left;
+    text-align: center;
+  }
+
+  .zigzag-row-reverse .zigzag-text p {
+    text-align: center;
   }
 
   .members-title {
