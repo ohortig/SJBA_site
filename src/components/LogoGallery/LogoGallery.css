@@ -89,6 +89,20 @@
   }
 }
 
+@keyframes scroll-right {
+  0% {
+    transform: translateX(-50%);
+  }
+
+  100% {
+    transform: translateX(0);
+  }
+}
+
+.logo-gallery-right {
+  animation: scroll-right 60s linear infinite;
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
   .logo-gallery-container {
