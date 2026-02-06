@@ -385,7 +385,9 @@
       brightness(94%) contrast(104%);
     opacity: 0.65;
     pointer-events: none;
-    transition: transform 0.2s ease, opacity 0.2s ease;
+    transition:
+      transform 0.2s ease,
+      opacity 0.2s ease;
   }
 
   .board-member-card:active {
