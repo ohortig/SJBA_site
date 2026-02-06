@@ -165,7 +165,6 @@ export const OurBoard = () => {
                       </div>
                       <h4 className="member-position">{member.position}</h4>
                       <p className="member-details">{member.major}</p>
-                      <div className="click-hint">Click to learn more</div>
                     </div>
                   </div>
                 ))}

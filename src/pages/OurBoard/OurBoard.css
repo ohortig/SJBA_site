@@ -216,22 +216,6 @@
   margin-bottom: 1.5rem;
 }
 
-.click-hint {
-  font-size: 0.9rem;
-  color: #8b5cf6;
-  font-weight: 600;
-  text-align: center;
-  padding: 0.5rem;
-  background: rgba(139, 92, 246, 0.1);
-  transition: all 0.3s ease;
-  margin-top: auto;
-}
-
-.board-member-card:hover .click-hint {
-  background: rgba(139, 92, 246, 0.2);
-  color: #4c0d7f;
-}
-
 .member-icon-buttons {
   display: flex;
   gap: 0.5rem;
@@ -382,6 +366,40 @@
     padding: 1.5rem;
   }
 
+  .board-member-card::before {
+    opacity: 0.35;
+  }
+
+  .board-member-card::after {
+    content: '';
+    position: absolute;
+    right: 0.85rem;
+    top: 0.65rem;
+    width: 12.5px;
+    height: 12.5px;
+    background-image: url('/icons/arrow-top-right.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    filter: brightness(0) saturate(100%) invert(16%) sepia(89%) saturate(1540%) hue-rotate(261deg)
+      brightness(94%) contrast(104%);
+    opacity: 0.65;
+    pointer-events: none;
+    transition:
+      transform 0.2s ease,
+      opacity 0.2s ease;
+  }
+
+  .board-member-card:active {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(76, 13, 127, 0.2);
+  }
+
+  .board-member-card:active::after {
+    transform: translateX(2px) translateY(-2px);
+    opacity: 0.95;
+  }
+
   .photo-placeholder {
     width: 150px;
     height: 150px;
@@ -441,6 +459,13 @@
 
   .board-member-card {
     padding: 1.25rem;
+  }
+
+  .board-member-card::after {
+    right: 0.75rem;
+    top: 0.55rem;
+    width: 11.25px;
+    height: 11.25px;
   }
 
   .photo-placeholder {
