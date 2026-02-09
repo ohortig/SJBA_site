@@ -97,7 +97,11 @@ export const Contact = () => {
         message: '',
       });
     } catch (error) {
-      toast.error('An error occurred. Please try again.');
+      let message = 'An error occurred. Please try again.';
+      if (error instanceof Error) {
+        message = error.message;
+      }
+      toast.error(message);
       console.error('Contact form submission error:', error);
     } finally {
       setIsSubmitting(false);
