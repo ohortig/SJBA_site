@@ -2,8 +2,8 @@ import { useState, useEffect, useMemo, useRef, useCallback } from 'react';
 import { Footer, LoadingSpinner, ErrorDisplay } from '@components';
 import { useScrollAnimation } from '@hooks';
 import { dataService } from '@api';
-import { EVENT_FLYERS_BUCKET, getSemesterForDate } from '@constants';
-import type { Semester } from '@constants';
+import { EVENT_FLYERS_BUCKET } from '@constants';
+import { semesterSortKey, semesterLabel } from '@utils';
 import type { Event } from '@types';
 import './Events.css';
 
@@ -34,22 +34,6 @@ const formatEventDate = (startTime: string, endTime: string | null): string => {
   return `${dateStr} • ${startTimeStr}`;
 };
 
-// Helper to get semester identifier from a date string
-const getSemesterFromDate = (dateString: string): Semester | null => {
-  const date = new Date(dateString);
-  const result = getSemesterForDate(date);
-  if (!result) return null;
-  return `${result.semester}${result.year}`;
-};
-
-// Helper to format semester for display
-const formatSemesterLabel = (semester: Semester): string => {
-  const match = semester.match(/^(fall|spring)(\d{4})$/);
-  if (!match) return semester;
-  const type = match[1] === 'fall' ? 'Fall' : 'Spring';
-  return `${type} ${match[2]}`;
-};
-
 // Section type for Upcoming/Past grouping
 type EventSection = 'upcoming' | 'past';
 
@@ -67,7 +51,7 @@ export const Events = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const [activeSemester, setActiveSemester] = useState<Semester | null>(null);
+  const [activeSemester, setActiveSemester] = useState<string | null>(null);
   const [forceVisible, setForceVisible] = useState(false);
   const [imageErrors, setImageErrors] = useState<Set<string>>(new Set());
   const [modalFlyer, setModalFlyer] = useState<{ src: string; title: string } | null>(null);
@@ -130,17 +114,18 @@ export const Events = () => {
         const scrollPosition = window.scrollY + 300; // Offset for header
 
         // Find which event card is currently in view and get its semester
-        let foundSemester: Semester | null = null;
+        let foundSemester: string | null = null;
+        let closestDistance = Infinity;
         eventCardRefs.current.forEach((element, eventId) => {
-          if (element && !foundSemester) {
+          if (element) {
             const { offsetTop, offsetHeight } = element;
             if (scrollPosition >= offsetTop && scrollPosition < offsetTop + offsetHeight + 100) {
-              // Find the event and get its semester
-              const event = events.find((e) => e.id === eventId);
-              if (event) {
-                const semester = getSemesterFromDate(event.startTime);
-                if (semester) {
-                  foundSemester = semester;
+              const distance = Math.abs(scrollPosition - offsetTop);
+              if (distance < closestDistance) {
+                const event = events.find((e) => e.id === eventId);
+                if (event) {
+                  foundSemester = event.semester;
+                  closestDistance = distance;
                 }
               }
             }
@@ -208,19 +193,12 @@ export const Events = () => {
 
   // Derive available semesters from events
   const availableSemesters = useMemo(() => {
-    const semesterSet = new Set<Semester>();
+    const semesterSet = new Set<string>();
     events.forEach((event) => {
-      const semester = getSemesterFromDate(event.startTime);
-      if (semester) semesterSet.add(semester);
+      if (event.semester) semesterSet.add(event.semester);
     });
-    // Sort semesters chronologically
-    return Array.from(semesterSet).sort((a, b) => {
-      const [, aType, aYear] = a.match(/^(fall|spring)(\d{4})$/) || [];
-      const [, , bYear] = b.match(/^(fall|spring)(\d{4})$/) || [];
-      if (aYear !== bYear) return Number(bYear) - Number(aYear);
-      // Same year: fall should appear first
-      return aType === 'fall' ? -1 : 1;
-    });
+    // Sort semesters newest-first
+    return Array.from(semesterSet).sort((a, b) => semesterSortKey(b) - semesterSortKey(a));
   }, [events]);
 
   const handleImageError = (eventId: string) => {
@@ -232,18 +210,18 @@ export const Events = () => {
   };
 
   const scrollToSemester = useCallback(
-    (semester: Semester) => {
-      // Find the first event card that belongs to this semester
+    (semester: string) => {
+      // Find the event card with the smallest offsetTop that belongs to this semester
       let targetElement: HTMLDivElement | undefined = undefined;
+      let bestTop = Infinity;
 
       eventCardRefs.current.forEach((element, eventId) => {
-        if (!targetElement) {
-          const event = events.find((e) => e.id === eventId);
-          if (event) {
-            const eventSemester = getSemesterFromDate(event.startTime);
-            if (eventSemester === semester) {
-              targetElement = element;
-            }
+        const event = events.find((e) => e.id === eventId);
+        if (event && event.semester === semester && element) {
+          const top = element.offsetTop;
+          if (top < bestTop) {
+            bestTop = top;
+            targetElement = element;
           }
         }
       });
@@ -424,7 +402,7 @@ export const Events = () => {
                   className={`semester-nav-item ${activeSemester === semester ? 'active' : ''}`}
                   onClick={() => scrollToSemester(semester)}
                 >
-                  {formatSemesterLabel(semester)}
+                  {semesterLabel(semester)}
                 </button>
               ))}
             </nav>

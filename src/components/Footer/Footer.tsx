@@ -29,12 +29,12 @@ export const Footer = () => {
             <h3>About Us</h3>
             <Link to="/our-mission">Our Mission</Link>
             <Link to="/our-board">Our Board</Link>
+            <Link to="/our-members">Our Members</Link>
           </div>
 
           <div className="footer-column stagger-item">
             <h3>Connect</h3>
             <Link to="/contact">Contact Us</Link>
-            <Link to="/contact">Join SJBA</Link>
           </div>
         </div>
 
