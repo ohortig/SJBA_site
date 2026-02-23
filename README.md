@@ -1,26 +1,25 @@
-# Stern Jewish Business Association Website
+# Stern Jewish Business Association Website Frontend
 
-A modern React website for the Stern Jewish Business Association at NYU, featuring dynamic content management and responsive design.
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
+[![CI](https://github.com/ohortig/SJBA_site/actions/workflows/ci.yml/badge.svg)](https://github.com/ohortig/SJBA_site/actions/workflows/ci.yml)
+[![Vercel](https://img.shields.io/badge/Vercel-Deployed-black?logo=vercel&logoColor=white)](https://nyu-sjba.org)
+[![Node.js](https://img.shields.io/badge/node-%3E%3D22.x-brightgreen)](https://nodejs.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.8-blue?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![React](https://img.shields.io/badge/React-19.1-blue?logo=react&logoColor=white)](https://react.dev/)
+[![Vite](https://img.shields.io/badge/Vite-6.3-purple?logo=vite&logoColor=white)](https://vitejs.dev/)
 
-🌐 **Live Site**: [sjba-site.vercel.app](https://sjba-site.vercel.app)
+A React frontend for the Stern Jewish Business Association website.
 
-## Tech Stack
+**Live Frontend**: [nyu-sjba.org](https://nyu-sjba.org)
+**Live API**: [api.nyu-sjba.org](https://api.nyu-sjba.org)
 
-- **Frontend**: React 19, TypeScript, Vite
-- **Styling**: CSS3 with custom animations
-- **Routing**: React Router
-- **HTTP Client**: Axios
-- **Animations**: Framer Motion
-- **Icons**: Lucide React
-- **Deployment**: Vercel
-- **Backend**: Node.js/Express (separate repository)
-- **Database**: Supabase
+> **Note:** This README will be updated soon with full information on local development and production deployment.
 
 ## Local Development
 
 ### Prerequisites
-- Node.js (v18 or higher recommended)
-- npm or yarn
+- Node.js (v22.x)
+- npm
 - Git
 
 ### Setup Instructions
@@ -33,21 +32,22 @@ A modern React website for the Stern Jewish Business Association at NYU, featuri
 
 2. **Install dependencies**
    ```bash
-   npm install
+   npm install --save-dev
    ```
 
 3. **Environment Configuration**
    
-   Create a `.env` file in the root directory and add:
+   Copy `.env.example` to `.env` and add:
    ```env
-   VITE_BACKEND_URL=your_backend_url_here
+   VITE_BOARD_IMAGES_BUCKET=
+   VITE_EVENT_FLYERS_BUCKET=
    ```
    
    **Backend URL Options:**
-   - **Production**: `https://sjba-site-backend.vercel.app/api/v1`
-   - **Local Development**: `http://localhost:3000/api/v1`
+   - **Production**: `https://api.nyu-sjba.org/v1`
+   - **Local Development**: `http://localhost:3000/v1`
      
-   > 📝 For local backend setup, see: [SJBA Backend Repository](https://github.com/ohortig/SJBA_site_backend)
+   > See: [SJBA Backend Repository](https://github.com/ohortig/SJBA_site_backend)
 
 4. **Start development server**
    ```bash
@@ -62,31 +62,16 @@ A modern React website for the Stern Jewish Business Association at NYU, featuri
 - `npm run build` - Build for production
 - `npm run preview` - Preview production build locally
 - `npm run lint` - Run ESLint
-
-## Contributing
-
-This project is actively maintained by the SJBA tech team. To contribute:
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
+- `npm run format` - Format code
 
 ## Contact
 
-Omer Hortig  
-📧 Email: [oh2065@nyu.edu](mailto:oh2065@nyu.edu)
+Omer Hortig
+
+Email: [oh2065@nyu.edu](mailto:oh2065@nyu.edu)
 
 Feel free to reach out to report bugs, ask questions, or inquire about joining the development team.
 
-## Release Notes
+## License
 
-### Version 0.1
-Initial release. Functional Home, Our Board, and Contact Us pages with static content.
-
-### Version 0.2 
-- Added backend API integration for dynamic content management
-- Board member profiles now load from Supabase database
-- Implemented loading states and error handling for API calls
-- Enhanced UI with new loading spinner and error display components 
+This project is licensed under the [MIT License](./LICENSE).
