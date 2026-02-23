@@ -53,6 +53,13 @@ export const AboutDropdown = ({ onClose }: AboutDropdownProps) => {
         <Link to="/our-board" className="nav-button nav-button--default" onClick={handleLinkClick}>
           OUR BOARD
         </Link>
+        <Link
+          to="/our-members"
+          className="nav-button nav-button--default"
+          onClick={handleLinkClick}
+        >
+          OUR MEMBERS
+        </Link>
       </>
     );
   }
@@ -72,6 +79,9 @@ export const AboutDropdown = ({ onClose }: AboutDropdownProps) => {
           </Link>
           <Link to="/our-board" className="dropdown-item" onClick={handleLinkClick}>
             Our Board
+          </Link>
+          <Link to="/our-members" className="dropdown-item" onClick={handleLinkClick}>
+            Our Members
           </Link>
         </div>
       )}

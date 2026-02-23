@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
 import { Header, ScrollToTop } from '@components';
-import { Home, OurMission, OurBoard, Programs, Events, Contact } from './pages';
+import { Home, OurMission, OurBoard, OurMembers, Programs, Events, Contact } from './pages';
 import './App.css';
 
 function App() {
@@ -44,6 +44,7 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/our-mission" element={<OurMission />} />
             <Route path="/our-board" element={<OurBoard />} />
+            <Route path="/our-members" element={<OurMembers />} />
             <Route path="/programs" element={<Programs />} />
             <Route path="/events" element={<Events />} />
             <Route path="/contact" element={<Contact />} />

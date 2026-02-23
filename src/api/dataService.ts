@@ -4,6 +4,7 @@ import type {
   BoardMember,
   Event,
   EventsQueryParams,
+  Member,
   NewsletterSignup,
   NewsletterSignupResponse,
   ContactFormData,
@@ -79,6 +80,15 @@ const eventsService = {
   },
 };
 
+/* Members Service */
+
+const membersService = {
+  async getAll(): Promise<Member[]> {
+    const response = await apiClient.get<ApiResponse<Member[]>>('/members');
+    return response.data;
+  },
+};
+
 /* Contact Form Service */
 
 const contactService = {
@@ -92,5 +102,6 @@ export const dataService = {
   boardMembers: boardMembersService,
   newsletter: newsletterService,
   events: eventsService,
+  members: membersService,
   contact: contactService,
 };
