@@ -11,7 +11,8 @@
     "lint:fix": "eslint . --fix",
     "format": "prettier --write \"src/**/*.{ts,tsx,css}\"",
     "format:check": "prettier --check \"src/**/*.{ts,tsx,css}\"",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "prepare": "husky"
   },
   "keywords": [
     "react",
@@ -41,6 +42,8 @@
     "eslint-plugin-react-refresh": "^0.4.19",
     "generate-env-example": "^1.1.0",
     "globals": "^16.0.0",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.2.7",
     "prettier": "^3.8.0",
     "typescript": "~5.8.3",
     "typescript-eslint": "^8.30.1",
@@ -48,5 +51,14 @@
   },
   "engines": {
     "node": ">=22.x"
+  },
+  "lint-staged": {
+    "*.{ts,tsx}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.css": [
+      "prettier --write"
+    ]
   }
 }
