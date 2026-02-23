@@ -9,11 +9,14 @@ export interface ApiResponse<T = unknown> {
 }
 
 export interface PaginatedResponse<T> extends ApiResponse<T[]> {
+  count: number;
   pagination: {
     page: number;
     limit: number;
     total: number;
     totalPages: number;
+    hasNext: boolean;
+    hasPrev: boolean;
   };
 }
 
@@ -67,14 +70,6 @@ class ApiClient {
     // Response interceptor - handle responses and errors globally
     this.client.interceptors.response.use(
       (response: AxiosResponse) => {
-        // Log response time for debugging
-        if (response.config.metadata) {
-          const endTime = new Date();
-          const duration = endTime.getTime() - response.config.metadata.startTime.getTime();
-          console.debug(
-            `API ${response.config.method?.toUpperCase()} ${response.config.url} took ${duration}ms`
-          );
-        }
         return response;
       },
       (error: AxiosError) => {
@@ -84,7 +79,12 @@ class ApiClient {
 
         if (error.response) {
           status = error.response.status;
-          const errorData = error.response.data as { message?: string; code?: string };
+          const responseData = error.response.data as {
+            error?: { message?: string; code?: string };
+            message?: string;
+            code?: string;
+          };
+          const errorData = responseData?.error ?? responseData;
           message =
             errorData?.message || error.message || `HTTP ${status}: ${error.response.statusText}`;
           code = errorData?.code;

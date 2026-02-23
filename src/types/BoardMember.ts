@@ -6,8 +6,8 @@ export interface BoardMember {
   major: string;
   year: string;
   hometown: string;
-  linkedinUrl: string;
+  linkedinUrl: string | null;
   email: string;
-  headshotFile: string;
+  headshotFile: string | null;
   orderIndex: number;
 }

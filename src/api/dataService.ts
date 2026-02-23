@@ -74,12 +74,8 @@ const eventsService = {
   },
 
   async getUpcoming(limit = 5): Promise<Event[]> {
-    const now = new Date().toISOString();
-    const { events } = await this.getAll({
-      startDate: now,
-      limit,
-    });
-    return events;
+    const response = await apiClient.get<ApiResponse<Event[]>>('/events/upcoming', { limit });
+    return response.data;
   },
 };
 
