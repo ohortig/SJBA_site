@@ -3,10 +3,13 @@
     "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
     "target": "ES2020",
     "useDefineForClassFields": true,
-    "lib": ["ES2020", "DOM", "DOM.Iterable"],
+    "lib": [
+      "ES2020",
+      "DOM",
+      "DOM.Iterable"
+    ],
     "module": "ESNext",
     "skipLibCheck": true,
-
     /* Bundler mode */
     "moduleResolution": "bundler",
     "allowImportingTsExtensions": true,
@@ -14,21 +17,43 @@
     "moduleDetection": "force",
     "noEmit": true,
     "jsx": "react-jsx",
-
     /* Path mapping */
     "baseUrl": "./src",
     "paths": {
-      "@hooks": ["./hooks/index.ts"],
-      "@hooks/*": ["./hooks/*"],
-      "@components": ["./components/index.tsx"],
-      "@components/*": ["./components/*"],
-      "@api": ["./api/index.ts"],
-      "@api/*": ["./api/*"],
-      "@types": ["./types/index.ts"],
-      "@types/*": ["./types/*"],
-      "@constants": ["./constants.ts"]
+      "@hooks": [
+        "./hooks/index.ts"
+      ],
+      "@hooks/*": [
+        "./hooks/*"
+      ],
+      "@components": [
+        "./components/index.tsx"
+      ],
+      "@components/*": [
+        "./components/*"
+      ],
+      "@api": [
+        "./api/index.ts"
+      ],
+      "@api/*": [
+        "./api/*"
+      ],
+      "@types": [
+        "./types/index.ts"
+      ],
+      "@types/*": [
+        "./types/*"
+      ],
+      "@constants": [
+        "./constants.ts"
+      ],
+      "@utils": [
+        "./utils/index.ts"
+      ],
+      "@utils/*": [
+        "./utils/*"
+      ]
     },
-
     /* Linting */
     "strict": true,
     "noUnusedLocals": true,
@@ -36,5 +61,7 @@
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true
   },
-  "include": ["src"]
+  "include": [
+    "src"
+  ]
 }
