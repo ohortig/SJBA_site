@@ -10,6 +10,7 @@ export interface Event {
   flyerFile: string | null;
   rsvpLink: string | null;
   description: string | null;
+  semester: string;
 }
 
 export interface EventsQueryParams {

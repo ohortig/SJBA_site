@@ -36,21 +36,8 @@ export const OurBoard = () => {
         // Check if it's an API error with a message, otherwise use a generic message
         let errorMessage = 'Failed to load board members. Please try again later.';
 
-        if (error && typeof error === 'object') {
-          if (
-            'response' in error &&
-            error.response &&
-            typeof error.response === 'object' &&
-            'data' in error.response &&
-            error.response.data &&
-            typeof error.response.data === 'object' &&
-            'message' in error.response.data &&
-            typeof error.response.data.message === 'string'
-          ) {
-            errorMessage = error.response.data.message;
-          } else if ('message' in error && typeof error.message === 'string') {
-            errorMessage = error.message;
-          }
+        if (error instanceof Error) {
+          errorMessage = error.message;
         }
 
         setError(errorMessage);

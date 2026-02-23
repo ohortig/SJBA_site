@@ -9,4 +9,8 @@ export interface ContactFormData {
 export interface ContactFormResponse {
   success: boolean;
   message: string;
+  data?: {
+    success: boolean;
+    message: string;
+  };
 }
