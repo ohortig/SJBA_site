@@ -40,21 +40,24 @@
 /* Semester Sidebar */
 .semester-sidebar {
   position: fixed;
-  right: 0;
+  right: 2rem;
   top: 50%;
   transform: translateY(-50%);
   width: 160px;
   z-index: 99;
 }
 
-.semester-nav {
+.semester-sidebar .semester-nav {
+  display: flex;
+  flex-direction: column;
   background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(248, 250, 252, 0.98));
   border: 1px solid rgba(76, 13, 127, 0.15);
+  border-radius: 8px;
   padding: 1.25rem;
   box-shadow: 0 4px 12px rgba(76, 13, 127, 0.1);
 }
 
-.semester-nav-title {
+.semester-sidebar .semester-nav-title {
   font-size: 0.85rem;
   font-weight: 700;
   color: #000000;
@@ -65,7 +68,7 @@
   border-bottom: 1px solid rgba(76, 13, 127, 0.1);
 }
 
-.semester-nav-item {
+.semester-sidebar .semester-nav-item {
   display: block;
   width: 100%;
   padding: 0.75rem 1rem;
@@ -81,7 +84,7 @@
   position: relative;
 }
 
-.semester-nav-item::before {
+.semester-sidebar .semester-nav-item::before {
   content: '';
   position: absolute;
   left: 0;
@@ -93,17 +96,17 @@
   transition: height 0.3s ease;
 }
 
-.semester-nav-item:hover {
+.semester-sidebar .semester-nav-item:hover {
   color: #4c0d7f;
   background: rgba(76, 13, 127, 0.05);
 }
 
-.semester-nav-item.active {
+.semester-sidebar .semester-nav-item.active {
   color: #4c0d7f;
   background: rgba(76, 13, 127, 0.08);
 }
 
-.semester-nav-item.active::before {
+.semester-sidebar .semester-nav-item.active::before {
   height: 60%;
 }
 
