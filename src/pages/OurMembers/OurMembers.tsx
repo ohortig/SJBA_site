@@ -69,7 +69,13 @@ export const OurMembers = () => {
       ([a], [b]) => semesterSortKey(b) - semesterSortKey(a)
     );
 
-    return sorted;
+    // TEMPORARY HOLD: Do not show Spring 2026 members yet.
+    // We need enough meetings this semester for students to truly be eligible
+    // for membership before displaying this cohort. Remove this filter once
+    // Spring 2026 membership eligibility has been finalized.
+    const filtered = sorted.filter(([semester]) => semester !== 'S26');
+
+    return filtered;
   }, [members]);
 
   const canGoPrev = activeSemesterIndex > 0;
