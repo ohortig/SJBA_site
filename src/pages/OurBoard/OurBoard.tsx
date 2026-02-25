@@ -1,8 +1,8 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { Footer, LoadingSpinner, ErrorDisplay, BoardMemberModal, CallToAction } from '@components';
 import { useScrollAnimation } from '@hooks';
 import { dataService } from '@api';
-import { BOARD_IMAGES_BUCKET } from '@constants';
+import { BOARD_IMAGES_BUCKET, BOARD_THUMBNAILS_BUCKET } from '@constants';
 import type { BoardMember } from '@types';
 import './OurBoard.css';
 
@@ -22,6 +22,7 @@ export const OurBoard = () => {
   const [boardMembers, setBoardMembers] = useState<BoardMember[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const preloadedImagesRef = useRef<Set<string>>(new Set());
 
   // Fetch board members data
   useEffect(() => {
@@ -48,6 +49,30 @@ export const OurBoard = () => {
     void fetchBoardMembers();
   }, []);
 
+  // Preload full-resolution images in the background
+  // so they're already cached when the modal opens
+  useEffect(() => {
+    if (boardMembers.length === 0) return;
+
+    const preloadImages = boardMembers
+      .filter((member) => member.headshotFile && !imageErrors.has(member.fullName))
+      .map((member) => {
+        const img = new Image();
+        const fullSrc = `${BOARD_IMAGES_BUCKET}${member.headshotFile}`;
+        img.src = fullSrc;
+        img.onload = () => {
+          preloadedImagesRef.current.add(fullSrc);
+        };
+        return img;
+      });
+
+    return () => {
+      preloadImages.forEach((img) => {
+        img.onload = null;
+      });
+    };
+  }, [boardMembers, imageErrors]);
+
   // Fallback mechanism for mobile - ensure animations trigger after a delay
   useEffect(() => {
     const timeout = setTimeout(() => {
@@ -57,14 +82,17 @@ export const OurBoard = () => {
     return () => clearTimeout(timeout);
   }, []);
 
-  const handleImageError = (memberName: string) => {
+  const handleImageError = useCallback((memberName: string) => {
     if (!memberName) return;
     setImageErrors((prev) => new Set(prev).add(memberName));
-  };
+  }, []);
 
-  const shouldShowPlaceholder = (member: BoardMember) => {
-    return !member.headshotFile || imageErrors.has(member.fullName);
-  };
+  const shouldShowPlaceholder = useCallback(
+    (member: BoardMember) => {
+      return !member.headshotFile || imageErrors.has(member.fullName);
+    },
+    [imageErrors]
+  );
 
   const openModal = (member: BoardMember) => {
     setSelectedMember(member);
@@ -117,7 +145,7 @@ export const OurBoard = () => {
                         </div>
                       ) : (
                         <img
-                          src={`${BOARD_IMAGES_BUCKET}${member.headshotFile}`}
+                          src={`${BOARD_THUMBNAILS_BUCKET}${member.headshotFile?.replace(/\.(png|webp|jpeg)$/i, '.jpg')}`}
                           alt={`${member.fullName} headshot`}
                           className="member-headshot"
                           onError={() => handleImageError(member.fullName)}
