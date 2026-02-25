@@ -133,3 +133,12 @@
     margin: 0 0.25rem;
   }
 }
+
+/* ---- Reduced motion ---- */
+@media (prefers-reduced-motion: reduce) {
+  .dropdown-menu {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}

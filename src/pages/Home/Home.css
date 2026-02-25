@@ -581,3 +581,21 @@
     margin-top: 0;
   }
 }
+
+/* ---- Reduced motion ---- */
+@media (prefers-reduced-motion: reduce) {
+  .gallery-image {
+    transition: none !important;
+  }
+
+  .hero-title,
+  .main-title,
+  .gallery-navigation,
+  .link-section,
+  .speakers-link,
+  .our-mission-link {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}

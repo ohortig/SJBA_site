@@ -148,3 +148,11 @@
     max-height: 60px;
   }
 }
+
+/* ---- Reduced motion ---- */
+@media (prefers-reduced-motion: reduce) {
+  .logo-gallery,
+  .logo-gallery-right {
+    animation: none !important;
+  }
+}
