@@ -3,7 +3,7 @@ import { useScrollAnimation } from '@hooks';
 
 interface CallToActionProps {
   title: string;
-  bodyText: string;
+  bodyText?: string;
   primaryButtonText?: string;
   primaryButtonHref?: string;
   secondaryButtonText?: string;
@@ -30,7 +30,7 @@ export const CallToAction = ({
     >
       <div className="call-to-action-content">
         <h2>{title}</h2>
-        <p>{bodyText}</p>
+        {bodyText && <p>{bodyText}</p>}
         <div className="call-to-action-buttons">
           <a href={primaryButtonHref} className="call-to-action-btn primary">
             {primaryButtonText}
