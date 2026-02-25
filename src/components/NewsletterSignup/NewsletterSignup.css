@@ -230,3 +230,10 @@
     height: 40px;
   }
 }
+
+/* ---- Reduced motion ---- */
+@media (prefers-reduced-motion: reduce) {
+  .newsletter-submit-btn {
+    transition: none !important;
+  }
+}

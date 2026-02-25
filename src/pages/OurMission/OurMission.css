@@ -204,3 +204,16 @@
   opacity: 1;
   transform: translateY(0);
 }
+
+/* ---- Reduced motion ---- */
+@media (prefers-reduced-motion: reduce) {
+  .mission-header,
+  .zigzag-row,
+  .members-section,
+  .slide-up {
+    transition: none !important;
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}

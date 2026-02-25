@@ -311,3 +311,10 @@
     font-size: 1.1rem;
   }
 }
+
+/* ---- Reduced motion ---- */
+@media (prefers-reduced-motion: reduce) {
+  .modal-content {
+    animation: none !important;
+  }
+}
