@@ -111,6 +111,39 @@
   font-weight: 700;
 }
 
+/* ---- Page Subtitle ---- */
+.members-page-subtitle {
+  font-size: 0.95rem;
+  color: #5a5f67;
+  line-height: 1.6;
+  margin: 0.75rem auto 0;
+  max-width: 720px;
+  font-weight: 400;
+}
+
+/* ---- Table Header ---- */
+.members-table-header {
+  text-align: center;
+  margin-bottom: 1.25rem;
+}
+
+.members-table-heading {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #4c0d7f;
+  margin: 0 0 0.4rem 0;
+}
+
+.members-table-subtitle {
+  font-size: 0.88rem;
+  color: #777;
+  line-height: 1.5;
+  margin: 0;
+  max-width: 540px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
 /* ---- Table Section ---- */
 .members-table-section {
   margin-bottom: 3rem;
@@ -324,6 +357,18 @@
     font-size: 0.9rem;
   }
 
+  .members-page-subtitle {
+    font-size: 0.9rem;
+  }
+
+  .members-table-heading {
+    font-size: 1.15rem;
+  }
+
+  .members-table-subtitle {
+    font-size: 0.84rem;
+  }
+
   .semester-tab {
     padding: 0.4rem 0.9rem;
     font-size: 0.8rem;
@@ -361,6 +406,18 @@
 
   .members-policy-heading {
     font-size: 1rem;
+  }
+
+  .members-page-subtitle {
+    font-size: 0.85rem;
+  }
+
+  .members-table-heading {
+    font-size: 1.05rem;
+  }
+
+  .members-table-subtitle {
+    font-size: 0.8rem;
   }
 
   .semester-tabs {
