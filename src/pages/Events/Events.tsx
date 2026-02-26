@@ -2,10 +2,17 @@ import { useState, useEffect, useMemo, useRef, useCallback } from 'react';
 import { Footer, LoadingSpinner, ErrorDisplay } from '@components';
 import { useScrollAnimation } from '@hooks';
 import { dataService } from '@api';
-import { EVENT_FLYERS_BUCKET } from '@constants';
+import { EVENT_FLYERS_BUCKET, EVENT_FLYERS_THUMBNAILS_BUCKET } from '@constants';
 import { semesterSortKey, semesterLabel } from '@utils';
 import type { Event } from '@types';
 import './Events.css';
+
+// Helper to get thumbnail url
+const getThumbnailUrl = (filename: string | null): string => {
+  if (!filename) return '';
+  const thumbnailName = filename.replace(/\.(png|webp|jpeg)$/i, '.jpg');
+  return `${EVENT_FLYERS_THUMBNAILS_BUCKET}${thumbnailName}`;
+};
 
 // Format date for display
 const formatEventDate = (startTime: string, endTime: string | null): string => {
@@ -272,7 +279,7 @@ export const Events = () => {
             </div>
           ) : (
             <img
-              src={`${EVENT_FLYERS_BUCKET}${event.flyerFile}`}
+              src={getThumbnailUrl(event.flyerFile)}
               alt={`${event.title} flyer`}
               className="event-flyer-image"
               onError={() => handleImageError(event.id)}
