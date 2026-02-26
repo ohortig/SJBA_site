@@ -62,6 +62,7 @@ export const Events = () => {
   const [forceVisible, setForceVisible] = useState(false);
   const [imageErrors, setImageErrors] = useState<Set<string>>(new Set());
   const [modalFlyer, setModalFlyer] = useState<{ src: string; title: string } | null>(null);
+  const preloadedImagesRef = useRef<Set<string>>(new Set());
 
   // Refs for event cards to track which semester is in view
   const eventCardRefs = useRef<Map<string, HTMLDivElement>>(new Map());
@@ -108,6 +109,30 @@ export const Events = () => {
 
     return () => clearTimeout(timeout);
   }, []);
+
+  // Preload full-resolution event flyers in the background
+  // so they're already cached when the modal opens
+  useEffect(() => {
+    if (events.length === 0) return;
+
+    const preloadImages = events
+      .filter((event) => event.flyerFile && !imageErrors.has(event.id))
+      .map((event) => {
+        const img = new Image();
+        const fullSrc = `${EVENT_FLYERS_BUCKET}${event.flyerFile}`;
+        img.src = fullSrc;
+        img.onload = () => {
+          preloadedImagesRef.current.add(fullSrc);
+        };
+        return img;
+      });
+
+    return () => {
+      preloadImages.forEach((img) => {
+        img.onload = null;
+      });
+    };
+  }, [events, imageErrors]);
 
   // Track scroll position to update active semester based on visible events and footer proximity
   useEffect(() => {
