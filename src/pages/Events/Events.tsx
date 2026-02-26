@@ -306,7 +306,19 @@ export const Events = () => {
               <span>{event.location}</span>
             </p>
           )}
-          {event.description && <p className="event-description">{event.description}</p>}
+          {event.description && (
+            <p className="event-description">
+              {event.description
+                .replace(/\\n/g, '\n')
+                .split('\n')
+                .map((line, i, arr) => (
+                  <span key={i}>
+                    {line}
+                    {i < arr.length - 1 && <br />}
+                  </span>
+                ))}
+            </p>
+          )}
           {event.rsvpLink &&
             (isPastEvent ? (
               <span className="event-rsvp-btn disabled">RSVP Closed</span>
