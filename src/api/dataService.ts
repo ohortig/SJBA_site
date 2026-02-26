@@ -9,6 +9,7 @@ import type {
   NewsletterSignupResponse,
   ContactFormData,
   ContactFormResponse,
+  SiteConfigEntry,
 } from '@types';
 
 /* Board Members Service */
@@ -98,10 +99,26 @@ const contactService = {
   },
 };
 
+/* Site Config Service */
+
+const siteConfigService = {
+  async getByKeys(keys: string[]): Promise<Record<string, string>> {
+    const response = await apiClient.get<ApiResponse<SiteConfigEntry[]>>('/site-config', {
+      keys: keys.join(','),
+    });
+    const map: Record<string, string> = {};
+    for (const entry of response.data) {
+      map[entry.key] = entry.value;
+    }
+    return map;
+  },
+};
+
 export const dataService = {
   boardMembers: boardMembersService,
   newsletter: newsletterService,
   events: eventsService,
   members: membersService,
   contact: contactService,
+  siteConfig: siteConfigService,
 };
