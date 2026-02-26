@@ -12,6 +12,7 @@ A React frontend for the Stern Jewish Business Association website.
 
 **Live Frontend**: [nyu-sjba.org](https://nyu-sjba.org)
 **Live API**: [api.nyu-sjba.org](https://api.nyu-sjba.org)
+**Status Page**: [status.nyu-sjba.org](https://status.nyu-sjba.org)
 
 > **Note:** This README will be updated soon with full information on local development and production deployment.
 
