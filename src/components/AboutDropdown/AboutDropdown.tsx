@@ -1,5 +1,6 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useIsMobile } from '../../hooks/useIsMobile';
 import './AboutDropdown.css';
 
 interface AboutDropdownProps {
@@ -8,18 +9,7 @@ interface AboutDropdownProps {
 
 export const AboutDropdown = ({ onClose }: AboutDropdownProps) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
-
-  useEffect(() => {
-    const checkIsMobile = () => {
-      setIsMobile(window.innerWidth <= 1024);
-    };
-
-    checkIsMobile();
-    window.addEventListener('resize', checkIsMobile);
-
-    return () => window.removeEventListener('resize', checkIsMobile);
-  }, []);
+  const isMobile = useIsMobile(1024);
 
   const handleMouseEnter = () => {
     if (!isMobile) {
