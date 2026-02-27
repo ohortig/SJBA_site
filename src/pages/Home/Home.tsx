@@ -1,8 +1,22 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { Link } from 'react-router-dom';
+
+import { dataService } from '@api';
+import type { Event } from '@types';
 import { useScrollAnimation } from '@hooks';
-import { Footer, LogoGallery, NewsletterSignup, type Logo } from '@components';
+import { HOME_PAGE_SPEAKER_LOGOS } from '@constants';
+import { Footer, LogoGallery, NewsletterSignup, FloatingPopup } from '@components';
+import {
+  getEventThumbnailUrl,
+  getNextUpcomingEvent,
+  formatEventDateOnly,
+  formatEventTimeOnly,
+  getCurrentLocalDateKey,
+} from '@utils';
+
 import './Home.css';
+
+const LAST_DISMISSED_DATE_STORAGE_KEY = 'homeNextEventPopup:lastDismissedDate';
 
 export const Home = () => {
   // Scroll animation hooks for different sections
@@ -11,6 +25,9 @@ export const Home = () => {
 
   // Gallery rotation state
   const [currentImage, setCurrentImage] = useState(1);
+  const [events, setEvents] = useState<Event[]>([]);
+  const [lastDismissedDate, setLastDismissedDate] = useState<string | null>(null);
+  const [isDismissalStateReady, setIsDismissalStateReady] = useState(false);
 
   // Auto-rotate gallery images
   useEffect(() => {
@@ -67,6 +84,49 @@ export const Home = () => {
       }
     });
   }, [currentImage]);
+
+  // Read previously dismissed next-event popup state from localStorage
+  useEffect(() => {
+    try {
+      const persistedLastDismissedDate = localStorage.getItem(LAST_DISMISSED_DATE_STORAGE_KEY);
+      setLastDismissedDate(persistedLastDismissedDate);
+    } catch (error) {
+      console.error('Unable to access popup dismissal state:', error);
+    } finally {
+      setIsDismissalStateReady(true);
+    }
+  }, []);
+
+  // Fetch events data to determine next upcoming event for popup
+  useEffect(() => {
+    let isCancelled = false;
+
+    const fetchEvents = async () => {
+      try {
+        const { events: fetchedEvents } = await dataService.events.getAll({ limit: 100 });
+        if (!isCancelled) {
+          setEvents(fetchedEvents);
+        }
+      } catch (error) {
+        console.error('Failed to fetch events for home popup:', error);
+      }
+    };
+
+    void fetchEvents();
+
+    return () => {
+      isCancelled = true;
+    };
+  }, []);
+
+  const handlePopupClose = () => {
+    setLastDismissedDate(currentDateKey);
+    try {
+      localStorage.setItem(LAST_DISMISSED_DATE_STORAGE_KEY, currentDateKey);
+    } catch (error) {
+      console.error('Unable to persist popup dismissal state:', error);
+    }
+  };
 
   return (
     <div className="page-container">
@@ -126,7 +186,7 @@ export const Home = () => {
         </div>
       </div>
 
-      <LogoGallery logos={speakerLogos} />
+      <LogoGallery logos={HOME_PAGE_SPEAKER_LOGOS} />
 
       <div className="section-divider"></div>
 
@@ -158,6 +218,50 @@ export const Home = () => {
         {/* Newsletter Signup Section */}
         <NewsletterSignup />
       </div>
+
+      <FloatingPopup
+        isOpen={Boolean(isDismissalStateReady && nextEvent && lastDismissedDate !== currentDateKey)}
+        onClose={handlePopupClose}
+        eyebrow="Upcoming Event"
+        title={nextEvent?.title ?? ''}
+        subtitle={nextEvent?.company ?? undefined}
+        thumbnailSrc={nextEventThumbnail}
+        thumbnailAlt={nextEvent ? `${nextEvent.title} flyer thumbnail` : 'Event flyer thumbnail'}
+        ariaLabel="Next upcoming event"
+      >
+        {nextEvent && (
+          <div className="home-next-event-popup-meta">
+            <div className="home-next-event-popup-details">
+              <p className="home-next-event-popup-row">
+                <img src="/icons/calendar.svg" alt="" className="home-next-event-popup-icon" />
+                <span className="home-next-event-popup-value">{nextEventDateLabel}</span>
+              </p>
+              <p className="home-next-event-popup-row">
+                <img src="/icons/clock.svg" alt="" className="home-next-event-popup-icon" />
+                <span className="home-next-event-popup-value">{nextEventTimeLabel}</span>
+              </p>
+              <p className="home-next-event-popup-row">
+                <img src="/icons/location-pin.svg" alt="" className="home-next-event-popup-icon" />
+                <span className="home-next-event-popup-value">
+                  {nextEvent.location ?? 'Location TBA'}
+                </span>
+              </p>
+            </div>
+            <Link
+              to={`/events#event-${nextEvent.id}`}
+              className="home-next-event-popup-cta home-next-event-popup-cta-inline"
+              onClick={handlePopupClose}
+            >
+              <span>View Details</span>
+              <img
+                src="/icons/arrow-top-right.png"
+                alt=""
+                className="home-next-event-popup-cta-arrow"
+              />
+            </Link>
+          </div>
+        )}
+      </FloatingPopup>
 
       <Footer />
     </div>
