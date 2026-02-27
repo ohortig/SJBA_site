@@ -326,8 +326,15 @@ export const Events = () => {
             className="event-datetime"
             style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}
           >
+            <img src="/icons/calendar.svg" alt="" className="event-icon" />
+            <span>{formatEventDateOnly(event.startTime)}</span>
+          </p>
+          <p
+            className="event-datetime"
+            style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}
+          >
             <img src="/icons/clock.svg" alt="" className="event-icon" />
-            <span>{formatEventDate(event.startTime, event.endTime)}</span>
+            <span>{formatEventTimeOnly(event.startTime, event.endTime)}</span>
           </p>
           {event.location && (
             <p
