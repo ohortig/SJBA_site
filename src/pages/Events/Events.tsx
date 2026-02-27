@@ -1,50 +1,24 @@
 import { useState, useEffect, useMemo, useRef, useCallback } from 'react';
+import { useLocation } from 'react-router-dom';
 import { Footer, LoadingSpinner, ErrorDisplay } from '@components';
 import { useScrollAnimation } from '@hooks';
 import { dataService } from '@api';
-import { EVENT_FLYERS_BUCKET, EVENT_FLYERS_THUMBNAILS_BUCKET } from '@constants';
-import { semesterSortKey, semesterLabel } from '@utils';
+import { EVENT_FLYERS_BUCKET } from '@constants';
+import {
+  semesterSortKey,
+  semesterLabel,
+  formatEventDateOnly,
+  formatEventTimeOnly,
+  getEventThumbnailUrl,
+} from '@utils';
 import type { Event } from '@types';
 import './Events.css';
-
-// Helper to get thumbnail url
-const getThumbnailUrl = (filename: string | null): string => {
-  if (!filename) return '';
-  const thumbnailName = filename.replace(/\.(png|webp|jpeg)$/i, '.jpg');
-  return `${EVENT_FLYERS_THUMBNAILS_BUCKET}${thumbnailName}`;
-};
-
-// Format date for display
-const formatEventDate = (startTime: string, endTime: string | null): string => {
-  const start = new Date(startTime);
-  const options: Intl.DateTimeFormatOptions = {
-    weekday: 'short',
-    month: 'short',
-    day: 'numeric',
-    year: 'numeric',
-  };
-  const dateStr = start.toLocaleDateString('en-US', options);
-
-  const timeOptions: Intl.DateTimeFormatOptions = {
-    hour: 'numeric',
-    minute: '2-digit',
-    hour12: true,
-  };
-  const startTimeStr = start.toLocaleTimeString('en-US', timeOptions);
-
-  if (endTime) {
-    const end = new Date(endTime);
-    const endTimeStr = end.toLocaleTimeString('en-US', timeOptions);
-    return `${dateStr} • ${startTimeStr} - ${endTimeStr}`;
-  }
-
-  return `${dateStr} • ${startTimeStr}`;
-};
 
 // Section type for Upcoming/Past grouping
 type EventSection = 'upcoming' | 'past';
 
 export const Events = () => {
+  const { hash } = useLocation();
   const headerAnimation = useScrollAnimation({
     threshold: 0.1,
     rootMargin: '0px 0px -20px 0px',
@@ -62,6 +36,7 @@ export const Events = () => {
   const [forceVisible, setForceVisible] = useState(false);
   const [imageErrors, setImageErrors] = useState<Set<string>>(new Set());
   const [modalFlyer, setModalFlyer] = useState<{ src: string; title: string } | null>(null);
+  const [linkedEventId, setLinkedEventId] = useState<string | null>(null);
   const preloadedImagesRef = useRef<Set<string>>(new Set());
 
   // Refs for event cards to track which semester is in view
@@ -197,6 +172,39 @@ export const Events = () => {
     };
   }, [events]);
 
+  // Navigate to and highlight linked event cards when arriving via hash
+  useEffect(() => {
+    if (!hash.startsWith('#event-') || isLoading || error || events.length === 0) return;
+
+    let targetEventId = hash.replace('#event-', '');
+    try {
+      targetEventId = decodeURIComponent(targetEventId);
+    } catch {
+      // Fall back to raw hash fragment if decoding fails.
+    }
+    if (!targetEventId) return;
+
+    const targetElement =
+      eventCardRefs.current.get(targetEventId) ??
+      (document.getElementById(`event-${targetEventId}`) as HTMLDivElement | null);
+
+    if (!targetElement) return;
+
+    // Dynamically calculate offset based on actual header height to handle mobile/desktop differences
+    const headerHeight = document.querySelector('header')?.clientHeight || 80;
+    const offset = headerHeight + 40; // Include 40px of breathing room
+
+    const top = Math.max(targetElement.getBoundingClientRect().top + window.scrollY - offset, 0);
+    window.scrollTo({ top, behavior: 'smooth' });
+
+    setLinkedEventId(targetEventId);
+    const timeout = window.setTimeout(() => {
+      setLinkedEventId((currentId) => (currentId === targetEventId ? null : currentId));
+    }, 2500);
+
+    return () => window.clearTimeout(timeout);
+  }, [hash, isLoading, error, events]);
+
   // Group events by Upcoming/Past
   const eventsBySection = useMemo(() => {
     const now = new Date();
@@ -259,7 +267,10 @@ export const Events = () => {
       });
 
       if (targetElement) {
-        const offset = 120; // Account for fixed header
+        // Dynamically calculate offset based on actual header height to handle mobile/desktop differences
+        const headerHeight = document.querySelector('header')?.clientHeight || 80;
+        const offset = headerHeight + 40; // Include 40px of breathing room
+
         const top = (targetElement as HTMLDivElement).offsetTop - offset;
         window.scrollTo({ top, behavior: 'smooth' });
       }
@@ -281,7 +292,12 @@ export const Events = () => {
     const isPastEvent = new Date(event.startTime) < new Date();
 
     return (
-      <div key={event.id} ref={setEventCardRef(event.id)} className="event-card stagger-item">
+      <div
+        key={event.id}
+        id={`event-${event.id}`}
+        ref={setEventCardRef(event.id)}
+        className={`event-card stagger-item ${linkedEventId === event.id ? 'event-card--linked-highlight' : ''}`}
+      >
         <div
           className={`event-flyer ${!shouldShowPlaceholder(event) ? 'has-image' : ''}`}
           onClick={(e) => {
@@ -304,7 +320,7 @@ export const Events = () => {
             </div>
           ) : (
             <img
-              src={getThumbnailUrl(event.flyerFile)}
+              src={getEventThumbnailUrl(event.flyerFile)}
               alt={`${event.title} flyer`}
               className="event-flyer-image"
               onError={() => handleImageError(event.id)}
@@ -326,8 +342,15 @@ export const Events = () => {
             className="event-datetime"
             style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}
           >
+            <img src="/icons/calendar.svg" alt="" className="event-icon" />
+            <span>{formatEventDateOnly(event.startTime)}</span>
+          </p>
+          <p
+            className="event-datetime"
+            style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}
+          >
             <img src="/icons/clock.svg" alt="" className="event-icon" />
-            <span>{formatEventDate(event.startTime, event.endTime)}</span>
+            <span>{formatEventTimeOnly(event.startTime, event.endTime)}</span>
           </p>
           {event.location && (
             <p
