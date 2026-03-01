@@ -3,6 +3,7 @@ export const BOARD_IMAGES_BUCKET = import.meta.env.VITE_BOARD_IMAGES_BUCKET as s
 export const BOARD_THUMBNAILS_BUCKET = `${BOARD_IMAGES_BUCKET}thumbnails/`;
 export const EVENT_FLYERS_BUCKET = import.meta.env.VITE_EVENT_FLYERS_BUCKET as string;
 export const EVENT_FLYERS_THUMBNAILS_BUCKET = `${EVENT_FLYERS_BUCKET}thumbnails/`;
+export const STATUS_PAGE_URL = 'https://status.nyu-sjba.org';
 
 export const HOME_PAGE_SPEAKER_LOGOS = [
   { name: 'Goldman Sachs', src: '/speaker-logos/goldman-sachs-logo.png' },
