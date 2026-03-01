@@ -1,5 +1,6 @@
 import { useState, useEffect, useMemo } from 'react';
 import { Link } from 'react-router-dom';
+import { motion, useReducedMotion } from 'motion/react';
 
 import { dataService } from '@api';
 import type { Event } from '@types';
@@ -14,11 +15,15 @@ import {
   getCurrentLocalDateKey,
 } from '@utils';
 
+import { MOTION_TRANSITION_FAST } from '../../motion/tokens';
 import './Home.css';
 
 const LAST_DISMISSED_DATE_STORAGE_KEY = 'homeNextEventPopup:lastDismissedDate';
 
+const MotionLink = motion.create(Link);
+
 export const Home = () => {
+  const shouldReduceMotion = useReducedMotion();
   // Scroll animation hooks for different sections
   const heroAnimation = useScrollAnimation({ threshold: 0.2 });
   const speakersAnimation = useScrollAnimation({ threshold: 0.3 });
@@ -61,29 +66,6 @@ export const Home = () => {
     if (!nextEvent) return '';
     return formatEventTimeOnly(nextEvent.startTime, nextEvent.endTime);
   }, [nextEvent]);
-
-  // Update active states
-  useEffect(() => {
-    // Update gallery images
-    const images = document.querySelectorAll('.gallery-image');
-    const dots = document.querySelectorAll('.nav-dot');
-
-    images.forEach((img, index) => {
-      if (index + 1 === currentImage) {
-        img.classList.add('active');
-      } else {
-        img.classList.remove('active');
-      }
-    });
-
-    dots.forEach((dot, index) => {
-      if (index + 1 === currentImage) {
-        dot.classList.add('active');
-      } else {
-        dot.classList.remove('active');
-      }
-    });
-  }, [currentImage]);
 
   // Read previously dismissed next-event popup state from localStorage
   useEffect(() => {
@@ -137,18 +119,28 @@ export const Home = () => {
         {/* Rotating Gallery Background */}
         <div className="rotating-gallery-background">
           <div className="gallery-image-container">
-            <div className="gallery-image active" data-image="1">
-              <img src="/home-gallery/sjba-gallery-1.JPG" />
-            </div>
-            <div className="gallery-image" data-image="2">
-              <img src="/home-gallery/sjba-gallery-2.JPG" />
-            </div>
-            <div className="gallery-image" data-image="3">
-              <img src="/home-gallery/sjba-gallery-3.JPG" />
-            </div>
-            <div className="gallery-image" data-image="4">
-              <img src="/home-gallery/sjba-gallery-4.JPG" />
-            </div>
+            {[
+              '/home-gallery/sjba-gallery-1.JPG',
+              '/home-gallery/sjba-gallery-2.JPG',
+              '/home-gallery/sjba-gallery-3.JPG',
+              '/home-gallery/sjba-gallery-4.JPG',
+            ].map((src, index) => {
+              const imageNumber = index + 1;
+
+              return (
+                <motion.div
+                  key={src}
+                  className="gallery-image"
+                  data-image={imageNumber}
+                  animate={{ opacity: currentImage === imageNumber ? 1 : 0 }}
+                  transition={
+                    shouldReduceMotion ? { duration: 0 } : { duration: 1.5, ease: [0.4, 0, 0.2, 1] }
+                  }
+                >
+                  <img src={src} />
+                </motion.div>
+              );
+            })}
           </div>
           <div className="gallery-overlay"></div>
         </div>
@@ -157,9 +149,34 @@ export const Home = () => {
         <div className="hero-content">
           {/* Main Title */}
           <h1 className="main-title">
-            <span className="title-line-1">Building Jewish Community</span>
-            <span className="title-connector">at</span>
-            <span className="title-line-2">NYU Stern</span>
+            <motion.span
+              className="title-line-1"
+              initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={shouldReduceMotion ? { duration: 0 } : MOTION_TRANSITION_FAST}
+            >
+              Building Jewish Community
+            </motion.span>
+            <motion.span
+              className="title-connector"
+              initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={
+                shouldReduceMotion ? { duration: 0 } : { ...MOTION_TRANSITION_FAST, delay: 0.1 }
+              }
+            >
+              at
+            </motion.span>
+            <motion.span
+              className="title-line-2"
+              initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={
+                shouldReduceMotion ? { duration: 0 } : { ...MOTION_TRANSITION_FAST, delay: 0.2 }
+              }
+            >
+              NYU Stern
+            </motion.span>
           </h1>
         </div>
 
@@ -167,23 +184,71 @@ export const Home = () => {
           ref={speakersAnimation.elementRef}
           className={`link-section scale-in ${speakersAnimation.isVisible ? 'visible' : ''}`}
         >
-          <Link to="/our-mission" className="our-mission-link">
-            <span>Our Mission</span>
-            <img src="/icons/arrow-top-right.png" alt="Arrow" className="our-mission-link-arrow" />
-          </Link>
-          <Link to="/events" className="speakers-link">
-            <span>Our Speakers</span>
-            <img src="/icons/arrow-top-right.png" alt="Arrow" className="speakers-link-arrow" />
-          </Link>
+          <motion.div
+            initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={
+              shouldReduceMotion ? { duration: 0 } : { ...MOTION_TRANSITION_FAST, delay: 0.4 }
+            }
+          >
+            <MotionLink
+              to="/our-mission"
+              className="our-mission-link"
+              whileHover={shouldReduceMotion ? undefined : { y: -2, x: 2 }}
+              whileTap={shouldReduceMotion ? undefined : { scale: 0.985 }}
+            >
+              <span>Our Mission</span>
+              <img
+                src="/icons/arrow-top-right.png"
+                alt="Arrow"
+                className="our-mission-link-arrow"
+              />
+            </MotionLink>
+          </motion.div>
+          <motion.div
+            initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={
+              shouldReduceMotion ? { duration: 0 } : { ...MOTION_TRANSITION_FAST, delay: 0.4 }
+            }
+          >
+            <MotionLink
+              to="/events"
+              className="speakers-link"
+              whileHover={shouldReduceMotion ? undefined : { y: -3 }}
+              whileTap={shouldReduceMotion ? undefined : { scale: 0.985 }}
+            >
+              <span>Our Speakers</span>
+              <img src="/icons/arrow-top-right.png" alt="Arrow" className="speakers-link-arrow" />
+            </MotionLink>
+          </motion.div>
         </div>
 
         {/* Gallery Navigation Dots */}
-        <div className="gallery-navigation">
-          <div className="nav-dot active" data-target="1" onClick={() => handleDotClick(1)}></div>
-          <div className="nav-dot" data-target="2" onClick={() => handleDotClick(2)}></div>
-          <div className="nav-dot" data-target="3" onClick={() => handleDotClick(3)}></div>
-          <div className="nav-dot" data-target="4" onClick={() => handleDotClick(4)}></div>
-        </div>
+        <motion.div
+          className="gallery-navigation"
+          initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={
+            shouldReduceMotion ? { duration: 0 } : { ...MOTION_TRANSITION_FAST, delay: 0.7 }
+          }
+        >
+          {[1, 2, 3, 4].map((imageNumber) => (
+            <motion.button
+              key={imageNumber}
+              type="button"
+              className={`nav-dot ${currentImage === imageNumber ? 'active' : ''}`}
+              data-target={imageNumber}
+              onClick={() => handleDotClick(imageNumber)}
+              animate={{ scale: currentImage === imageNumber ? 1.4 : 1 }}
+              whileHover={
+                shouldReduceMotion || currentImage === imageNumber ? undefined : { scale: 1.2 }
+              }
+              whileTap={shouldReduceMotion ? undefined : { scale: 0.9 }}
+              transition={shouldReduceMotion ? { duration: 0 } : MOTION_TRANSITION_FAST}
+            />
+          ))}
+        </motion.div>
       </div>
 
       <LogoGallery logos={HOME_PAGE_SPEAKER_LOGOS} />

@@ -25,20 +25,7 @@
   flex-direction: column;
   position: relative;
   box-shadow: 0 20px 60px rgba(76, 13, 127, 0.3);
-  animation: modalSlideIn 0.3s ease-out;
   overflow: hidden;
-}
-
-@keyframes modalSlideIn {
-  from {
-    opacity: 0;
-    transform: translateY(-20px) scale(0.95);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
 }
 
 .modal-close {
