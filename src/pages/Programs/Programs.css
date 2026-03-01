@@ -64,7 +64,6 @@
 }
 
 .application-status-pill:hover {
-  transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
 
@@ -296,22 +295,10 @@
 
 .status-dot.open-dot {
   background: #10b981;
-  animation: pulse-dot 2s ease-in-out infinite;
 }
 
 .status-dot.closed-dot {
   background: #9ca3af;
-}
-
-@keyframes pulse-dot {
-  0%,
-  100% {
-    opacity: 1;
-  }
-
-  50% {
-    opacity: 0.4;
-  }
 }
 
 .programs-apply-heading {
@@ -342,7 +329,6 @@
   border-radius: 0;
   text-decoration: none;
   cursor: pointer;
-  transition: all 0.3s ease;
   box-shadow: 0 4px 16px rgba(76, 13, 127, 0.22);
   font-family: inherit;
   position: relative;
@@ -362,7 +348,6 @@
     rgba(255, 255, 255, 0.2) 50%,
     transparent 100%
   );
-  transition: left 0.6s ease;
 }
 
 .apply-button:hover::before {
@@ -370,7 +355,6 @@
 }
 
 .apply-button:hover {
-  transform: translateY(-2px);
   box-shadow: 0 8px 24px rgba(76, 13, 127, 0.32);
   background: linear-gradient(135deg, #5a1a8a, #9f7aea);
   color: white;
@@ -388,11 +372,9 @@
   width: 10px;
   height: 10px;
   filter: brightness(0) invert(1);
-  transition: transform 0.3s ease;
 }
 
 .apply-button:hover .apply-button-arrow {
-  transform: translateX(2px) translateY(-2px);
 }
 
 /* ---------- Inline contact line ---------- */

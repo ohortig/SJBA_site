@@ -1,3 +1,4 @@
+import { motion, useReducedMotion } from 'motion/react';
 import './LogoGallery.css';
 
 export interface Logo {
@@ -12,10 +13,25 @@ interface LogoGalleryProps {
 }
 
 export const LogoGallery = ({ direction = 'left', logos }: LogoGalleryProps) => {
+  const shouldReduceMotion = useReducedMotion();
+
   return (
     <div className="logo-gallery-container">
-      <div className={`logo-gallery ${direction === 'right' ? 'logo-gallery-right' : ''}`}>
-        {/* First set of logos */}
+      <motion.div
+        className={`logo-gallery ${direction === 'right' ? 'logo-gallery-right' : ''}`}
+        animate={
+          shouldReduceMotion
+            ? { x: '0%' }
+            : direction === 'right'
+              ? { x: ['-50%', '0%'] }
+              : { x: ['0%', '-50%'] }
+        }
+        transition={
+          shouldReduceMotion
+            ? { duration: 0 }
+            : { duration: 60, ease: 'linear', repeat: Number.POSITIVE_INFINITY }
+        }
+      >
         {logos.map((logo, index) => (
           <div key={`set1-${index}`} className="logo-item">
             {logo.hasImage !== false ? (
@@ -25,7 +41,6 @@ export const LogoGallery = ({ direction = 'left', logos }: LogoGalleryProps) => 
                   alt={logo.name}
                   className="company-logo"
                   onError={(e) => {
-                    // Fallback to text if image fails to load
                     const target = e.currentTarget;
                     const fallback = target.nextElementSibling as HTMLElement;
                     if (fallback) {
@@ -43,7 +58,6 @@ export const LogoGallery = ({ direction = 'left', logos }: LogoGalleryProps) => 
             )}
           </div>
         ))}
-        {/* Duplicate set for seamless loop */}
         {logos.map((logo, index) => (
           <div key={`set2-${index}`} className="logo-item">
             {logo.hasImage !== false ? (
@@ -70,7 +84,7 @@ export const LogoGallery = ({ direction = 'left', logos }: LogoGalleryProps) => 
             )}
           </div>
         ))}
-      </div>
+      </motion.div>
     </div>
   );
 };

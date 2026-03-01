@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react';
+import { motion, useReducedMotion } from 'motion/react';
 import { Footer } from '@components';
 import { useScrollAnimation } from '@hooks';
 import { dataService } from '@api';
 import type { BoardMember } from '@types';
+import { MOTION_TRANSITION_FAST } from '../../motion/tokens';
 import './Programs.css';
 
 /* Default values for mentorship application status and URL (updated with API call) */
@@ -12,6 +14,7 @@ const DEFAULTS = {
 };
 
 export const Programs = () => {
+  const shouldReduceMotion = useReducedMotion();
   const headerAnim = useScrollAnimation({ threshold: 0.1, rootMargin: '0px 0px -20px 0px' });
   const introAnim = useScrollAnimation({ threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
   const zigzag1Anim = useScrollAnimation({ threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
@@ -94,7 +97,17 @@ export const Programs = () => {
             className={`application-status-pill ${isApplicationOpen ? 'open' : 'closed'}`}
             onClick={scrollToApply}
           >
-            <span className={`status-dot ${isApplicationOpen ? 'open-dot' : 'closed-dot'}`} />
+            <motion.span
+              className={`status-dot ${isApplicationOpen ? 'open-dot' : 'closed-dot'}`}
+              animate={
+                isApplicationOpen && !shouldReduceMotion ? { opacity: [1, 0.4, 1] } : { opacity: 1 }
+              }
+              transition={
+                isApplicationOpen && !shouldReduceMotion
+                  ? { duration: 2, ease: 'easeInOut', repeat: Number.POSITIVE_INFINITY }
+                  : { duration: 0 }
+              }
+            />
             {isApplicationOpen ? 'Applications Open — Apply Below' : 'Applications Closed'}
           </button>
         )}
@@ -188,7 +201,17 @@ export const Programs = () => {
           className={`programs-apply-section ${applyAnim.isVisible ? 'visible' : ''}`}
         >
           <div className={`application-status-badge ${isApplicationOpen ? 'open' : 'closed'}`}>
-            <span className={`status-dot ${isApplicationOpen ? 'open-dot' : 'closed-dot'}`} />
+            <motion.span
+              className={`status-dot ${isApplicationOpen ? 'open-dot' : 'closed-dot'}`}
+              animate={
+                isApplicationOpen && !shouldReduceMotion ? { opacity: [1, 0.4, 1] } : { opacity: 1 }
+              }
+              transition={
+                isApplicationOpen && !shouldReduceMotion
+                  ? { duration: 2, ease: 'easeInOut', repeat: Number.POSITIVE_INFINITY }
+                  : { duration: 0 }
+              }
+            />
             {isApplicationOpen ? 'Applications Open' : 'Applications Closed'}
           </div>
 
@@ -203,17 +226,33 @@ export const Programs = () => {
           </p>
 
           {isApplicationOpen ? (
-            <a
+            <motion.a
               href={applicationUrl}
               target="_blank"
               rel="noopener noreferrer"
               className="apply-button"
+              whileHover={shouldReduceMotion ? undefined : { y: -2 }}
+              whileTap={shouldReduceMotion ? undefined : { scale: 0.985 }}
+              transition={shouldReduceMotion ? { duration: 0 } : MOTION_TRANSITION_FAST}
             >
               Apply Now{' '}
-              <img src="/icons/arrow-top-right.png" alt="Arrow" className="apply-button-arrow" />
-            </a>
+              <motion.img
+                src="/icons/arrow-top-right.png"
+                alt="Arrow"
+                className="apply-button-arrow"
+                whileHover={shouldReduceMotion ? undefined : { x: 2, y: -2 }}
+                transition={shouldReduceMotion ? { duration: 0 } : MOTION_TRANSITION_FAST}
+              />
+            </motion.a>
           ) : (
-            <span className="apply-button disabled">Applications Closed</span>
+            <motion.span
+              className="apply-button disabled"
+              initial={false}
+              animate={{ opacity: 1 }}
+              transition={shouldReduceMotion ? { duration: 0 } : MOTION_TRANSITION_FAST}
+            >
+              Applications Closed
+            </motion.span>
           )}
 
           {mentorshipChair && (

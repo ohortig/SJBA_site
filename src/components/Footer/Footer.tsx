@@ -1,45 +1,83 @@
+import { motion, useReducedMotion } from 'motion/react';
 import { Link } from 'react-router-dom';
 import { useScrollAnimation } from '@hooks';
 import { SocialLink } from '@components';
 import { STATUS_PAGE_URL } from '@constants';
+import { MOTION_EASE_STANDARD, MOTION_TRANSITION_FAST } from '../../motion/tokens';
 import './Footer.css';
+
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.06,
+      delayChildren: 0.04,
+    },
+  },
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0 },
+};
 
 export const Footer = () => {
   const footerAnimation = useScrollAnimation({ threshold: 0.02 });
+  const shouldReduceMotion = useReducedMotion();
 
   return (
-    <footer
+    <motion.footer
       ref={footerAnimation.elementRef}
-      className={`footer-section fade-in ${footerAnimation.isVisible ? 'visible' : ''}`}
+      className="footer-section"
+      initial={{ opacity: 0 }}
+      animate={footerAnimation.isVisible ? { opacity: 1 } : { opacity: 0 }}
+      transition={shouldReduceMotion ? { duration: 0 } : MOTION_TRANSITION_FAST}
     >
       <div className="footer-content">
-        <div
-          className={`footer-links stagger-children ${footerAnimation.isVisible ? 'visible' : ''}`}
+        <motion.div
+          className="footer-links"
+          variants={containerVariants}
+          initial="hidden"
+          animate={footerAnimation.isVisible ? 'visible' : 'hidden'}
+          transition={
+            shouldReduceMotion
+              ? { duration: 0 }
+              : {
+                  duration: 0.2,
+                  ease: MOTION_EASE_STANDARD,
+                }
+          }
         >
-          <div className="footer-column stagger-item">
+          <motion.div className="footer-column" variants={itemVariants}>
             <h3>Programs</h3>
             <Link to="/programs">All Programs</Link>
-          </div>
+          </motion.div>
 
-          <div className="footer-column stagger-item">
+          <motion.div className="footer-column" variants={itemVariants}>
             <h3>Events</h3>
             <Link to="/events">Events & Speakers</Link>
-          </div>
+          </motion.div>
 
-          <div className="footer-column stagger-item">
+          <motion.div className="footer-column" variants={itemVariants}>
             <h3>About Us</h3>
             <Link to="/our-mission">Our Mission</Link>
             <Link to="/our-board">Our Board</Link>
             <Link to="/our-members">Our Members</Link>
-          </div>
+          </motion.div>
 
-          <div className="footer-column stagger-item">
+          <motion.div className="footer-column" variants={itemVariants}>
             <h3>Connect</h3>
             <Link to="/contact">Contact Us</Link>
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
 
-        <div className={`footer-social slide-left ${footerAnimation.isVisible ? 'visible' : ''}`}>
+        <motion.div
+          className="footer-social"
+          initial={{ opacity: 0, x: shouldReduceMotion ? 0 : 40 }}
+          animate={footerAnimation.isVisible ? { opacity: 1, x: 0 } : { opacity: 0, x: 40 }}
+          transition={shouldReduceMotion ? { duration: 0 } : MOTION_TRANSITION_FAST}
+        >
           <h3>Where to find us</h3>
           <div className="social-links">
             <SocialLink
@@ -59,7 +97,7 @@ export const Footer = () => {
               alt="Instagram"
             />
           </div>
-        </div>
+        </motion.div>
       </div>
 
       <div className="footer-bottom">
@@ -79,11 +117,18 @@ export const Footer = () => {
             <br />
             All rights reserved.
           </p>
-          <a className="footer-status-link" href={STATUS_PAGE_URL} target="_blank" rel="noreferrer">
+          <motion.a
+            className="footer-status-link"
+            href={STATUS_PAGE_URL}
+            target="_blank"
+            rel="noreferrer"
+            whileHover={shouldReduceMotion ? undefined : { opacity: 0.8 }}
+            transition={shouldReduceMotion ? { duration: 0 } : MOTION_TRANSITION_FAST}
+          >
             Service Status
-          </a>
+          </motion.a>
         </div>
       </div>
-    </footer>
+    </motion.footer>
   );
 };

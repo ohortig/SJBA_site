@@ -1,5 +1,6 @@
 import { useState, useEffect, useMemo, useRef, useCallback } from 'react';
 import { useLocation } from 'react-router-dom';
+import { AnimatePresence, motion, useReducedMotion } from 'motion/react';
 import { Footer, LoadingSpinner, ErrorDisplay } from '@components';
 import { useScrollAnimation } from '@hooks';
 import { dataService } from '@api';
@@ -12,12 +13,14 @@ import {
   getEventThumbnailUrl,
 } from '@utils';
 import type { Event } from '@types';
+import { MOTION_TRANSITION_FAST } from '../../motion/tokens';
 import './Events.css';
 
 // Section type for Upcoming/Past grouping
 type EventSection = 'upcoming' | 'past';
 
 export const Events = () => {
+  const shouldReduceMotion = useReducedMotion();
   const { hash } = useLocation();
   const headerAnimation = useScrollAnimation({
     threshold: 0.1,
@@ -293,11 +296,30 @@ export const Events = () => {
     const isPastEvent = new Date(event.startTime) < new Date();
 
     return (
-      <div
+      <motion.div
         key={event.id}
         id={`event-${event.id}`}
         ref={setEventCardRef(event.id)}
         className={`event-card stagger-item ${linkedEventId === event.id ? 'event-card--linked-highlight' : ''}`}
+        animate={
+          linkedEventId === event.id && !shouldReduceMotion
+            ? {
+                boxShadow: [
+                  '0 0 0 0 rgba(76, 13, 127, 0), 0 4px 12px rgba(76, 13, 127, 0.1)',
+                  '0 0 0 6px rgba(76, 13, 127, 0.2), 0 12px 30px rgba(76, 13, 127, 0.24)',
+                  '0 0 0 3px rgba(76, 13, 127, 0.15), 0 10px 28px rgba(76, 13, 127, 0.22)',
+                ],
+              }
+            : undefined
+        }
+        transition={
+          shouldReduceMotion
+            ? { duration: 0 }
+            : linkedEventId === event.id
+              ? { duration: 2.4, ease: 'easeInOut' }
+              : MOTION_TRANSITION_FAST
+        }
+        whileHover={shouldReduceMotion ? undefined : { y: -8 }}
       >
         <div
           className={`event-flyer ${!shouldShowPlaceholder(event) ? 'has-image' : ''}`}
@@ -390,7 +412,7 @@ export const Events = () => {
               </a>
             ))}
         </div>
-      </div>
+      </motion.div>
     );
   };
 
@@ -483,24 +505,44 @@ export const Events = () => {
       </div>
 
       {/* Flyer Modal */}
-      {modalFlyer && (
-        <div className="flyer-modal-overlay" onClick={() => setModalFlyer(null)}>
-          <div className="flyer-modal-content" onClick={(e) => e.stopPropagation()}>
-            <button
-              className="flyer-modal-close"
-              onClick={() => setModalFlyer(null)}
-              aria-label="Close modal"
+      <AnimatePresence>
+        {modalFlyer && (
+          <motion.div
+            className="flyer-modal-overlay"
+            onClick={() => setModalFlyer(null)}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={shouldReduceMotion ? { duration: 0 } : { duration: 0.2, ease: 'easeOut' }}
+          >
+            <motion.div
+              className="flyer-modal-content"
+              onClick={(e) => e.stopPropagation()}
+              initial={shouldReduceMotion ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, scale: 0.97 }}
+              transition={
+                shouldReduceMotion
+                  ? { duration: 0 }
+                  : { duration: 0.2, ease: [0.25, 0.46, 0.45, 0.94] }
+              }
             >
-              ×
-            </button>
-            <img
-              src={modalFlyer.src}
-              alt={`${modalFlyer.title} flyer`}
-              className="flyer-modal-image"
-            />
-          </div>
-        </div>
-      )}
+              <button
+                className="flyer-modal-close"
+                onClick={() => setModalFlyer(null)}
+                aria-label="Close modal"
+              >
+                ×
+              </button>
+              <img
+                src={modalFlyer.src}
+                alt={`${modalFlyer.title} flyer`}
+                className="flyer-modal-image"
+              />
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </>
   );
 };

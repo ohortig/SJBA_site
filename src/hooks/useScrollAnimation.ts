@@ -1,4 +1,5 @@
-import { useEffect, useRef, useState } from 'react';
+import { useMemo, useRef, type RefObject } from 'react';
+import { useInView, useReducedMotion } from 'motion/react';
 
 interface UseScrollAnimationOptions {
   threshold?: number;
@@ -6,41 +7,34 @@ interface UseScrollAnimationOptions {
   triggerOnce?: boolean;
 }
 
-export const useScrollAnimation = (options: UseScrollAnimationOptions = {}) => {
+interface UseScrollAnimationResult<T extends HTMLElement> {
+  elementRef: RefObject<T | null>;
+  isVisible: boolean;
+}
+
+const clamp = (value: number, min: number, max: number) => Math.min(Math.max(value, min), max);
+
+export const useScrollAnimation = <T extends HTMLElement = HTMLDivElement>(
+  options: UseScrollAnimationOptions = {}
+): UseScrollAnimationResult<T> => {
   const { threshold = 0.05, rootMargin = '0px 0px -50px 0px', triggerOnce = true } = options;
 
-  const elementRef = useRef<HTMLDivElement>(null);
-  const [isVisible, setIsVisible] = useState(false);
+  const shouldReduceMotion = useReducedMotion();
+  const elementRef = useRef<T>(null);
 
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-          if (triggerOnce && elementRef.current) {
-            observer.unobserve(elementRef.current);
-          }
-        } else if (!triggerOnce) {
-          setIsVisible(false);
-        }
-      },
-      {
-        threshold,
-        rootMargin,
-      }
-    );
+  const inViewOptions = useMemo(
+    () => ({
+      amount: clamp(threshold, 0, 1),
+      margin: rootMargin as `${number}px ${number}px ${number}px ${number}px`,
+      once: triggerOnce,
+    }),
+    [threshold, rootMargin, triggerOnce]
+  );
 
-    const element = elementRef.current;
-    if (element) {
-      observer.observe(element);
-    }
+  const isInView = useInView(elementRef, inViewOptions);
 
-    return () => {
-      if (element) {
-        observer.unobserve(element);
-      }
-    };
-  }, [threshold, rootMargin, triggerOnce]);
-
-  return { elementRef, isVisible };
+  return {
+    elementRef,
+    isVisible: shouldReduceMotion ? true : isInView,
+  };
 };
