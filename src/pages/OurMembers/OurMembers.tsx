@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo, useCallback } from 'react';
 import { Footer, LoadingSpinner, ErrorDisplay, CallToAction } from '@components';
 import { semesterSortKey, semesterLabel } from '@utils';
 import { useScrollAnimation } from '@hooks';
@@ -26,26 +26,27 @@ export const OurMembers = () => {
   const [error, setError] = useState<string | null>(null);
   const [activeSemesterIndex, setActiveSemesterIndex] = useState(0);
 
-  useEffect(() => {
-    const fetchMembers = async () => {
-      try {
-        setIsLoading(true);
-        setError(null);
-        const data = await dataService.members.getAll();
-        setMembers(data);
-      } catch (err) {
-        console.error('Failed to fetch members:', err);
-        let errorMessage = 'Failed to load members. Please try again later.';
-        if (err instanceof Error) {
-          errorMessage = err.message;
-        }
-        setError(errorMessage);
-      } finally {
-        setIsLoading(false);
+  const fetchMembers = useCallback(async () => {
+    try {
+      setIsLoading(true);
+      setError(null);
+      const data = await dataService.members.getAll();
+      setMembers(data);
+    } catch (err) {
+      console.error('Failed to fetch members:', err);
+      let errorMessage = 'Failed to load members. Please try again later.';
+      if (err instanceof Error) {
+        errorMessage = err.message;
       }
-    };
-    void fetchMembers();
+      setError(errorMessage);
+    } finally {
+      setIsLoading(false);
+    }
   }, []);
+
+  useEffect(() => {
+    void fetchMembers();
+  }, [fetchMembers]);
 
   // Group members by semester, sorted newest-first
   const groupedMembers = useMemo(() => {
@@ -131,7 +132,7 @@ export const OurMembers = () => {
             {isLoading ? (
               <LoadingSpinner />
             ) : error ? (
-              <ErrorDisplay error={error} onRetry={() => window.location.reload()} />
+              <ErrorDisplay error={error} onRetry={() => void fetchMembers()} />
             ) : groupedMembers.length === 0 ? (
               <p className="members-empty">No members to display yet.</p>
             ) : (

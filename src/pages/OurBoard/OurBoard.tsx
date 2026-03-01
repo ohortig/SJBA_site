@@ -24,30 +24,30 @@ export const OurBoard = () => {
   const [error, setError] = useState<string | null>(null);
   const preloadedImagesRef = useRef<Set<string>>(new Set());
 
+  const fetchBoardMembers = useCallback(async () => {
+    try {
+      setIsLoading(true);
+      setError(null);
+      const members = await dataService.boardMembers.getAll();
+      setBoardMembers(members);
+    } catch (error) {
+      console.error('Failed to fetch board members:', error);
+      let errorMessage = 'Failed to load board members. Please try again later.';
+
+      if (error instanceof Error) {
+        errorMessage = error.message;
+      }
+
+      setError(errorMessage);
+    } finally {
+      setIsLoading(false);
+    }
+  }, []);
+
   // Fetch board members data
   useEffect(() => {
-    const fetchBoardMembers = async () => {
-      try {
-        setIsLoading(true);
-        setError(null);
-        const members = await dataService.boardMembers.getAll();
-        setBoardMembers(members);
-      } catch (error) {
-        console.error('Failed to fetch board members:', error);
-        // Check if it's an API error with a message, otherwise use a generic message
-        let errorMessage = 'Failed to load board members. Please try again later.';
-
-        if (error instanceof Error) {
-          errorMessage = error.message;
-        }
-
-        setError(errorMessage);
-      } finally {
-        setIsLoading(false);
-      }
-    };
     void fetchBoardMembers();
-  }, []);
+  }, [fetchBoardMembers]);
 
   // Preload full-resolution images in the background
   // so they're already cached when the modal opens
@@ -120,7 +120,7 @@ export const OurBoard = () => {
           {isLoading ? (
             <LoadingSpinner />
           ) : error ? (
-            <ErrorDisplay error={error} onRetry={() => window.location.reload()} />
+            <ErrorDisplay error={error} onRetry={() => void fetchBoardMembers()} />
           ) : (
             <div
               className={`board-grid stagger-children ${boardAnimation.isVisible || forceVisible ? 'visible' : ''}`}

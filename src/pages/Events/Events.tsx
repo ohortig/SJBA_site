@@ -50,31 +50,32 @@ export const Events = () => {
     past: null,
   });
 
+  const fetchEvents = useCallback(async () => {
+    try {
+      setIsLoading(true);
+      setError(null);
+      const { events: fetchedEvents } = await dataService.events.getAll({
+        limit: 100,
+      });
+      setEvents(fetchedEvents);
+    } catch (error) {
+      console.error('Failed to fetch events:', error);
+      let errorMessage = 'Failed to load events. Please try again later.';
+
+      if (error instanceof Error) {
+        errorMessage = error.message;
+      }
+
+      setError(errorMessage);
+    } finally {
+      setIsLoading(false);
+    }
+  }, []);
+
   // Fetch events data
   useEffect(() => {
-    const fetchEvents = async () => {
-      try {
-        setIsLoading(true);
-        setError(null);
-        const { events: fetchedEvents } = await dataService.events.getAll({
-          limit: 100,
-        });
-        setEvents(fetchedEvents);
-      } catch (error) {
-        console.error('Failed to fetch events:', error);
-        let errorMessage = 'Failed to load events. Please try again later.';
-
-        if (error instanceof Error) {
-          errorMessage = error.message;
-        }
-
-        setError(errorMessage);
-      } finally {
-        setIsLoading(false);
-      }
-    };
     void fetchEvents();
-  }, []);
+  }, [fetchEvents]);
 
   // Fallback mechanism for mobile - ensure animations trigger after a delay
   useEffect(() => {
@@ -411,7 +412,7 @@ export const Events = () => {
             {isLoading ? (
               <LoadingSpinner />
             ) : error ? (
-              <ErrorDisplay error={error} onRetry={() => window.location.reload()} />
+              <ErrorDisplay error={error} onRetry={() => void fetchEvents()} />
             ) : events.length === 0 ? (
               <div className="no-events-message">
                 <p>No events scheduled yet.</p>
