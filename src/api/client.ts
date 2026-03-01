@@ -85,11 +85,21 @@ class ApiClient {
             code?: string;
           };
           const errorData = responseData?.error ?? responseData;
-          message =
-            errorData?.message || error.message || `HTTP ${status}: ${error.response.statusText}`;
+
+          if (status >= 500) {
+            message = 'Services are temporarily unavailable.';
+          } else if (status === 404) {
+            message = 'The requested resource could not be found.';
+          } else if (status === 401 || status === 403) {
+            message = 'You do not have permission to access this resource.';
+          } else {
+            message =
+              errorData?.message || error.message || `HTTP ${status}: ${error.response.statusText}`;
+          }
+
           code = errorData?.code;
         } else if (error.request) {
-          message = 'Network error - please check your connection';
+          message = 'Network error. Please check your connection and try again.';
           status = 0;
         } else {
           message = error.message;
