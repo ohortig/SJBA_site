@@ -9,8 +9,15 @@
 }
 
 .error-icon {
-  font-size: 3rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   margin-bottom: 1rem;
+}
+
+.error-icon img {
+  width: 52px;
+  height: 52px;
 }
 
 .error-text {
@@ -18,8 +25,44 @@
   color: #dc2626;
   font-weight: 500;
   margin: 0 0 1.5rem 0;
-  max-width: 400px;
+  max-width: 560px;
   text-align: center;
+}
+
+.error-status-chip {
+  margin: 0 0 1.5rem 0;
+  display: inline-flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  align-items: center;
+  padding: 0.75rem 1rem;
+  border: 1px solid rgba(76, 13, 127, 0.14);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.75);
+}
+
+.error-status-label {
+  font-size: 0.82rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #6b7280;
+}
+
+.error-status-link {
+  color: #4c0d7f;
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.error-status-link:hover {
+  color: #5a1a8a;
+}
+
+.error-status-link:focus-visible {
+  outline: 2px solid #4c0d7f;
+  outline-offset: 3px;
+  border-radius: 4px;
 }
 
 .retry-button {
@@ -48,5 +91,10 @@
 
   .error-text {
     font-size: 0.9rem;
+  }
+
+  .error-icon img {
+    width: 46px;
+    height: 46px;
   }
 }
