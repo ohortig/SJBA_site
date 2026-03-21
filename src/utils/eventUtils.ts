@@ -1,34 +1,60 @@
 import { EVENT_FLYERS_THUMBNAILS_BUCKET } from '@constants';
 import type { Event } from '@types';
+import { SITE_TIME_ZONE } from './siteTimeUtils';
+
+const EVENT_DATE_FORMATTER = new Intl.DateTimeFormat('en-US', {
+  timeZone: SITE_TIME_ZONE,
+  weekday: 'short',
+  month: 'short',
+  day: 'numeric',
+  year: 'numeric',
+});
+
+const EVENT_TIME_FORMATTER = new Intl.DateTimeFormat('en-US', {
+  timeZone: SITE_TIME_ZONE,
+  hour: 'numeric',
+  minute: '2-digit',
+  hour12: true,
+});
+
+const INVALID_EVENT_DATE_LABEL = 'Date TBA';
+const INVALID_EVENT_TIME_LABEL = 'Time TBA';
+
+const getValidDate = (value: string): Date | null => {
+  const parsed = new Date(value);
+  return Number.isNaN(parsed.getTime()) ? null : parsed;
+};
+
+const getEventTimestamp = (value: string): number | null => {
+  const date = getValidDate(value);
+  return date ? date.getTime() : null;
+};
+
+const getSortableTimestamp = (value: string): number => {
+  return getEventTimestamp(value) ?? Number.POSITIVE_INFINITY;
+};
 
 export const formatEventDate = (startTime: string, endTime: string | null): string => {
   return `${formatEventDateOnly(startTime)} • ${formatEventTimeOnly(startTime, endTime)}`;
 };
 
 export const formatEventDateOnly = (startTime: string): string => {
-  const start = new Date(startTime);
-  const options: Intl.DateTimeFormatOptions = {
-    weekday: 'short',
-    month: 'short',
-    day: 'numeric',
-    year: 'numeric',
-  };
-  return start.toLocaleDateString('en-US', options);
+  const start = getValidDate(startTime);
+  return start ? EVENT_DATE_FORMATTER.format(start) : INVALID_EVENT_DATE_LABEL;
 };
 
 export const formatEventTimeOnly = (startTime: string, endTime: string | null): string => {
-  const start = new Date(startTime);
-  const timeOptions: Intl.DateTimeFormatOptions = {
-    hour: 'numeric',
-    minute: '2-digit',
-    hour12: true,
-  };
-  const startLabel = start.toLocaleTimeString('en-US', timeOptions);
+  const start = getValidDate(startTime);
+  if (!start) return INVALID_EVENT_TIME_LABEL;
+
+  const startLabel = EVENT_TIME_FORMATTER.format(start);
 
   if (!endTime) return startLabel;
 
-  const end = new Date(endTime);
-  const endLabel = end.toLocaleTimeString('en-US', timeOptions);
+  const end = getValidDate(endTime);
+  if (!end) return startLabel;
+
+  const endLabel = EVENT_TIME_FORMATTER.format(end);
   return `${startLabel} - ${endLabel}`;
 };
 
@@ -38,10 +64,27 @@ export const getEventThumbnailUrl = (filename: string | null): string => {
   return `${EVENT_FLYERS_THUMBNAILS_BUCKET}${thumbnailName}`;
 };
 
+export const compareEventStarts = (
+  a: Pick<Event, 'startTime'>,
+  b: Pick<Event, 'startTime'>
+): number => {
+  return getSortableTimestamp(a.startTime) - getSortableTimestamp(b.startTime);
+};
+
+export const isEventUpcoming = (event: Pick<Event, 'startTime'>, now = new Date()): boolean => {
+  const startTimestamp = getEventTimestamp(event.startTime);
+  return startTimestamp !== null && startTimestamp >= now.getTime();
+};
+
+export const isEventPast = (event: Pick<Event, 'startTime'>, now = new Date()): boolean => {
+  const startTimestamp = getEventTimestamp(event.startTime);
+  return startTimestamp !== null && startTimestamp < now.getTime();
+};
+
 export const getNextUpcomingEvent = (events: Event[], now = new Date()): Event | null => {
   const upcomingEvents = events
-    .filter((event) => new Date(event.startTime).getTime() >= now.getTime())
-    .sort((a, b) => new Date(a.startTime).getTime() - new Date(b.startTime).getTime());
+    .filter((event) => isEventUpcoming(event, now))
+    .sort(compareEventStarts);
 
   return upcomingEvents[0] ?? null;
 };

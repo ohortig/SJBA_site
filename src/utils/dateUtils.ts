@@ -1,7 +1,5 @@
-export const getCurrentLocalDateKey = (): string => {
-  const now = new Date();
-  const year = now.getFullYear();
-  const month = String(now.getMonth() + 1).padStart(2, '0');
-  const day = String(now.getDate()).padStart(2, '0');
-  return `${year}-${month}-${day}`;
-};
+export { getCurrentSiteDateKey } from './siteTimeUtils';
+
+// Backward-compatible alias retained while the rest of the app migrates away from
+// viewer-local semantics.
+export { getCurrentSiteDateKey as getCurrentLocalDateKey } from './siteTimeUtils';
