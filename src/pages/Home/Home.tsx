@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 import { dataService } from '@api';
 import type { Event } from '@types';
-import { useProgressiveImage, useScrollAnimation } from '@hooks';
+import { useCurrentTime, useProgressiveImage, useScrollAnimation } from '@hooks';
 import { HOME_PAGE_SPEAKER_LOGOS } from '@constants';
 import { Footer, LogoGallery, NewsletterSignup, FloatingPopup } from '@components';
 import {
@@ -11,7 +11,7 @@ import {
   getNextUpcomingEvent,
   formatEventDateOnly,
   formatEventTimeOnly,
-  getCurrentLocalDateKey,
+  getCurrentSiteDateKey,
 } from '@utils';
 
 import './Home.css';
@@ -37,6 +37,7 @@ export const Home = () => {
   const [lastDismissedDate, setLastDismissedDate] = useState<string | null>(null);
   const [isDismissalStateReady, setIsDismissalStateReady] = useState(false);
   const firstHeroImageSrc = HERO_GALLERY_IMAGES[0];
+  const now = useCurrentTime();
   const { currentSrc: progressiveHeroImageSrc, isFullLoaded: isHeroImageLoaded } =
     useProgressiveImage(HERO_GALLERY_PLACEHOLDER, firstHeroImageSrc);
 
@@ -54,14 +55,14 @@ export const Home = () => {
     setCurrentImage(imageNumber);
   };
 
-  const nextEvent = useMemo(() => getNextUpcomingEvent(events), [events]);
+  const nextEvent = useMemo(() => getNextUpcomingEvent(events, now), [events, now]);
 
   const nextEventThumbnail = useMemo(() => {
     if (!nextEvent?.flyerFile) return undefined;
     return getEventThumbnailUrl(nextEvent.flyerFile);
   }, [nextEvent]);
 
-  const currentDateKey = getCurrentLocalDateKey();
+  const currentDateKey = useMemo(() => getCurrentSiteDateKey(now), [now]);
 
   const nextEventDateLabel = useMemo(() => {
     if (!nextEvent) return '';
