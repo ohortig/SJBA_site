@@ -78,6 +78,11 @@
   object-fit: cover;
 }
 
+.gallery-image img.is-placeholder {
+  filter: blur(12px);
+  transform: scale(1.03);
+}
+
 .gallery-overlay {
   position: absolute;
   top: 0;
