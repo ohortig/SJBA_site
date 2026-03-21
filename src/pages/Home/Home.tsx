@@ -18,10 +18,10 @@ import './Home.css';
 
 const LAST_DISMISSED_DATE_STORAGE_KEY = 'homeNextEventPopup:lastDismissedDate';
 const HERO_GALLERY_IMAGES = [
-  '/home-gallery/sjba-gallery-1.jpg',
-  '/home-gallery/sjba-gallery-2.jpg',
-  '/home-gallery/sjba-gallery-3.jpg',
-  '/home-gallery/sjba-gallery-4.jpg',
+  '/home-gallery/sjba-gallery-1.JPG',
+  '/home-gallery/sjba-gallery-2.JPG',
+  '/home-gallery/sjba-gallery-3.JPG',
+  '/home-gallery/sjba-gallery-4.JPG',
 ] as const;
 const HERO_GALLERY_PLACEHOLDER = '/home-gallery/sjba-gallery-1-placeholder.jpg';
 
