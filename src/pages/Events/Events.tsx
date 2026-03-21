@@ -1,15 +1,18 @@
 import { useState, useEffect, useMemo, useRef, useCallback } from 'react';
 import { useLocation } from 'react-router-dom';
 import { Footer, LoadingSpinner, ErrorDisplay } from '@components';
-import { useScrollAnimation } from '@hooks';
+import { useScrollAnimation, useCurrentTime } from '@hooks';
 import { dataService } from '@api';
 import { EVENT_FLYERS_BUCKET } from '@constants';
 import {
+  compareEventStarts,
   semesterSortKey,
   semesterLabel,
   formatEventDateOnly,
   formatEventTimeOnly,
   getEventThumbnailUrl,
+  isEventPast,
+  isEventUpcoming,
 } from '@utils';
 import type { Event } from '@types';
 import './Events.css';
@@ -38,6 +41,7 @@ export const Events = () => {
   const [modalFlyer, setModalFlyer] = useState<{ src: string; title: string } | null>(null);
   const [linkedEventId, setLinkedEventId] = useState<string | null>(null);
   const preloadedImagesRef = useRef<Set<string>>(new Set());
+  const now = useCurrentTime();
 
   // Refs for event cards to track which semester is in view
   const eventCardRefs = useRef<Map<string, HTMLDivElement>>(new Map());
@@ -208,20 +212,15 @@ export const Events = () => {
 
   // Group events by Upcoming/Past
   const eventsBySection = useMemo(() => {
-    const now = new Date();
     const grouped: Record<EventSection, Event[]> = {
       upcoming: [],
       past: [],
     };
 
-    // Sort events by start time
-    const sortedEvents = [...events].sort(
-      (a, b) => new Date(a.startTime).getTime() - new Date(b.startTime).getTime()
-    );
+    const sortedEvents = [...events].sort(compareEventStarts);
 
     sortedEvents.forEach((event) => {
-      const eventDate = new Date(event.startTime);
-      if (eventDate >= now) {
+      if (isEventUpcoming(event, now)) {
         grouped.upcoming.push(event);
       } else {
         // Sort past events most recent first
@@ -230,7 +229,7 @@ export const Events = () => {
     });
 
     return grouped;
-  }, [events]);
+  }, [events, now]);
 
   // Derive available semesters from events
   const availableSemesters = useMemo(() => {
@@ -290,7 +289,7 @@ export const Events = () => {
 
   // Render an event card
   const renderEventCard = (event: Event) => {
-    const isPastEvent = new Date(event.startTime) < new Date();
+    const isPastEventCard = isEventPast(event, now);
 
     return (
       <div
@@ -376,7 +375,7 @@ export const Events = () => {
             </p>
           )}
           {event.rsvpLink &&
-            (isPastEvent ? (
+            (isPastEventCard ? (
               <span className="event-rsvp-btn disabled">RSVP Closed</span>
             ) : (
               <a
