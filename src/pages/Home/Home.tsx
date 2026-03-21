@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 import { dataService } from '@api';
 import type { Event } from '@types';
-import { useScrollAnimation } from '@hooks';
+import { useProgressiveImage, useScrollAnimation } from '@hooks';
 import { HOME_PAGE_SPEAKER_LOGOS } from '@constants';
 import { Footer, LogoGallery, NewsletterSignup, FloatingPopup } from '@components';
 import {
@@ -17,6 +17,13 @@ import {
 import './Home.css';
 
 const LAST_DISMISSED_DATE_STORAGE_KEY = 'homeNextEventPopup:lastDismissedDate';
+const HERO_GALLERY_IMAGES = [
+  '/home-gallery/sjba-gallery-1.jpg',
+  '/home-gallery/sjba-gallery-2.jpg',
+  '/home-gallery/sjba-gallery-3.jpg',
+  '/home-gallery/sjba-gallery-4.jpg',
+] as const;
+const HERO_GALLERY_PLACEHOLDER = '/home-gallery/sjba-gallery-1-placeholder.jpg';
 
 export const Home = () => {
   // Scroll animation hooks for different sections
@@ -25,9 +32,13 @@ export const Home = () => {
 
   // Gallery rotation state
   const [currentImage, setCurrentImage] = useState(1);
+  const [loadedGalleryImages, setLoadedGalleryImages] = useState<number[]>([1, 2]);
   const [events, setEvents] = useState<Event[]>([]);
   const [lastDismissedDate, setLastDismissedDate] = useState<string | null>(null);
   const [isDismissalStateReady, setIsDismissalStateReady] = useState(false);
+  const firstHeroImageSrc = HERO_GALLERY_IMAGES[0];
+  const { currentSrc: progressiveHeroImageSrc, isFullLoaded: isHeroImageLoaded } =
+    useProgressiveImage(HERO_GALLERY_PLACEHOLDER, firstHeroImageSrc);
 
   // Auto-rotate gallery images
   useEffect(() => {
@@ -62,27 +73,10 @@ export const Home = () => {
     return formatEventTimeOnly(nextEvent.startTime, nextEvent.endTime);
   }, [nextEvent]);
 
-  // Update active states
   useEffect(() => {
-    // Update gallery images
-    const images = document.querySelectorAll('.gallery-image');
-    const dots = document.querySelectorAll('.nav-dot');
-
-    images.forEach((img, index) => {
-      if (index + 1 === currentImage) {
-        img.classList.add('active');
-      } else {
-        img.classList.remove('active');
-      }
-    });
-
-    dots.forEach((dot, index) => {
-      if (index + 1 === currentImage) {
-        dot.classList.add('active');
-      } else {
-        dot.classList.remove('active');
-      }
-    });
+    setLoadedGalleryImages((previous) =>
+      previous.includes(currentImage) ? previous : [...previous, currentImage]
+    );
   }, [currentImage]);
 
   // Read previously dismissed next-event popup state from localStorage
@@ -137,18 +131,36 @@ export const Home = () => {
         {/* Rotating Gallery Background */}
         <div className="rotating-gallery-background">
           <div className="gallery-image-container">
-            <div className="gallery-image active" data-image="1">
-              <img src="/home-gallery/sjba-gallery-1.JPG" />
-            </div>
-            <div className="gallery-image" data-image="2">
-              <img src="/home-gallery/sjba-gallery-2.JPG" />
-            </div>
-            <div className="gallery-image" data-image="3">
-              <img src="/home-gallery/sjba-gallery-3.JPG" />
-            </div>
-            <div className="gallery-image" data-image="4">
-              <img src="/home-gallery/sjba-gallery-4.JPG" />
-            </div>
+            {HERO_GALLERY_IMAGES.map((imageSrc, index) => {
+              const imageNumber = index + 1;
+              const shouldLoadImage = loadedGalleryImages.includes(imageNumber);
+              const isActiveImage = currentImage === imageNumber;
+              const displaySrc =
+                imageNumber === 1
+                  ? (progressiveHeroImageSrc ?? HERO_GALLERY_PLACEHOLDER)
+                  : shouldLoadImage
+                    ? imageSrc
+                    : undefined;
+
+              return (
+                <div
+                  key={imageSrc}
+                  className={`gallery-image ${isActiveImage ? 'active' : ''}`}
+                  data-image={imageNumber}
+                >
+                  {displaySrc ? (
+                    <img
+                      src={displaySrc}
+                      alt=""
+                      loading={imageNumber <= 2 ? 'eager' : 'lazy'}
+                      decoding={imageNumber <= 2 ? 'sync' : 'async'}
+                      fetchPriority={imageNumber <= 2 ? 'high' : 'low'}
+                      className={imageNumber === 1 && !isHeroImageLoaded ? 'is-placeholder' : ''}
+                    />
+                  ) : null}
+                </div>
+              );
+            })}
           </div>
           <div className="gallery-overlay"></div>
         </div>
@@ -179,10 +191,18 @@ export const Home = () => {
 
         {/* Gallery Navigation Dots */}
         <div className="gallery-navigation">
-          <div className="nav-dot active" data-target="1" onClick={() => handleDotClick(1)}></div>
-          <div className="nav-dot" data-target="2" onClick={() => handleDotClick(2)}></div>
-          <div className="nav-dot" data-target="3" onClick={() => handleDotClick(3)}></div>
-          <div className="nav-dot" data-target="4" onClick={() => handleDotClick(4)}></div>
+          {HERO_GALLERY_IMAGES.map((imageSrc, index) => {
+            const imageNumber = index + 1;
+
+            return (
+              <div
+                key={imageSrc}
+                className={`nav-dot ${currentImage === imageNumber ? 'active' : ''}`}
+                data-target={imageNumber}
+                onClick={() => handleDotClick(imageNumber)}
+              ></div>
+            );
+          })}
         </div>
       </div>
 
