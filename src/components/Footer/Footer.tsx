@@ -28,14 +28,14 @@ export const Footer = () => {
 
           <div className="footer-column stagger-item">
             <h3>About Us</h3>
-            <Link to="/our-mission">Our Mission</Link>
-            <Link to="/our-board">Our Board</Link>
-            <Link to="/our-members">Our Members</Link>
+            <Link to="/our-mission">The SJBA Mission</Link>
+            <Link to="/our-board">Executive Board</Link>
+            <Link to="/our-members">General Members</Link>
           </div>
 
           <div className="footer-column stagger-item">
             <h3>Connect</h3>
-            <Link to="/contact">Contact Us</Link>
+            <Link to="/contact">Contact</Link>
           </div>
         </div>
 

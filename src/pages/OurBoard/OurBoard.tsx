@@ -109,7 +109,7 @@ export const OurBoard = () => {
           ref={headerAnimation.elementRef}
           className={`board-header slide-up ${headerAnimation.isVisible ? 'visible' : ''}`}
         >
-          <h1 className="board-title">Our Board</h1>
+          <h1 className="board-title">Executive Board</h1>
           <p className="board-subtitle">Meet the dedicated leaders driving SJBA's mission.</p>
         </div>
 
@@ -192,7 +192,7 @@ export const OurBoard = () => {
           bodyText="SJBA is always looking for passionate students who want to make a difference in the Jewish community at NYU Stern. Board positions become available each academic year through our application process."
           primaryButtonText="Get Involved"
           primaryButtonHref="/contact"
-          secondaryButtonText="Attend Our Events"
+          secondaryButtonText="Attend SJBA Events"
           secondaryButtonHref="/events"
         />
       </div>

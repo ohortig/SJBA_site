@@ -112,7 +112,7 @@ export const Contact = () => {
     <div className="contact-container">
       <div className="contact-content">
         <div className="contact-info">
-          <h1 className="contact-title">Contact Us</h1>
+          <h1 className="contact-title">Contact SJBA</h1>
           <p>Feel free to contact us if you have any questions or concerns!</p>
           <p>
             We are always open to corporate partnerships, events, and outside speakers. Reach out
