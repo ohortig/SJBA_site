@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import './NavButton.css';
 
 interface NavButtonProps {
@@ -17,8 +17,14 @@ export const NavButton = ({
   onClick,
 }: NavButtonProps) => {
   return (
-    <Link to={to} className={`nav-button nav-button--${variant} ${className}`} onClick={onClick}>
+    <NavLink
+      to={to}
+      className={({ isActive }) =>
+        `nav-button nav-button--${variant} ${isActive ? 'is-active' : ''} ${className}`.trim()
+      }
+      onClick={onClick}
+    >
       {children}
-    </Link>
+    </NavLink>
   );
 };
