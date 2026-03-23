@@ -9,11 +9,19 @@ export interface Logo {
 interface LogoGalleryProps {
   direction?: 'left' | 'right';
   logos: Logo[];
+  variant?: 'default' | 'hero-ribbon';
+  eyebrow?: string;
 }
 
-export const LogoGallery = ({ direction = 'left', logos }: LogoGalleryProps) => {
+export const LogoGallery = ({
+  direction = 'left',
+  logos,
+  variant = 'default',
+  eyebrow,
+}: LogoGalleryProps) => {
   return (
-    <div className="logo-gallery-container">
+    <div className={`logo-gallery-container logo-gallery-container-${variant}`}>
+      {eyebrow ? <p className="logo-gallery-eyebrow">{eyebrow}</p> : null}
       <div className={`logo-gallery ${direction === 'right' ? 'logo-gallery-right' : ''}`}>
         {/* First set of logos */}
         {logos.map((logo, index) => (
