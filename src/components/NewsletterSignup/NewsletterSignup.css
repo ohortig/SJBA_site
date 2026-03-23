@@ -204,7 +204,7 @@
   }
 
   .newsletter-content h2 {
-    font-size: clamp(2.1rem, 10vw, 3rem);
+    font-size: clamp(1.55rem, 5.2vw, 2.3rem);
   }
 
   .form-label {
