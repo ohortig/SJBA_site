@@ -20,7 +20,8 @@
   --surface-highlight: rgba(255, 255, 255, 0.5);
   --page-gutter: clamp(1.4rem, 6vw, 15vw);
   --content-max-width: 78rem;
-  --header-offset: 6.25rem;
+  --header-compact-height: 5rem;
+  --header-offset: var(--header-compact-height);
   --radius-soft: 1.5rem;
   --shadow-soft: 0 20px 45px rgba(32, 25, 46, 0.08);
   --shadow-panel: 0 10px 24px rgba(32, 25, 46, 0.08);
