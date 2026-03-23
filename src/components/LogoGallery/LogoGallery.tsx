@@ -30,6 +30,27 @@ export const LogoGallery = ({
   const animationRef = useRef<ReturnType<typeof animate> | null>(null);
   const [firstSetWidth, setFirstSetWidth] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
+  const [isMobileScreen, setIsMobileScreen] = useState(false);
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia('(max-width: 768px)');
+
+    const updateIsMobileScreen = (event?: MediaQueryListEvent) => {
+      setIsMobileScreen(event?.matches ?? mediaQuery.matches);
+    };
+
+    updateIsMobileScreen();
+
+    mediaQuery.addEventListener('change', updateIsMobileScreen);
+
+    return () => mediaQuery.removeEventListener('change', updateIsMobileScreen);
+  }, []);
+
+  useEffect(() => {
+    if (isMobileScreen && isPaused) {
+      setIsPaused(false);
+    }
+  }, [isMobileScreen, isPaused]);
 
   useEffect(() => {
     const element = firstSetRef.current;
@@ -57,7 +78,7 @@ export const LogoGallery = ({
   useEffect(() => {
     animationRef.current?.stop();
 
-    if (shouldReduceMotion || isPaused || !firstSetWidth) return undefined;
+    if (shouldReduceMotion || (isPaused && !isMobileScreen) || !firstSetWidth) return undefined;
 
     const start = direction === 'left' ? 0 : -firstSetWidth;
     const end = direction === 'left' ? -firstSetWidth : 0;
@@ -82,13 +103,15 @@ export const LogoGallery = ({
     });
 
     return () => animationRef.current?.stop();
-  }, [direction, firstSetWidth, isPaused, shouldReduceMotion, x]);
+  }, [direction, firstSetWidth, isMobileScreen, isPaused, shouldReduceMotion, x]);
 
   const handlePause = () => {
+    if (isMobileScreen) return;
     setIsPaused(true);
   };
 
   const handleResume = () => {
+    if (isMobileScreen) return;
     setIsPaused(false);
   };
 
