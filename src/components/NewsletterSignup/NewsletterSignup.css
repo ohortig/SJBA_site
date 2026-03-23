@@ -140,7 +140,7 @@
   width: 100%;
   min-height: 2.6rem;
   border: 1px solid rgba(76, 13, 127, 0.16);
-  background: linear-gradient(135deg, #4c0d7f, #6d2aa5);
+  background: var(--color-brand);
   color: var(--color-white);
   font-family: var(--font-sans);
   font-size: 0.7rem;
@@ -156,7 +156,7 @@
 
 .newsletter-submit-btn:hover:not(:disabled),
 .newsletter-submit-btn:focus-visible {
-  background: linear-gradient(135deg, #5a1a8a, #7a35b2);
+  background: var(--color-brand-dark);
   transform: translateY(-1px);
   box-shadow: 0 16px 28px rgba(76, 13, 127, 0.2);
 }
