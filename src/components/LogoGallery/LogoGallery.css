@@ -1,16 +1,23 @@
 .logo-gallery-container {
   width: 100%;
-  overflow: hidden;
   padding: 1.1rem 0 1.3rem;
   position: relative;
   background: rgba(247, 242, 233, 0.88);
 }
 
+.logo-gallery-viewport {
+  overflow: hidden;
+}
+
 .logo-gallery {
   display: flex;
-  gap: 1.5rem;
-  animation: scroll-left 54s linear infinite;
   width: max-content;
+  will-change: transform;
+}
+
+.logo-gallery-set {
+  display: flex;
+  gap: 1.5rem;
 }
 
 .logo-item {
@@ -77,32 +84,8 @@
   color: rgba(32, 25, 46, 0.66);
 }
 
-@keyframes scroll-left {
-  0% {
-    transform: translateX(0);
-  }
-
-  100% {
-    transform: translateX(-50%);
-  }
-}
-
-@keyframes scroll-right {
-  0% {
-    transform: translateX(-50%);
-  }
-
-  100% {
-    transform: translateX(0);
-  }
-}
-
-.logo-gallery-right {
-  animation: scroll-right 54s linear infinite;
-}
-
 @media (max-width: 768px) {
-  .logo-gallery {
+  .logo-gallery-set {
     gap: 1.1rem;
   }
 
@@ -118,7 +101,7 @@
 }
 
 @media (max-width: 480px) {
-  .logo-gallery {
+  .logo-gallery-set {
     gap: 0.9rem;
   }
 
@@ -134,10 +117,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .logo-gallery,
-  .logo-gallery-right,
   .company-logo {
-    animation: none !important;
     transition: none !important;
   }
 }
