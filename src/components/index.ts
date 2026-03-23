@@ -1,4 +1,4 @@
-export * from './AboutDropdown';
+export * from './HeaderDropdown';
 export * from './BoardMemberModal';
 export * from './CallToAction';
 export * from './ErrorDisplay';

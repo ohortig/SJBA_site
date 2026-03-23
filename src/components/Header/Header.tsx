@@ -1,10 +1,15 @@
 import { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { AboutDropdown, NavButton } from '@components';
+import { Dropdown, NavButton } from '@components';
 import { useIsMobile } from '@hooks';
 import './Header.css';
 
 const SETTLED_SCROLL_THRESHOLD = 36;
+const ABOUT_DROPDOWN_ITEMS = [
+  { label: 'The SJBA Mission', to: '/our-mission' },
+  { label: 'Executive Board', to: '/our-board' },
+  { label: 'General Members', to: '/our-members' },
+];
 
 export const Header = () => {
   const location = useLocation();
@@ -96,7 +101,13 @@ export const Header = () => {
           <NavButton to="/programs" onClick={closeMenu}>
             Programs
           </NavButton>
-          <AboutDropdown onClose={closeMenu} />
+          <Dropdown
+            label="About"
+            items={ABOUT_DROPDOWN_ITEMS}
+            activeRoutes={ABOUT_DROPDOWN_ITEMS.map((item) => item.to)}
+            menuId="about-dropdown-menu"
+            onClose={closeMenu}
+          />
           <NavButton to="/contact" variant="primary" onClick={closeMenu}>
             Contact
           </NavButton>

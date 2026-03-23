@@ -3,21 +3,35 @@ import { AnimatePresence, motion, useReducedMotion } from 'motion/react';
 import type { Variants } from 'motion/react';
 import { NavLink, useLocation } from 'react-router-dom';
 import { useIsMobile } from '../../hooks/useIsMobile';
-import './AboutDropdown.css';
+import './HeaderDropdown.css';
 
-interface AboutDropdownProps {
+interface DropdownItem {
+  label: string;
+  to: string;
+}
+
+interface DropdownProps {
+  label: string;
+  items: DropdownItem[];
+  activeRoutes?: string[];
+  menuId?: string;
   onClose?: () => void;
 }
 
-const ABOUT_ROUTES = ['/our-mission', '/our-board', '/our-members'];
-
-export const AboutDropdown = ({ onClose }: AboutDropdownProps) => {
+export const Dropdown = ({
+  label,
+  items,
+  activeRoutes,
+  menuId = `${label.toLowerCase().replace(/\s+/g, '-')}-dropdown-menu`,
+  onClose,
+}: DropdownProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const isMobile = useIsMobile(1024);
   const shouldReduceMotion = useReducedMotion();
   const location = useLocation();
   const dropdownRef = useRef<HTMLDivElement | null>(null);
-  const isActive = ABOUT_ROUTES.includes(location.pathname);
+  const matchedRoutes = activeRoutes ?? items.map((item) => item.to);
+  const isActive = matchedRoutes.includes(location.pathname);
 
   const menuEase = [0.22, 1, 0.36, 1] as const;
 
@@ -97,33 +111,18 @@ export const AboutDropdown = ({ onClose }: AboutDropdownProps) => {
   if (isMobile) {
     return (
       <>
-        <NavLink
-          to="/our-mission"
-          className={({ isActive: linkIsActive }) =>
-            `nav-button nav-button--default ${linkIsActive ? 'is-active' : ''}`.trim()
-          }
-          onClick={handleLinkClick}
-        >
-          The SJBA Mission
-        </NavLink>
-        <NavLink
-          to="/our-board"
-          className={({ isActive: linkIsActive }) =>
-            `nav-button nav-button--default ${linkIsActive ? 'is-active' : ''}`.trim()
-          }
-          onClick={handleLinkClick}
-        >
-          Executive Board
-        </NavLink>
-        <NavLink
-          to="/our-members"
-          className={({ isActive: linkIsActive }) =>
-            `nav-button nav-button--default ${linkIsActive ? 'is-active' : ''}`.trim()
-          }
-          onClick={handleLinkClick}
-        >
-          General Members
-        </NavLink>
+        {items.map((item) => (
+          <NavLink
+            key={item.to}
+            to={item.to}
+            className={({ isActive: linkIsActive }) =>
+              `nav-button nav-button--default ${linkIsActive ? 'is-active' : ''}`.trim()
+            }
+            onClick={handleLinkClick}
+          >
+            {item.label}
+          </NavLink>
+        ))}
       </>
     );
   }
@@ -131,7 +130,7 @@ export const AboutDropdown = ({ onClose }: AboutDropdownProps) => {
   return (
     <div
       ref={dropdownRef}
-      className={`about-dropdown ${isOpen ? 'is-open' : ''}`}
+      className={`dropdown ${isOpen ? 'is-open' : ''}`}
       onMouseEnter={() => setIsOpen(true)}
       onMouseLeave={closeDropdown}
     >
@@ -140,11 +139,11 @@ export const AboutDropdown = ({ onClose }: AboutDropdownProps) => {
         className={`nav-button nav-button--default dropdown-trigger ${isActive ? 'is-active' : ''}`}
         aria-expanded={isOpen}
         aria-haspopup="menu"
-        aria-controls="about-dropdown-menu"
+        aria-controls={menuId}
         onClick={() => setIsOpen((previousState) => !previousState)}
         onFocus={() => setIsOpen(true)}
       >
-        About
+        {label}
         <motion.span
           className="dropdown-arrow"
           aria-hidden="true"
@@ -160,46 +159,26 @@ export const AboutDropdown = ({ onClose }: AboutDropdownProps) => {
           <div className="dropdown-menu-shell">
             <motion.div
               className="dropdown-menu is-open"
-              id="about-dropdown-menu"
+              id={menuId}
               role="menu"
               initial="closed"
               animate="open"
               exit="closed"
               variants={menuVariants}
             >
-              <motion.div variants={itemVariants}>
-                <NavLink
-                  to="/our-mission"
-                  className={({ isActive: linkIsActive }) =>
-                    `dropdown-item ${linkIsActive ? 'is-active' : ''}`.trim()
-                  }
-                  onClick={handleLinkClick}
-                >
-                  The SJBA Mission
-                </NavLink>
-              </motion.div>
-              <motion.div variants={itemVariants}>
-                <NavLink
-                  to="/our-board"
-                  className={({ isActive: linkIsActive }) =>
-                    `dropdown-item ${linkIsActive ? 'is-active' : ''}`.trim()
-                  }
-                  onClick={handleLinkClick}
-                >
-                  Executive Board
-                </NavLink>
-              </motion.div>
-              <motion.div variants={itemVariants}>
-                <NavLink
-                  to="/our-members"
-                  className={({ isActive: linkIsActive }) =>
-                    `dropdown-item ${linkIsActive ? 'is-active' : ''}`.trim()
-                  }
-                  onClick={handleLinkClick}
-                >
-                  General Members
-                </NavLink>
-              </motion.div>
+              {items.map((item) => (
+                <motion.div key={item.to} variants={itemVariants}>
+                  <NavLink
+                    to={item.to}
+                    className={({ isActive: linkIsActive }) =>
+                      `dropdown-item ${linkIsActive ? 'is-active' : ''}`.trim()
+                    }
+                    onClick={handleLinkClick}
+                  >
+                    {item.label}
+                  </NavLink>
+                </motion.div>
+              ))}
             </motion.div>
           </div>
         )}

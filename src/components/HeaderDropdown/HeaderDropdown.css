@@ -1,4 +1,4 @@
-.about-dropdown {
+.dropdown {
   position: relative;
 }
 
@@ -65,7 +65,7 @@
 }
 
 @media (max-width: 1024px) {
-  .about-dropdown {
+  .dropdown {
     display: contents;
   }
 }
