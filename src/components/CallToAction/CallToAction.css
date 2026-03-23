@@ -5,7 +5,9 @@
   text-align: center;
   opacity: 0;
   transform: translateY(30px);
-  transition: all 0.4s ease;
+  transition:
+    opacity 0.4s ease,
+    transform 0.4s ease;
 }
 
 .call-to-action-section.visible {

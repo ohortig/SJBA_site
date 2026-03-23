@@ -6,7 +6,9 @@
   width: fit-content;
   opacity: 0;
   transform: translateY(30px);
-  transition: all 0.4s ease;
+  transition:
+    opacity 0.4s ease,
+    transform 0.4s ease;
 }
 
 .programs-header.visible {
@@ -29,7 +31,9 @@
   text-align: center;
   opacity: 0;
   transform: translateY(30px);
-  transition: all 0.5s ease;
+  transition:
+    opacity 0.5s ease,
+    transform 0.5s ease;
 }
 
 .programs-intro.visible {
@@ -99,7 +103,9 @@
   align-items: stretch;
   opacity: 0;
   transform: translateY(40px);
-  transition: all 0.5s ease;
+  transition:
+    opacity 0.5s ease,
+    transform 0.5s ease;
   background: white;
 }
 
@@ -161,7 +167,9 @@
   margin: 2rem 0 4rem 0;
   opacity: 0;
   transform: translateY(30px);
-  transition: all 0.5s ease;
+  transition:
+    opacity 0.5s ease,
+    transform 0.5s ease;
 }
 
 .programs-steps-section.visible {
@@ -253,7 +261,9 @@
   border-radius: 10px;
   opacity: 0;
   transform: translateY(30px);
-  transition: all 0.5s ease;
+  transition:
+    opacity 0.5s ease,
+    transform 0.5s ease;
 }
 
 .programs-apply-section.visible {

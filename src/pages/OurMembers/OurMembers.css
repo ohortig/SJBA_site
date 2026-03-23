@@ -10,7 +10,9 @@
   text-align: center;
   opacity: 0;
   transform: translateY(30px);
-  transition: all 0.4s ease;
+  transition:
+    opacity 0.4s ease,
+    transform 0.4s ease;
 }
 
 .members-page-header.visible {
@@ -38,7 +40,9 @@
   text-align: left;
   opacity: 0;
   transform: translateY(30px);
-  transition: all 0.4s ease;
+  transition:
+    opacity 0.4s ease,
+    transform 0.4s ease;
 }
 
 .members-policy-card.visible {
@@ -149,7 +153,9 @@
   margin-bottom: 3rem;
   opacity: 0;
   transform: translateY(40px);
-  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  transition:
+    opacity 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+    transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
 .members-table-section.visible {

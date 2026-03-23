@@ -6,7 +6,9 @@
   width: fit-content;
   opacity: 0;
   transform: translateY(30px);
-  transition: all 0.4s ease;
+  transition:
+    opacity 0.4s ease,
+    transform 0.4s ease;
 }
 
 .board-header.visible {
@@ -43,7 +45,9 @@
   margin-bottom: 5rem;
   opacity: 0;
   transform: translateY(40px);
-  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  transition:
+    opacity 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+    transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
 .board-section.visible {
@@ -78,7 +82,9 @@
 .board-grid.stagger-children .board-member-card.stagger-item {
   opacity: 0;
   transform: translateY(30px);
-  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  transition:
+    opacity 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+    transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
 .board-grid.stagger-children.visible .board-member-card.stagger-item:nth-child(1) {
@@ -260,7 +266,9 @@
   /* margin-bottom: 4rem; */
   opacity: 0;
   transform: translateY(30px);
-  transition: all 0.4s ease;
+  transition:
+    opacity 0.4s ease,
+    transform 0.4s ease;
 }
 
 .join-board-section.visible {
@@ -495,7 +503,9 @@
 /* Scroll Animations */
 .animate-on-scroll {
   opacity: 0;
-  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  transition:
+    opacity 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+    transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
 .animate-on-scroll.visible {
@@ -516,7 +526,9 @@
 .slide-up {
   opacity: 0;
   transform: translateY(40px);
-  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  transition:
+    opacity 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+    transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
 .slide-up.visible {
@@ -528,7 +540,9 @@
 .slide-left {
   opacity: 0;
   transform: translateX(40px);
-  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  transition:
+    opacity 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+    transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
 .slide-left.visible {
@@ -540,7 +554,9 @@
 .slide-right {
   opacity: 0;
   transform: translateX(-40px);
-  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  transition:
+    opacity 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+    transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
 .slide-right.visible {
@@ -552,7 +568,9 @@
 .stagger-children .stagger-item {
   opacity: 0;
   transform: translateY(20px);
-  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  transition:
+    opacity 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+    transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
 .stagger-children.visible .stagger-item:nth-child(1) {
@@ -583,7 +601,9 @@
 .scale-in {
   opacity: 0;
   transform: scale(0.8);
-  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  transition:
+    opacity 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+    transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
 .scale-in.visible {
