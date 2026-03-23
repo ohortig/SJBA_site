@@ -3,10 +3,8 @@
   position: relative;
   overflow: hidden;
   background: rgba(247, 242, 233, 0.92);
-  border: 1px solid var(--border-subtle);
-  box-shadow:
-    inset 0 0 0 1px var(--surface-highlight),
-    var(--shadow-panel);
+  border: none;
+  box-shadow: none;
   padding: clamp(1.05rem, 2vw, 1.6rem);
   color: var(--color-ink);
 }
