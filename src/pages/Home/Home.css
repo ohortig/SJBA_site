@@ -175,10 +175,10 @@
 }
 
 .speakers-link {
-  color: var(--color-white);
-  background: var(--color-brand);
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  box-shadow: 0 20px 40px rgba(17, 11, 32, 0.24);
+  color: var(--cta-primary-text);
+  background: var(--cta-primary-background);
+  border: 1px solid var(--cta-primary-border);
+  box-shadow: var(--cta-primary-shadow);
 }
 
 .our-mission-link {
@@ -194,13 +194,17 @@
 .our-mission-link:focus-visible {
   color: var(--color-white);
   text-decoration: none;
-  transform: translateY(-2px);
+  transform: translateY(-1px);
 }
 
-.speakers-link:hover,
+.speakers-link:hover {
+  background: var(--cta-primary-background-hover);
+  box-shadow: var(--cta-primary-shadow-hover);
+}
+
 .speakers-link:focus-visible {
-  background: #5d1996;
-  box-shadow: 0 24px 42px rgba(17, 11, 32, 0.3);
+  background: var(--cta-primary-background-hover);
+  box-shadow: var(--cta-primary-shadow-hover), var(--cta-primary-focus-ring);
 }
 
 .our-mission-link:hover,

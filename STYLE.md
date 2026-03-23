@@ -140,10 +140,36 @@ Color rules:
 
 - `--transition-medium`
   - Default transition timing for hover, focus, and small state changes.
+- `--cta-primary-text`
+  - Foreground color for the shared filled primary CTA system.
+- `--cta-primary-border`
+  - Border tone for primary CTAs.
+- `--cta-primary-background`
+  - Resting gradient surface for primary CTAs.
+- `--cta-primary-background-hover`
+  - Hover and focus gradient surface for primary CTAs.
+- `--cta-primary-shadow`
+  - Default elevation for primary CTAs.
+- `--cta-primary-shadow-hover`
+  - Hover elevation for primary CTAs.
+- `--cta-primary-focus-ring`
+  - Focus halo for primary CTAs.
 
 Motion rule:
 
 - If motion is not doing hierarchy, affordance, or atmosphere work, remove it.
+
+## Primary CTA System
+
+The filled purple CTA is now a shared system used by the header `Contact` action, the hero
+`Explore Speakers` action, and the newsletter `Join the List` action.
+
+Rules:
+
+- Use the shared CTA tokens from `index.css` instead of inventing one-off purple fills.
+- Keep the resting state as a solid branded purple with restrained shadow and light text.
+- Hover and focus should use the simpler brightened purple button state with a slight lift.
+- Keep sizing contextual to the component, but preserve the same surface language, border, and focus treatment.
 
 ## Typography Rules
 
