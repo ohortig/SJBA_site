@@ -46,13 +46,25 @@
   box-sizing: border-box;
 }
 
-html,
-body {
+html {
   margin: 0;
   padding: 0;
   width: 100%;
   overflow-x: hidden;
   background: var(--color-canvas);
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  overflow-x: clip;
+  background: var(--color-canvas);
+  min-width: 320px;
+  min-height: 100vh;
+  display: block;
+  font-family: var(--font-sans);
+  color: var(--color-ink);
 }
 
 a {
@@ -63,16 +75,6 @@ a {
 
 a:hover {
   color: inherit;
-}
-
-body {
-  margin: 0;
-  min-width: 320px;
-  min-height: 100vh;
-  display: block;
-  font-family: var(--font-sans);
-  color: var(--color-ink);
-  background: var(--color-canvas);
 }
 
 button {
