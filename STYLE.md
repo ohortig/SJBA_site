@@ -1,0 +1,545 @@
+# SJBA Frontend Style System
+
+This document defines the current visual system for the SJBA site.
+
+The goal is consistency. New pages and components should feel like part of the same site, not isolated redesigns.
+
+The SJBA visual language should feel:
+
+- editorial rather than app-like
+- professional rather than playful
+- premium but restrained
+- readable first
+- rooted in Stern purple without becoming purple-heavy
+
+The site is for a student club at a business school. That means the visual tone should sit between campus community and early-career professionalism.
+
+Use these reference ideas when making decisions:
+
+- strong typography before decorative UI
+- structured layouts before cards
+- photography and whitespace before gradients
+- a small number of colors before visual variety
+- hierarchy and composition before effects
+
+## System Layers
+
+The styling system is intentionally split into layers.
+
+### `index.css`
+
+Use `index.css` for:
+
+- design tokens
+- HTML element defaults
+- font family defaults
+- site-wide colors
+- shared motion timing values
+- browser resets and base rendering behavior
+
+Do not put page-specific composition in `index.css`.
+
+### `App.css`
+
+Use `App.css` for:
+
+- app-shell layout
+- root wrappers like `.app`, `.main-content`, `.page-container`
+- shared content gutters and top offsets
+
+Do not use `App.css` for component chrome, page-specific typography, or section-level art direction.
+
+### Page and component CSS
+
+Use page/component CSS files for:
+
+- section composition
+- local layout
+- page-specific motion
+- component appearance
+
+These files must consume tokens from `:root` rather than introducing arbitrary new values unless there is a strong reason.
+
+## Tokens
+
+These are the current core tokens in `index.css`.
+
+### Typography
+
+- `--font-display`
+  - Use for main headlines, section titles, and editorial statements.
+  - This is the serif voice of the brand.
+- `--font-sans`
+  - Use for body copy, labels, navigation, controls, and utility text.
+  - This is the operational voice of the brand.
+
+Rule:
+
+- Display serif for emphasis.
+- Sans serif for everything people scan quickly or interact with.
+
+### Color
+
+- `--color-brand: #4c0d7f`
+  - Primary brand color.
+  - Use for primary actions, labels, key dividers, and branded emphasis.
+- `--color-brand-deep: #20192e`
+  - Darker supporting brand tone.
+  - Use for serious dark surfaces when needed.
+- `--color-ink: #171220`
+  - Main text and dark surface anchor.
+  - Prefer this over pure black.
+- `--color-muted: #5c556d`
+  - Secondary text.
+  - Use for body copy, descriptions, captions, and less prominent UI.
+- `--color-accent: #c4a86a`
+  - Restrained warm accent.
+  - Use sparingly for highlights, active indicators, or subtle editorial emphasis.
+- `--color-surface: #f7f2e9`
+  - Warm surface color.
+  - Use for ribbons, panels, quiet containers, and layered surfaces.
+- `--color-canvas: #fbf8f3`
+  - Global page background.
+  - Default page canvas.
+- `--color-white: #ffffff`
+  - For text on dark imagery and controlled high-contrast surfaces.
+- `--border-subtle`
+  - Default subtle border for refined light surfaces.
+- `--surface-highlight`
+  - Inner highlight for light panels that need separation without a heavy frame.
+
+Color rules:
+
+- Keep the palette narrow.
+- Purple is the anchor, not the wallpaper.
+- Use the gold accent sparingly.
+- Prefer neutral warmth over bright contrast.
+- Avoid introducing new saturated colors unless the design system is being intentionally expanded.
+
+### Layout and spacing
+
+- `--page-gutter`
+  - Shared page-side padding.
+  - Use this instead of hardcoding `vw` gutters for standard pages.
+- `--content-max-width`
+  - Max width for readable content zones.
+  - Use this for inner wrappers inside full-bleed sections.
+- `--header-offset`
+  - Space reserved for the header.
+  - Use when positioning first-viewport content.
+- `--radius-soft`
+  - Soft corner radius for elevated surfaces.
+- `--shadow-soft`
+  - Default elevated shadow for refined surfaces.
+- `--shadow-panel`
+  - Tighter panel shadow for surfaces that should separate from the page without looking floaty.
+
+### Motion
+
+- `--transition-medium`
+  - Default transition timing for hover, focus, and small state changes.
+
+Motion rule:
+
+- If motion is not doing hierarchy, affordance, or atmosphere work, remove it.
+
+## Typography Rules
+
+### Headings
+
+Use serif display headings for major page moments:
+
+- hero titles
+- section titles
+- newsletter titles when presented editorially
+
+Heading characteristics:
+
+- tight line-height
+- slightly negative letter-spacing on large sizes
+- compact, high-contrast copy
+
+Avoid:
+
+- long, paragraph-like headings
+- all-caps serif headings
+- generic web-app headline styling
+
+### Body copy
+
+Body copy should be:
+
+- in `--font-sans`
+- easy to scan
+- set with comfortable line-height, usually around `1.7` to `1.85`
+- muted rather than fully black
+
+Use short paragraphs. Editorial does not mean verbose.
+
+### Eyebrows and labels
+
+Eyebrows are an important pattern in this system.
+
+Use them for:
+
+- section kickers
+- ribbons
+- proof labels
+- small orientation text above major headings
+
+Eyebrow rules:
+
+- sans serif
+- uppercase
+- increased letter spacing
+- visually restrained
+- typically brand purple or a muted light-on-dark tone
+
+## Layout Principles
+
+### Prefer full-bleed moments with constrained inner content
+
+For hero sections and major branded moments:
+
+- allow the section background to run edge to edge
+- constrain the inner content with `var(--content-max-width)`
+- use `var(--page-gutter)` for inner padding
+
+This is the pattern used in the Home hero.
+
+### Prefer sections, columns, and dividers over cards
+
+The current design system is intentionally anti-card by default.
+
+Use:
+
+- editorial columns
+- section dividers
+- whitespace
+- surface changes
+- image-to-text contrast
+
+Only use a card or panel when the surface itself is part of the interaction or meaning.
+
+Good uses:
+
+- newsletter signup container
+- modal-like surfaces
+- highly bounded utilities
+
+Bad uses:
+
+- turning every proof point into a separate card
+- stacking generic panels to create fake structure
+
+### Keep sections singular
+
+Each section should do one job:
+
+- orient
+- prove
+- deepen
+- convert
+
+Do not combine multiple competing ideas into one section.
+
+## Home Page Patterns To Reuse
+
+The Home page is now the clearest expression of the system.
+
+Use `Home.css` as the primary composition reference.
+
+### Hero pattern
+
+The Home hero establishes several reusable decisions:
+
+- text is left-anchored, not centered
+- imagery is darkened so copy remains readable
+- inner content is constrained
+- CTA row uses one primary and one secondary action
+- navigation dots are minimal and not decorative
+- the logo ribbon is physically connected to the hero
+
+When building future heroes:
+
+- start with one dominant visual plane
+- place copy in the calmest area of the image
+- use overlay gradients to protect readability
+- do not place headline text over busy image detail
+- avoid hero cards
+
+### Editorial split section pattern
+
+The narrative/newsletter section demonstrates the preferred two-column pattern:
+
+- one editorial text column
+- one structured conversion or utility block
+- balanced whitespace
+- clear hierarchy without decorative clutter
+
+Use this for future combinations like:
+
+- story + CTA
+- program explanation + registration
+- mission + contact form
+
+## Component Patterns
+
+### Buttons and links
+
+Current button logic on the Home page:
+
+- primary actions use brand purple
+- secondary actions on dark surfaces use translucent white
+- both use uppercase sans-serif text with tracked letters
+- hover behavior is subtle lift, not dramatic animation
+
+Rules:
+
+- keep action labels short
+- use one primary action per area
+- secondary actions should feel quieter, not merely color-swapped
+
+### Logo marquee
+
+The logo gallery now has a deliberate brand role.
+
+Rules:
+
+- logos are smaller than a typical sponsor wall
+- default state is grayscale and partially muted
+- hover/focus restores clarity
+- the ribbon is a support texture, not the main attraction
+- spacing should feel compact and editorial, not spacious and celebratory
+
+The `variant="hero-ribbon"` mode in `LogoGallery.tsx` should be used when the logo gallery is attached to a first-viewport branded section.
+
+### Forms
+
+The newsletter component establishes the form styling direction:
+
+- quiet warm surface
+- serif heading
+- sans body copy
+- large input hit areas
+- thin purple-tinted borders
+- soft focus rings
+- one clearly branded submit action
+- simple eyebrow + headline + short supporting copy
+- flat paper surface with subtle edge definition instead of decorative texture
+
+When styling future forms:
+
+- optimize for clarity over flair
+- use soft shadows sparingly
+- keep placeholders muted
+- use accessible focus treatment
+
+For editorial signup or call-to-action surfaces:
+
+- prefer warm paper tones and restrained editorial hierarchy over decorative textures
+- avoid blob gradients that feel cosmetic rather than structural
+- if the content starts feeling too tall for the available width, widen the usable content area or simplify the copy before adding more visual structure
+- when a component lives inside a constrained column, use container queries or single-column defaults so the component responds to its own width, not just the viewport
+- prefer simple editorial cues like an eyebrow, a strong headline, and clear spacing before adding mastheads, seals, or novelty structure
+- prefer form fields with restrained editorial structure, such as bottom rules or lightly tinted paper fills, before defaulting to heavy boxed inputs
+
+## Motion Rules
+
+Motion should be restrained and intentional.
+
+Use motion for:
+
+- content entrance sequencing
+- hover feedback
+- image crossfades
+- subtle depth and presence
+
+Do not use motion for:
+
+- constant decorative movement unrelated to meaning
+- large bouncy transitions
+- distracting parallax
+
+Reduced motion:
+
+- always respect `prefers-reduced-motion`
+- disable non-essential animation in that mode
+
+## Responsive Rules
+
+The system should remain editorial on mobile, not collapse into generic stacked cards.
+
+Responsive priorities:
+
+- keep first-viewport hierarchy intact
+- preserve the heading as the dominant text element
+- stack columns cleanly when needed
+- keep CTA rows legible and finger-friendly
+- maintain visible connection between hero and logo ribbon
+
+Avoid:
+
+- shrinking text too aggressively
+- introducing separate mobile-only visual styles that change the design language
+- collapsing everything into centered content unless the composition demands it
+
+## Copy And Tone Guidance
+
+The interface copy should sound:
+
+- informed
+- concise
+- professional
+- direct
+
+Avoid copy that sounds:
+
+- overly promotional
+- generic startup marketing
+- playful or slang-heavy
+- needlessly academic
+
+Avoid phrases that feel inflated or vague:
+
+- "unlock your potential"
+- "next-level opportunities"
+- "where innovation meets excellence"
+
+## Rules For Human Developers
+
+When adding or editing UI:
+
+- start by checking `index.css` for an existing token before adding a new raw value
+- use `App.css` only for shared shell/layout concerns
+- keep page-specific composition inside that page's CSS file
+- prefer existing Home page patterns when inventing a new section
+- use serif display headings intentionally, not everywhere
+- keep actions short and hierarchy obvious
+- test desktop and mobile before considering a style complete
+
+Before adding a new color, font, or spacing constant, ask:
+
+- can an existing token do this?
+- is this a system need or a one-off preference?
+- will this make the site feel more coherent or less coherent?
+
+## Rules For AI Agents
+
+If you are an AI agent editing this codebase, follow these rules unless the user explicitly requests a different direction.
+
+### Default assumptions
+
+- prefer `var(...)` tokens over raw hex values, pixel values, and one-off fonts
+- preserve the editorial/professional tone
+- preserve the limited color system
+- preserve the no-cards-by-default rule
+
+### What to do before styling
+
+- inspect `index.css` for existing tokens
+- inspect the nearest related page/component CSS for pattern reuse
+- reuse existing class naming patterns when reasonable
+- verify whether the new UI is a hero, proof, editorial, or utility section before choosing layout
+
+### What not to do
+
+- do not introduce bright new accent colors
+- do not default to generic dashboard cards
+- do not center everything by habit
+- do not place low-contrast text on photography
+- do not add decorative gradients if the section already has a clear visual structure
+- do not replace serif display with default sans for major headings
+- do not add motion without a clear interaction or hierarchy reason
+
+### When adding new tokens
+
+Add a new token only if:
+
+- the value will be reused
+- the existing system cannot express the need cleanly
+- the new token fits the current design language
+
+If a value is truly local and not reusable, keep it local to the component/page CSS.
+
+### Output quality bar
+
+A new page or section should pass these checks:
+
+- Does it immediately look like SJBA?
+- Is the headline clearly readable?
+- Does the section have one dominant idea?
+- Is the palette restrained?
+- Would the layout still feel good if shadows were removed?
+- Does the mobile version preserve hierarchy rather than flattening it?
+
+## Preferred Implementation Patterns
+
+Good pattern:
+
+```css
+.section-title {
+  font-family: var(--font-display);
+  color: var(--color-ink);
+}
+```
+
+Bad pattern:
+
+```css
+.section-title {
+  font-family: Georgia, serif;
+  color: #222;
+}
+```
+
+Good pattern:
+
+```css
+.page-section {
+  width: min(100%, var(--content-max-width));
+  margin: 0 auto;
+  padding-inline: var(--page-gutter);
+}
+```
+
+Bad pattern:
+
+```css
+.page-section {
+  width: 1180px;
+  margin-left: 143px;
+  margin-right: 143px;
+}
+```
+
+Good pattern:
+
+```css
+.body-copy {
+  color: var(--color-muted);
+  line-height: 1.8;
+}
+```
+
+Bad pattern:
+
+```css
+.body-copy {
+  color: #000;
+  line-height: 1.3;
+}
+```
+
+## When To Update This Document
+
+Update this file when:
+
+- new global tokens are added
+- a new reusable section pattern is introduced
+- the brand direction changes
+- a major component establishes a new standard worth reusing
+
+Do not update this file for trivial CSS tweaks.
+
+If there is ever a conflict between this document and the implemented token system, update the code or this document so they match again.
