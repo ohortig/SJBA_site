@@ -221,6 +221,18 @@ Use:
 - surface changes
 - image-to-text contrast
 
+## Footer System
+
+The footer is an approved full-bleed closing section in this system.
+
+Rules:
+
+- Use a full-bleed footer background, but constrain the inner content with `var(--content-max-width)` and `var(--page-gutter)`.
+- Treat the footer as an editorial landing, not a utility card tray.
+- Use serif sparingly for the main footer statement only.
+- Keep navigation groups, metadata, and status links in `--font-sans`.
+- Prefer quiet dividers, warm surfaces, and restrained hover states over glass, glossy gradients, or app-like panels.
+
 ## Header System
 
 The site header now has two approved modes.
