@@ -24,6 +24,23 @@ const HERO_GALLERY_IMAGES = [
   '/home-gallery/sjba-gallery-4.JPG',
 ] as const;
 const HERO_GALLERY_PLACEHOLDER = '/home-gallery/sjba-gallery-1-placeholder.jpg';
+const HOME_PROOF_POINTS = [
+  {
+    label: 'Speaker Events',
+    title: 'Leaders in finance, consulting, investing, and technology.',
+    copy: 'SJBA brings in top professionals across finance, consulting, investing, and technology, giving members direct access to real-world decision makers.',
+  },
+  {
+    label: 'Professional Network',
+    title: 'A Jewish network grounded in Stern’s culture of ambition.',
+    copy: 'The club creates a setting where students can build relationships that feel both personally rooted and professionally serious from the first semester onward.',
+  },
+  {
+    label: 'Career Building',
+    title: 'Programming designed to convert interest into direction.',
+    copy: 'Through conversations, mentorship, and recurring touchpoints, members leave with sharper industry context, stronger conviction, and better connections.',
+  },
+] as const;
 
 export const Home = () => {
   // Scroll animation hooks for different sections
@@ -167,70 +184,99 @@ export const Home = () => {
         </div>
 
         {/* Hero Content */}
-        <div className="hero-content">
-          {/* Main Title */}
-          <h1 className="main-title">
-            <span className="title-line-1">Building Jewish Community</span>
-            <span className="title-connector">at</span>
-            <span className="title-line-2">NYU Stern</span>
-          </h1>
-        </div>
+        <div className="hero-shell">
+          <div className="hero-content">
+            <div className="hero-copy">
+              <h1 className="main-title">
+                <span className="title-line-1">Jewish community</span>
+                <span className="title-connector">for the next generation at</span>
+                <span className="title-line-2">NYU Stern</span>
+              </h1>
+              <p className="hero-description">
+                SJBA joins ambitious students, distinguished speakers, and a professional network
+                shaped by shared values.
+              </p>
 
-        <div
-          ref={speakersAnimation.elementRef}
-          className={`link-section scale-in ${speakersAnimation.isVisible ? 'visible' : ''}`}
-        >
-          <Link to="/our-mission" className="our-mission-link">
-            <span>Our Mission</span>
-            <img src="/icons/arrow-top-right.png" alt="Arrow" className="our-mission-link-arrow" />
-          </Link>
-          <Link to="/events" className="speakers-link">
-            <span>Our Speakers</span>
-            <img src="/icons/arrow-top-right.png" alt="Arrow" className="speakers-link-arrow" />
-          </Link>
-        </div>
-
-        {/* Gallery Navigation Dots */}
-        <div className="gallery-navigation">
-          {HERO_GALLERY_IMAGES.map((imageSrc, index) => {
-            const imageNumber = index + 1;
-
-            return (
               <div
-                key={imageSrc}
-                className={`nav-dot ${currentImage === imageNumber ? 'active' : ''}`}
-                data-target={imageNumber}
-                onClick={() => handleDotClick(imageNumber)}
-              ></div>
-            );
-          })}
+                ref={speakersAnimation.elementRef}
+                className={`link-section scale-in ${speakersAnimation.isVisible ? 'visible' : ''}`}
+              >
+                <Link to="/events" className="speakers-link">
+                  <span>Explore Speakers</span>
+                  <img
+                    src="/icons/arrow-top-right.png"
+                    alt="Arrow"
+                    className="speakers-link-arrow"
+                  />
+                </Link>
+                <Link to="/our-mission" className="our-mission-link">
+                  <span>The SJBA Mission</span>
+                  <img
+                    src="/icons/arrow-top-right.png"
+                    alt="Arrow"
+                    className="our-mission-link-arrow"
+                  />
+                </Link>
+              </div>
+
+              <div className="gallery-navigation" aria-label="Hero gallery navigation">
+                {HERO_GALLERY_IMAGES.map((imageSrc, index) => {
+                  const imageNumber = index + 1;
+
+                  return (
+                    <button
+                      key={imageSrc}
+                      type="button"
+                      className={`nav-dot ${currentImage === imageNumber ? 'active' : ''}`}
+                      data-target={imageNumber}
+                      onClick={() => handleDotClick(imageNumber)}
+                      aria-label={`Show hero image ${imageNumber}`}
+                    />
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+
+          <div className="hero-gallery-ribbon">
+            <LogoGallery logos={HOME_PAGE_SPEAKER_LOGOS} variant="hero-ribbon" />
+          </div>
         </div>
       </div>
 
-      <LogoGallery logos={HOME_PAGE_SPEAKER_LOGOS} />
+      <section className="home-section proof-section" aria-label="SJBA professional value">
+        {HOME_PROOF_POINTS.map((item) => (
+          <article key={item.label} className="proof-item">
+            <span className="proof-label">{item.label}</span>
+            <h2 className="proof-title">{item.title}</h2>
+            <p className="proof-copy">{item.copy}</p>
+          </article>
+        ))}
+      </section>
 
-      <div className="section-divider"></div>
-
-      <div className="split-content-container">
+      <section className="home-section split-content-container">
         <div className="content-section">
           <div className="text-container">
-            <h2 className="section-title">The Jewish impact on the business world</h2>
+            <h2 className="section-title">
+              A professional Jewish community with real career gravity.
+            </h2>
+            <p className="section-lead">
+              SJBA sits at the intersection of campus life and professional formation, giving Stern
+              students a place to think seriously about business, leadership, and community at the
+              same time.
+            </p>
 
             <div className="section-content">
               <p>
-                The Jewish community has played a pivotal role in shaping modern business and
-                finance. From pioneering investment banking to revolutionary entrepreneurship,
-                Jewish professionals have left an indelible mark on industries worldwide. At SJBA,
-                we celebrate this rich heritage while building the next generation of Jewish
-                business leaders.
+                Our programming is designed to feel substantive rather than symbolic. Members hear
+                directly from accomplished operators, investors, founders, and advisors, then carry
+                those conversations into a network of peers who are equally committed to growth.
               </p>
 
               <p>
-                Our organization provides a platform for networking, mentorship, and professional
-                development within NYU's vibrant Jewish community. Through exclusive events, speaker
-                series, and industry connections, we help members understand their cultural legacy
-                while preparing them for successful careers in finance, consulting, technology, and
-                beyond.
+                That combination matters at Stern. Students want access, but they also want context:
+                how careers unfold, how decisions are made, and how values can remain part of the
+                equation. SJBA creates a home for both the ambition and the belonging.
               </p>
             </div>
           </div>
@@ -238,7 +284,7 @@ export const Home = () => {
 
         {/* Newsletter Signup Section */}
         <NewsletterSignup />
-      </div>
+      </section>
 
       <FloatingPopup
         isOpen={Boolean(isDismissalStateReady && nextEvent && lastDismissedDate !== currentDateKey)}
