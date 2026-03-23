@@ -127,6 +127,8 @@ Color rules:
 - `--header-offset`
   - Space reserved for the header.
   - Use when positioning first-viewport content.
+- `--header-compact-height`
+  - Settled header height used after scroll and on non-home pages.
 - `--radius-soft`
   - Soft corner radius for elevated surfaces.
 - `--shadow-soft`
@@ -218,6 +220,46 @@ Use:
 - whitespace
 - surface changes
 - image-to-text contrast
+
+## Header System
+
+The site header now has two approved modes.
+
+### Header modes
+
+- `overlay`
+  - Use on the home page at the top of the hero.
+  - Header stays transparent-dark, uses light text, and should feel integrated with the image rather than boxed above it.
+- `settled`
+  - Use after scroll and on non-home pages.
+  - Header shifts to a warm solid surface with ink text and a clearer bottom divider.
+
+Rules:
+
+- Home starts in `overlay` and settles once the page scrolls.
+- Non-home pages should render directly in `settled`.
+- The header should stay fixed; do not create page-specific alternate navigation shells.
+
+### Navigation typography
+
+- Navigation uses `--font-sans`, uppercase tracking on desktop, and quieter editorial scale than the hero.
+- Default desktop nav items should read as links first, not buttons.
+- Use underlines, spacing, and contrast for hover/active states before adding fills or shadows.
+- On mobile, nav items can drop uppercase and scale up significantly for a more editorial sheet layout.
+
+### Navigation CTA
+
+- `Contact Us` is the only primary header CTA.
+- On desktop it may use a restrained pill treatment.
+- On overlay headers, the CTA should stay readable without looking like a glossy app button.
+- On mobile, the CTA should sit apart as a subdued utility action near the bottom of the menu sheet.
+
+### Dropdowns and mobile menu
+
+- Desktop dropdowns should use warm surfaces, tight spacing, and calm motion.
+- Dropdown panels should feel like part of the page system, not floating glass widgets.
+- Mobile navigation should open as a full-screen editorial sheet, not a narrow drawer.
+- When the mobile sheet is open, body scroll should be locked using the `menu-open` body class.
 
 Only use a card or panel when the surface itself is part of the interaction or meaning.
 
