@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { startTransition, useEffect, useState } from 'react';
 
 export const useCurrentTime = (tickMs = 30_000): Date => {
   const [now, setNow] = useState(() => new Date());
@@ -7,7 +7,9 @@ export const useCurrentTime = (tickMs = 30_000): Date => {
     let intervalId: number | undefined;
 
     const updateNow = () => {
-      setNow(new Date());
+      startTransition(() => {
+        setNow(new Date());
+      });
     };
 
     const startInterval = () => {
