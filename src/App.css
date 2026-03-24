@@ -22,3 +22,9 @@
   padding-top: var(--header-offset);
   margin: 0;
 }
+
+@media (max-width: 768px) {
+  .app {
+    background: var(--color-surface);
+  }
+}

@@ -103,3 +103,13 @@ button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
+
+@media (max-width: 768px) {
+  html {
+    background: var(--color-surface);
+  }
+
+  body {
+    background: var(--color-surface);
+  }
+}
