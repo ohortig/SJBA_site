@@ -10,6 +10,7 @@ export const HOME_PAGE_SPEAKER_LOGOS = [
   { name: 'JPMorgan Chase', src: '/speaker-logos/jpmorgan-logo.jpg' },
   { name: 'Morgan Stanley', src: '/speaker-logos/morgan-stanley-logo.jpg' },
   { name: 'Blackstone', src: '/speaker-logos/blackstone-logo.png' },
+  { name: 'BentallGreenOak', src: '/speaker-logos/bentall-green-oak.png' },
   { name: 'Sequoia Capital', src: '/speaker-logos/sequoia-logo.png' },
   { name: 'McKinsey & Company', src: '/speaker-logos/mckinsey-logo.jpg' },
   { name: 'Ackman-Ziff', src: '/speaker-logos/ackman-ziff-logo.jpg' },
@@ -27,4 +28,5 @@ export const HOME_PAGE_SPEAKER_LOGOS = [
   { name: 'Cantor Fitzgerald', src: '/speaker-logos/cantor-fitzgerald-logo.png' },
   { name: 'Palantir', src: '/speaker-logos/palantir-logo.png' },
   { name: 'UBS', src: '/speaker-logos/UBS-logo.png' },
+  { name: 'Warby Parker', src: '/speaker-logos/warby-parker.png' },
 ];
