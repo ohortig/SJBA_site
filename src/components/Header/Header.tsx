@@ -5,7 +5,7 @@ import { useIsMobile } from '@hooks';
 import './Header.css';
 
 const SETTLED_SCROLL_THRESHOLD = 36;
-const OVERLAY_HEADER_ROUTES = new Set(['/', '/programs']);
+const OVERLAY_HEADER_ROUTES = new Set(['/', '/mentorship']);
 const ABOUT_DROPDOWN_ITEMS = [
   { label: 'The SJBA Mission', to: '/our-mission' },
   { label: 'Executive Board', to: '/our-board' },
@@ -99,7 +99,7 @@ export const Header = () => {
           <NavButton to="/events" onClick={closeMenu}>
             Events
           </NavButton>
-          <NavButton to="/programs" onClick={closeMenu}>
+          <NavButton to="/mentorship" onClick={closeMenu}>
             Programs
           </NavButton>
           <Dropdown

@@ -16,7 +16,7 @@ import {
 } from '@constants';
 import { useScrollAnimation } from '@hooks';
 import type { BoardMember } from '@types';
-import './Programs.css';
+import './Mentorship.css';
 
 type ApplicationConfig = {
   applicationUrl: string;
@@ -156,7 +156,7 @@ const PROCESS_STEPS = [
   },
 ];
 
-export const Programs = () => {
+export const Mentorship = () => {
   const heroAnim = useScrollAnimation({ threshold: 0.05, rootMargin: '0px 0px -20px 0px' });
   const overviewAnim = useScrollAnimation({ threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
   const tracksAnim = useScrollAnimation({ threshold: 0.08, rootMargin: '0px 0px -60px 0px' });
