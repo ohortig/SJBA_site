@@ -128,7 +128,7 @@ Color rules:
   - Space reserved for the header.
   - Use when positioning first-viewport content.
 - `--header-compact-height`
-  - Settled header height used after scroll and on non-home pages.
+  - Header height used before and after scroll.
 - `--radius-soft`
   - Soft corner radius for elevated surfaces.
 - `--shadow-soft`
