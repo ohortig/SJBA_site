@@ -362,6 +362,181 @@ Use this for future combinations like:
 - program explanation + registration
 - mission + contact form
 
+## Subpage Framework
+
+`src/pages/Mentorship/Mentorship.tsx` is now the clearest reference for how a branded interior subpage should be assembled.
+
+Use Mentorship as the default subpage blueprint unless a page has a clear structural reason to differ.
+
+### Approved subpage stack
+
+The preferred structure for future subpages is:
+
+1. full-bleed `SubpageHero`
+2. constrained overview or framing section
+3. one or more detail sections using shared content primitives
+4. a final conversion or contact section
+5. the shared `Footer`
+
+This keeps subpages aligned with the home page without copying the home page exactly.
+
+### Shared primitives to reuse first
+
+Before creating new page-specific layout patterns, check whether the subpage can be built from these existing pieces:
+
+- `SubpageHero`
+  - Use for the opening section on interior pages.
+  - It already handles full-bleed imagery, dark overlay treatment, constrained inner content, and mobile CTA stacking.
+- `ZigzagView`
+  - Use for alternating image-and-copy story rows.
+  - This is the approved pattern for program tracks, benefits, featured initiatives, and similar paired content.
+- `NumberedList`
+  - Use for step-based explanations such as process, timeline, or how-it-works sections.
+  - Do not rebuild numbered process layouts locally unless the content genuinely needs a different structure.
+- `LinkButtonPrimary`
+  - Use `variant="subpage"` for the main action in subpage heroes and conversion sections.
+- `LinkButtonSecondary`
+  - Use `variant="status"` for supportive hero actions, status indicators, or quiet secondary controls on dark surfaces.
+- `InlineLink`
+  - Use inside headings or editorial copy when a text-level action should stay integrated with the sentence.
+
+Rule:
+
+- prefer extending these primitives with page wrapper classes before creating new component-specific patterns
+- if a local page class is styling the same structure already covered by a shared component, move the rule to the shared component instead of copying it again
+
+### Subpage hero rules
+
+Mentorship confirms that subpages should use the same core hero language:
+
+- full-bleed image
+- darkened image treatment for readable copy
+- constrained inner shell using `var(--content-max-width)` and `var(--page-gutter)`
+- left-aligned copy
+- serif display headline
+- short sans-serif lead
+- one primary action and one quieter supporting action
+
+Implementation guidance:
+
+- use `SubpageHero` instead of building a one-off hero in the page CSS
+- set `--subpage-hero-photo-offset` on the page root only when the page needs to tune how much of the hero image remains visible below the fold
+- keep hero copy narrow, usually around the existing `36rem` max width
+- keep hero actions in a simple row that wraps on desktop and stacks on mobile
+- use real photography rather than abstract graphics for subpage heroes whenever possible
+
+Avoid:
+
+- centered hero copy by default
+- boxed hero containers
+- extra promo cards or stat tiles inside the hero
+- adding a different button system just for subpages
+
+### Interior section pattern
+
+Mentorship uses a reliable editorial sequence that should guide future subpages:
+
+- overview section for orientation
+- alternating story/detail section for proof or explanation
+- process section for structured steps
+- final call-to-action or contact section
+
+Each section should do one job.
+
+Recommended section behavior:
+
+- keep sections on the shared content width rather than inventing new max widths
+- use top padding to create rhythm between sections instead of boxed panels
+- use quiet borders to separate process and overview content when needed
+- keep headings serif and body copy sans
+- use section labels or eyebrows to orient the reader before the main heading
+
+### Layout and alignment rules for subpages
+
+Future subpages should follow these alignment defaults from Mentorship:
+
+- first interior sections should sit on `width: min(100%, var(--content-max-width))` with `margin: 0 auto`
+- two-column editorial sections should use asymmetrical ratios rather than equal columns when one side is clearly intro copy and the other is detail
+- alternating media/text rows should reverse only the media and copy order, not the overall visual language
+- image blocks may use soft shadow for depth, but should stay edge-defined and calm
+- body copy should usually stay near `1rem` with generous line-height around `1.8`
+
+Do not:
+
+- center everything just because the page is narrower than home
+- replace editorial columns with card grids
+- mix multiple unrelated section widths on the same subpage without a strong reason
+
+### Motion and interaction on subpages
+
+Mentorship also establishes the expected motion model for interior pages:
+
+- sections can fade and rise in using `useScrollAnimation`
+- motion timing should stay restrained and consistent, around the existing `560ms` reveal window
+- image hover motion should be subtle scale and saturation changes only
+- CTA hover motion should remain a slight lift plus arrow movement
+
+Rules:
+
+- use `useScrollAnimation` for section reveal sequencing when the page benefits from progressive entrance
+- keep one reveal treatment across the page instead of inventing a different animation per section
+- preserve `prefers-reduced-motion` handling on shared and local styles
+
+### Responsive behavior for subpages
+
+Subpages should collapse cleanly without changing their design language.
+
+Use the Mentorship behavior as the default:
+
+- hero actions stack on mobile
+- two-column sections collapse to one column around tablet widths
+- reversed zigzag rows should return to natural document order on smaller screens
+- text blocks can expand to full width on mobile
+- hero height can relax from strict viewport locking on smaller screens
+
+Avoid:
+
+- mobile-only redesigns
+- keeping complex side-by-side layouts too long
+- tiny desktop-scaled text on phones
+
+### Content and data behavior
+
+Mentorship is not only a visual reference. It also shows how subpages should integrate dynamic content:
+
+- fetch live data inside the page when the content is page-specific
+- keep async status visible in the UI rather than hiding the action entirely
+- use progressive enhancement patterns like cached config and loading-safe fallback copy when a CTA depends on remote data
+- keep contact or ownership details near the final action, not buried higher on the page
+
+### When page-level CSS is appropriate
+
+Page CSS is still valid for:
+
+- spacing between sections
+- page-specific hero offset tuning
+- small content-width adjustments for a specific section
+- page-only utility states such as a loading status modifier
+
+Page CSS should not duplicate:
+
+- hero base structure already owned by `SubpageHero.css`
+- alternating media/text structure already owned by `ZigzagView.css`
+- numbered process structure already owned by `NumberedList.css`
+- shared CTA styling already owned by the button components
+
+### Subpage checklist
+
+Before shipping a new subpage, verify:
+
+- the page opens with `SubpageHero` unless there is a documented reason not to
+- the main body uses shared content width and editorial spacing
+- repeated section patterns use shared components before local one-offs
+- there is one clear primary action
+- mobile layout collapses cleanly into stacked sections
+- motion is restrained and reduced-motion safe
+- the page still feels like SJBA, not a microsite or campaign landing page
+
 ## Component Patterns
 
 ### Buttons and links
