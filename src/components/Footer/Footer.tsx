@@ -14,7 +14,7 @@ export const Footer = () => {
     >
       <div className="footer-shell">
         <div className="footer-content">
-          <div className={`footer-lead slide-left ${footerAnimation.isVisible ? 'visible' : ''}`}>
+          <div className="footer-lead">
             <div className="footer-intro">
               <h2>Stay connected with the Stern Jewish Business Association.</h2>
               <p>Follow club updates and keep the conversation going.</p>
@@ -42,27 +42,25 @@ export const Footer = () => {
             </div>
           </div>
 
-          <div
-            className={`footer-links stagger-children ${footerAnimation.isVisible ? 'visible' : ''}`}
-          >
-            <div className="footer-column stagger-item">
+          <div className="footer-links">
+            <div className="footer-column">
               <h3>Programs</h3>
               <Link to="/programs">All Programs</Link>
             </div>
 
-            <div className="footer-column stagger-item">
+            <div className="footer-column">
               <h3>Events</h3>
               <Link to="/events">Events & Speakers</Link>
             </div>
 
-            <div className="footer-column stagger-item">
+            <div className="footer-column">
               <h3>About Us</h3>
               <Link to="/our-mission">The SJBA Mission</Link>
               <Link to="/our-board">Executive Board</Link>
               <Link to="/our-members">General Members</Link>
             </div>
 
-            <div className="footer-column stagger-item">
+            <div className="footer-column">
               <h3>Connect</h3>
               <Link to="/contact">Contact</Link>
             </div>
