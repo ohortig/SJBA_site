@@ -28,17 +28,17 @@ const HOME_PROOF_POINTS = [
   {
     label: 'Speaker Events',
     title: 'Leaders in finance, consulting, and technology.',
-    copy: 'SJBA brings in top professionals across finance, consulting, investing, and technology, giving members direct access to real-world decision makers.',
+    copy: "SJBA's guest speakers span across finance, consulting, investing, and technology, giving members direct access to industry leaders.",
+  },
+  {
+    label: 'Career Building',
+    title: 'Jumpstart your career.',
+    copy: 'Explore career paths, connect with mentors, build skills, and unlock opportunities. Our network spans top firms across the business world.',
   },
   {
     label: 'Professional Network',
     title: 'A Jewish community open to all.',
-    copy: 'The club creates a setting where students can build relationships that feel both personally rooted and professionally serious from the first semester onward.',
-  },
-  {
-    label: 'Career Building',
-    title: 'Programming designed to convert interest into direction.',
-    copy: 'Through conversations, mentorship, and recurring touchpoints, members leave with sharper industry context, stronger conviction, and better connections.',
+    copy: 'Our community is grounded in shared values and mutual support, and is open to all interested NYU students regardless of background or identity.',
   },
 ] as const;
 
@@ -124,8 +124,8 @@ const HomeHero = () => {
               <span className="title-line-2">NYU Stern</span>
             </h1>
             <p className="hero-description">
-              SJBA joins ambitious students, distinguished speakers, and a professional network
-              shaped by shared values.
+              SJBA fosters a community of ambitious students, distinguished speakers, and a
+              professional network built on shared values.
             </p>
 
             <div
