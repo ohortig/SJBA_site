@@ -6,7 +6,7 @@
     rgba(19, 14, 31, 0.24) 62%,
     rgba(19, 14, 31, 0) 100%
   );
-  --header-settled-background: rgba(251, 248, 243, 0.92);
+  --header-settled-background: rgba(249, 245, 237, 0.94);
   --header-dark-text: var(--color-ink);
   --header-light-text: rgba(255, 251, 244, 0.96);
   --header-divider-light: rgba(255, 255, 255, 0.18);
