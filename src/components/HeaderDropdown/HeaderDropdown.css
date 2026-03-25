@@ -24,6 +24,7 @@
   padding: 0.85rem;
   border: 1px solid rgba(76, 13, 127, 0.12);
   background: rgba(251, 248, 243, 0.98);
+  color: var(--color-ink);
   box-shadow: var(--header-menu-shadow);
   transform-origin: top center;
   will-change: transform, opacity;
@@ -69,6 +70,7 @@
 
 .dropdown-item:hover,
 .dropdown-item:focus-visible {
+  color: var(--color-brand-deep);
   text-decoration: none;
   transform: translateY(-1px);
 }
@@ -80,6 +82,7 @@
 }
 
 .dropdown-item.is-active {
+  color: var(--color-brand-deep);
   text-decoration: none;
 }
 
