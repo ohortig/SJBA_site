@@ -5,6 +5,7 @@ import { useIsMobile } from '@hooks';
 import './Header.css';
 
 const SETTLED_SCROLL_THRESHOLD = 36;
+const OVERLAY_HEADER_ROUTES = new Set(['/', '/mentorship']);
 const ABOUT_DROPDOWN_ITEMS = [
   { label: 'The SJBA Mission', to: '/our-mission' },
   { label: 'Executive Board', to: '/our-board' },
@@ -17,8 +18,8 @@ export const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
 
-  const isHomeRoute = location.pathname === '/';
-  const isSettled = !isHomeRoute || isScrolled || isMenuOpen;
+  const usesOverlayHeader = OVERLAY_HEADER_ROUTES.has(location.pathname);
+  const isSettled = !usesOverlayHeader || isScrolled || isMenuOpen;
   const mobileLogoSrc = isSettled
     ? '/sjba/sjba-logo-clear-no-text.png'
     : '/sjba/sjba-logo-clear-inverted.png';
@@ -98,7 +99,7 @@ export const Header = () => {
           <NavButton to="/events" onClick={closeMenu}>
             Events
           </NavButton>
-          <NavButton to="/programs" onClick={closeMenu}>
+          <NavButton to="/mentorship" onClick={closeMenu}>
             Programs
           </NavButton>
           <Dropdown

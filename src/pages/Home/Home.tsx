@@ -4,8 +4,14 @@ import { Link } from 'react-router-dom';
 import { dataService } from '@api';
 import type { Event } from '@types';
 import { useCurrentTime, useProgressiveImage, useScrollAnimation } from '@hooks';
-import { HOME_PAGE_SPEAKER_LOGOS } from '@constants';
-import { Footer, LogoGallery, NewsletterSignup, FloatingPopup } from '@components';
+import {
+  Footer,
+  FloatingPopup,
+  LinkButtonPrimary,
+  LinkButtonSecondary,
+  LogoGallery,
+  NewsletterSignup,
+} from '@components';
 import {
   getEventThumbnailUrl,
   getNextUpcomingEvent,
@@ -24,6 +30,31 @@ const HERO_GALLERY_IMAGES = [
   '/home-gallery/sjba-gallery-4.JPG',
 ] as const;
 const HERO_GALLERY_PLACEHOLDER = '/home-gallery/sjba-gallery-1-placeholder.jpg';
+const HOME_PAGE_SPEAKER_LOGOS = [
+  { name: 'Goldman Sachs', src: '/speaker-logos/goldman-sachs-logo.png' },
+  { name: 'JPMorgan Chase', src: '/speaker-logos/jpmorgan-logo.jpg' },
+  { name: 'Morgan Stanley', src: '/speaker-logos/morgan-stanley-logo.jpg' },
+  { name: 'Blackstone', src: '/speaker-logos/blackstone-logo.png' },
+  { name: 'BentallGreenOak', src: '/speaker-logos/bentall-green-oak.png' },
+  { name: 'Sequoia Capital', src: '/speaker-logos/sequoia-logo.png' },
+  { name: 'McKinsey & Company', src: '/speaker-logos/mckinsey-logo.jpg' },
+  { name: 'Ackman-Ziff', src: '/speaker-logos/ackman-ziff-logo.jpg' },
+  { name: 'Axom Partners', src: '/speaker-logos/axom-partners-logo.jpg' },
+  { name: 'Bank of America', src: '/speaker-logos/bank-of-america-logo.png' },
+  { name: 'Carter Pierce', src: '/speaker-logos/carter-pierce-logo.png' },
+  { name: 'Cushman & Wakefield', src: '/speaker-logos/cushman-and-wakefield-logo.png' },
+  { name: 'Declaration Partners', src: '/speaker-logos/declaration-partners-logo.jpg' },
+  { name: 'Deutsche Bank', src: '/speaker-logos/deutsche-bank-logo.png' },
+  { name: 'Eden Global Partners', src: '/speaker-logos/eden-global-partners-logo.jpeg' },
+  { name: 'FTI Consulting', src: '/speaker-logos/FTI-consulting-logo.png' },
+  { name: 'HSBC', src: '/speaker-logos/HSBC-logo.png' },
+  { name: 'IBM', src: '/speaker-logos/IBM-logo.png' },
+  { name: 'KKR', src: '/speaker-logos/KKR-logo.png' },
+  { name: 'Cantor Fitzgerald', src: '/speaker-logos/cantor-fitzgerald-logo.png' },
+  { name: 'Palantir', src: '/speaker-logos/palantir-logo.png' },
+  { name: 'UBS', src: '/speaker-logos/UBS-logo.png' },
+  { name: 'Warby Parker', src: '/speaker-logos/warby-parker.png' },
+];
 const HOME_PROOF_POINTS = [
   {
     label: 'Speaker Events',
@@ -132,18 +163,12 @@ const HomeHero = () => {
               ref={speakersAnimation.elementRef}
               className={`link-section scale-in ${speakersAnimation.isVisible ? 'visible' : ''}`}
             >
-              <Link to="/events" className="speakers-link">
-                <span>Explore Speakers</span>
-                <img src="/icons/arrow-top-right.png" alt="Arrow" className="speakers-link-arrow" />
-              </Link>
-              <Link to="/our-mission" className="our-mission-link">
-                <span>The SJBA Mission</span>
-                <img
-                  src="/icons/arrow-top-right.png"
-                  alt="Arrow"
-                  className="our-mission-link-arrow"
-                />
-              </Link>
+              <LinkButtonPrimary variant="home" to="/events">
+                Explore Speakers
+              </LinkButtonPrimary>
+              <LinkButtonSecondary variant="home" to="/our-mission" showArrow>
+                The SJBA Mission
+              </LinkButtonSecondary>
             </div>
 
             <div className="gallery-navigation" aria-label="Hero gallery navigation">
