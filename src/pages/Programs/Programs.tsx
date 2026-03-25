@@ -1,22 +1,60 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Footer } from '@components';
-import { useScrollAnimation } from '@hooks';
 import { dataService } from '@api';
+import { useScrollAnimation } from '@hooks';
 import type { BoardMember } from '@types';
 import './Programs.css';
 
-/* Default values for mentorship application status and URL (updated with API call) */
 const DEFAULTS = {
   mentorship_application_open: 'false',
   mentorship_application_url: '',
 };
 
+const MENTORSHIP_TRACKS = [
+  {
+    eyebrow: 'Cross-Campus Pairings',
+    title: 'Undergraduate students are matched with MBA and JD mentors.',
+    description:
+      'In partnership with the Jewish Student Association, students build relationships with mentors who can speak to academic choices, recruiting timelines, and the transition into professional life.',
+    image: '/mentorship-gallery/mentorship-gallery-1.jpeg',
+    alt: 'Graduate mentorship pairing',
+  },
+  {
+    eyebrow: 'Peer Guidance',
+    title: 'Upperclassmen help newer students navigate Stern with recent experience.',
+    description:
+      'Freshmen are paired with sophomores, and sophomores with juniors or seniors, so every mentee has access to practical advice from someone who has recently navigated the same questions.',
+    image: '/mentorship-gallery/mentorship-gallery-2.jpeg',
+    alt: 'Undergraduate mentorship pairing',
+  },
+];
+
+const PROCESS_STEPS = [
+  {
+    number: '01',
+    title: 'Apply',
+    description:
+      "Share which mentorship track fits you, along with your background, interests, and what you'd like from the relationship.",
+  },
+  {
+    number: '02',
+    title: 'Interview',
+    description:
+      'After applications close, mentorship leads send interview slots to understand fit, goals, and scheduling preferences.',
+  },
+  {
+    number: '03',
+    title: 'Match',
+    description:
+      'Pairs are finalized carefully so both sides enter the program with shared expectations and meaningful overlap.',
+  },
+];
+
 export const Programs = () => {
-  const headerAnim = useScrollAnimation({ threshold: 0.1, rootMargin: '0px 0px -20px 0px' });
-  const introAnim = useScrollAnimation({ threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
-  const zigzag1Anim = useScrollAnimation({ threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
-  const zigzag2Anim = useScrollAnimation({ threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
-  const stepsAnim = useScrollAnimation({ threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+  const heroAnim = useScrollAnimation({ threshold: 0.05, rootMargin: '0px 0px -20px 0px' });
+  const overviewAnim = useScrollAnimation({ threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+  const tracksAnim = useScrollAnimation({ threshold: 0.08, rootMargin: '0px 0px -60px 0px' });
+  const processAnim = useScrollAnimation({ threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
   const applyAnim = useScrollAnimation({ threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
 
   const [mentorshipChair, setMentorshipChair] = useState<BoardMember | null>(null);
@@ -34,7 +72,6 @@ export const Programs = () => {
         dataService.boardMembers.getAll(),
       ]);
 
-      // Process site config
       if (configResult.status === 'fulfilled') {
         const config = configResult.value;
         setIsApplicationOpen(
@@ -46,12 +83,16 @@ export const Programs = () => {
         setIsApplicationOpen(DEFAULTS.mentorship_application_open === 'true');
         setApplicationUrl(DEFAULTS.mentorship_application_url);
       }
+
       setConfigLoaded(true);
 
-      // Process mentorship chair
       if (membersResult.status === 'fulfilled') {
-        const chair = membersResult.value.find((m) => m.position.toLowerCase().includes('mentor'));
-        if (chair) setMentorshipChair(chair);
+        const chair = membersResult.value.find((member) =>
+          member.position.toLowerCase().includes('mentor')
+        );
+        if (chair) {
+          setMentorshipChair(chair);
+        }
       } else {
         console.error('Failed to fetch mentorship chair:', membersResult.reason);
       }
@@ -66,166 +107,189 @@ export const Programs = () => {
 
   return (
     <>
-      <div className="page-container">
-        {/* ── Header ── */}
-        <div
-          ref={headerAnim.elementRef}
-          className={`programs-header ${headerAnim.isVisible ? 'visible' : ''}`}
+      <div className="page-container mentorship-page">
+        <section
+          ref={heroAnim.elementRef}
+          className={`mentorship-hero ${heroAnim.isVisible ? 'visible' : ''}`}
         >
-          <h1 className="programs-title">Mentorship at SJBA</h1>
-        </div>
-
-        {/* ── Introduction ── */}
-        <div
-          ref={introAnim.elementRef}
-          className={`programs-intro ${introAnim.isVisible ? 'visible' : ''}`}
-        >
-          <p>
-            Participants in our mentorship programs foster lasting relationships, exchange career
-            guidance, and strengthen the Jewish community at NYU Stern across class years and degree
-            levels.
-          </p>
-        </div>
-
-        {/* ── Application status pill (scrolls to CTA) ── */}
-        {configLoaded && (
-          <button
-            type="button"
-            className={`application-status-pill ${isApplicationOpen ? 'open' : 'closed'}`}
-            onClick={scrollToApply}
-          >
-            <span className={`status-dot ${isApplicationOpen ? 'open-dot' : 'closed-dot'}`} />
-            {isApplicationOpen ? 'Applications Open — Apply Below' : 'Applications Closed'}
-          </button>
-        )}
-
-        <hr className="programs-divider" />
-
-        {/* ── Zigzag Section ── */}
-        <div className="programs-zigzag">
-          {/* Row 1 — Graduate Mentors */}
-          <div
-            ref={zigzag1Anim.elementRef}
-            className={`programs-zigzag-row ${zigzag1Anim.isVisible ? 'visible' : ''}`}
-          >
-            <div className="programs-zigzag-text">
-              <h3>Undergraduate & Graduate Pairings</h3>
-              <p>
-                In partnership with the Jewish Student Association (JSA), undergraduate students are
-                paired with MBA and JD mentors, creating opportunities to learn directly from those
-                with advanced academic and professional experience.
-              </p>
-            </div>
-            <div className="programs-zigzag-image">
-              <img
-                src="/mentorship-gallery/mentorship-gallery-1.jpeg"
-                alt="Graduate mentorship pairing"
-              />
-            </div>
+          <div className="mentorship-hero-background" aria-hidden="true">
+            <img
+              src="/mentorship-gallery/mentorship-gallery-1.jpeg"
+              alt=""
+              className="mentorship-hero-image"
+            />
           </div>
 
-          {/* Row 2 — Peer Mentors */}
-          <div
-            ref={zigzag2Anim.elementRef}
-            className={`programs-zigzag-row reverse ${zigzag2Anim.isVisible ? 'visible' : ''}`}
-          >
-            <div className="programs-zigzag-text">
-              <h3>Underclassmen & Upperclassmen</h3>
-              <p>
-                Guidance is available at every stage of the undergraduate journey. Freshmen are
-                matched with sophomores, and sophomores with juniors or seniors – ensuring that
-                every student has a peer who recently navigated the same challenges and can offer
-                first-hand advice.
+          <div className="mentorship-hero-shell">
+            <div className="mentorship-hero-copy">
+              <span className="mentorship-eyebrow">Programs / Mentorship</span>
+              <h1 className="mentorship-title">Mentorship</h1>
+              <p className="mentorship-lead">
+                A structured way for SJBA members to learn across class years, degree programs, and
+                career stages while building a stronger Jewish community at Stern.
               </p>
-            </div>
-            <div className="programs-zigzag-image">
-              <img
-                src="/mentorship-gallery/mentorship-gallery-2.jpeg"
-                alt="Undergraduate mentorship pairing"
-              />
+
+              <div className="mentorship-hero-actions">
+                {configLoaded && (
+                  <button
+                    type="button"
+                    className={`mentorship-status-pill ${isApplicationOpen ? 'open' : 'closed'}`}
+                    onClick={scrollToApply}
+                  >
+                    <span
+                      className={`mentorship-status-dot ${isApplicationOpen ? 'open-dot' : 'closed-dot'}`}
+                    />
+                    {isApplicationOpen ? 'Application open' : 'Application closed'}
+                  </button>
+                )}
+
+                {isApplicationOpen ? (
+                  <a
+                    href={applicationUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="mentorship-link-button"
+                  >
+                    View Application
+                    <img
+                      src="/icons/arrow-top-right.png"
+                      alt=""
+                      aria-hidden="true"
+                      className="mentorship-link-arrow"
+                    />
+                  </a>
+                ) : (
+                  <button type="button" className="mentorship-link-button" onClick={scrollToApply}>
+                    View Application
+                    <img
+                      src="/icons/arrow-top-right.png"
+                      alt=""
+                      aria-hidden="true"
+                      className="mentorship-link-arrow"
+                    />
+                  </button>
+                )}
+              </div>
             </div>
           </div>
-        </div>
+        </section>
 
-        {/* ── How It Works ── */}
-        <div
-          ref={stepsAnim.elementRef}
-          className={`programs-steps-section ${stepsAnim.isVisible ? 'visible' : ''}`}
+        <section
+          ref={overviewAnim.elementRef}
+          className={`mentorship-overview ${overviewAnim.isVisible ? 'visible' : ''}`}
         >
-          <h2 className="programs-steps-heading">How It Works</h2>
-
-          <div className="programs-steps-grid">
-            <div className="step-card">
-              <div className="step-number">1</div>
-              <h4>Apply</h4>
-              <p>
-                Fill out the application form where you'll select which program(s) you're interested
-                in and share your background, interests, and goals.
-              </p>
+          <div className="mentorship-overview-grid">
+            <div className="mentorship-overview-intro">
+              <span className="mentorship-section-label">Mentorship Program Overview</span>
+              <h2>One program, two mentorship paths.</h2>
             </div>
 
-            <div className="step-card">
-              <div className="step-number">2</div>
-              <h4>Interview</h4>
-              <p>
-                Participate in a brief interview. Interview time slots are sent out after the
-                application window closes.
+            <div className="mentorship-overview-detail">
+              <p className="mentorship-overview-lead">
+                The mentorship program is designed to feel personal rather than administrative.
               </p>
-            </div>
-
-            <div className="step-card">
-              <div className="step-number">3</div>
-              <h4>Get Matched</h4>
-              <p>Pairs are matched thoughtfully to maximize value for both mentors and mentees.</p>
+              <div className="mentorship-overview-body">
+                <p>
+                  Students enter with clear goals, meet with SJBA leadership, and are paired with
+                  mentors who can offer useful perspective on school life, recruiting, and
+                  community.
+                </p>
+              </div>
             </div>
           </div>
-        </div>
+        </section>
 
-        {/* ── Application CTA ── */}
-        <div
+        <section
+          ref={tracksAnim.elementRef}
+          className={`mentorship-tracks ${tracksAnim.isVisible ? 'visible' : ''}`}
+        >
+          {MENTORSHIP_TRACKS.map((track, index) => (
+            <article
+              key={track.title}
+              className={`mentorship-track ${index % 2 === 1 ? 'mentorship-track--reverse' : ''}`}
+            >
+              <div className="mentorship-track-media">
+                <img src={track.image} alt={track.alt} />
+              </div>
+
+              <div className="mentorship-track-copy">
+                <span className="mentorship-section-label">{track.eyebrow}</span>
+                <h3>{track.title}</h3>
+                <p>{track.description}</p>
+              </div>
+            </article>
+          ))}
+        </section>
+
+        <section
+          ref={processAnim.elementRef}
+          className={`mentorship-process ${processAnim.isVisible ? 'visible' : ''}`}
+        >
+          <div className="mentorship-process-header">
+            <span className="mentorship-section-label">How It Works</span>
+            <h2>The matching process stays simple, deliberate, and consistent each semester.</h2>
+          </div>
+
+          <div className="mentorship-process-list">
+            {PROCESS_STEPS.map((step) => (
+              <div key={step.number} className="mentorship-process-step">
+                <span className="mentorship-process-number">{step.number}</span>
+                <div>
+                  <h3>{step.title}</h3>
+                  <p>{step.description}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        <section
           id="apply-section"
           ref={applyAnim.elementRef}
-          className={`programs-apply-section ${applyAnim.isVisible ? 'visible' : ''}`}
+          className={`mentorship-apply ${applyAnim.isVisible ? 'visible' : ''}`}
         >
-          <div className={`application-status-badge ${isApplicationOpen ? 'open' : 'closed'}`}>
-            <span className={`status-dot ${isApplicationOpen ? 'open-dot' : 'closed-dot'}`} />
-            {isApplicationOpen ? 'Applications Open' : 'Applications Closed'}
-          </div>
-
-          <h2 className="programs-apply-heading">
-            {isApplicationOpen ? 'Ready to find your mentor?' : 'Applications are currently closed'}
-          </h2>
-
-          <p className="programs-apply-description">
-            {isApplicationOpen
-              ? 'Complete the application form to get started. Interview slots will be shared after the application window closes.'
-              : 'Check back soon — we open applications at the start of each semester. Sign up for our newsletter to stay updated.'}
-          </p>
-
-          {isApplicationOpen ? (
-            <a
-              href={applicationUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="apply-button"
-            >
-              Apply Now{' '}
-              <img src="/icons/arrow-top-right.png" alt="Arrow" className="apply-button-arrow" />
-            </a>
-          ) : (
-            <span className="apply-button disabled">Applications Closed</span>
-          )}
-
-          {mentorshipChair && (
-            <div className="apply-contact-line">
-              <span>
-                Have any questions? Reach out to{' '}
+          <div className="mentorship-apply-copy">
+            <span className="mentorship-section-label">Next Step</span>
+            <h2>
+              {isApplicationOpen ? (
+                <>
+                  <a
+                    href={applicationUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="mentorship-inline-apply-link"
+                  >
+                    <span>Apply</span>
+                    <svg
+                      className="mentorship-inline-apply-link-arrow"
+                      viewBox="0 0 16 16"
+                      aria-hidden="true"
+                    >
+                      <path
+                        d="M2.5 8h9.5M8.5 4.5L12 8l-3.5 3.5"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="1.75"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </svg>
+                  </a>{' '}
+                  to join the next mentorship cohort.
+                </>
+              ) : (
+                'Applications are closed for the current cycle.'
+              )}
+            </h2>
+            {mentorshipChair && (
+              <p className="mentorship-contact mentorship-contact--intro">
+                Questions can be directed to{' '}
                 <a href={`mailto:${mentorshipChair.email}`}>{mentorshipChair.fullName}</a>,{' '}
-                {mentorshipChair.position}
-              </span>
-            </div>
-          )}
-        </div>
+                {mentorshipChair.position}.
+              </p>
+            )}
+          </div>
+        </section>
       </div>
 
       <Footer />
