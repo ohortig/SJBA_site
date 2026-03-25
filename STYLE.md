@@ -161,8 +161,7 @@ Motion rule:
 
 ## Primary CTA System
 
-The filled purple CTA is now a shared system used by the header `Contact` action, the hero
-`Explore Speakers` action, and the newsletter `Join the List` action.
+The filled purple CTA is now a shared system used by CTA buttons across the website.
 
 Rules:
 
