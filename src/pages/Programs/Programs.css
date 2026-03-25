@@ -1,5 +1,5 @@
 .mentorship-page {
-  --mentorship-hero-photo-offset: 15.2rem;
+  --subpage-hero-photo-offset: 15.2rem;
   padding-bottom: clamp(1rem, 2.5vw, 2rem);
 }
 

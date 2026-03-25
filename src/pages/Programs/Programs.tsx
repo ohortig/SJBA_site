@@ -1,5 +1,13 @@
 import { useEffect, useState } from 'react';
-import { Footer } from '@components';
+import {
+  Footer,
+  InlineLink,
+  LinkButtonPrimary,
+  LinkButtonSecondary,
+  NumberedList,
+  SubpageHero,
+  ZigzagView,
+} from '@components';
 import { dataService } from '@api';
 import { useScrollAnimation } from '@hooks';
 import type { BoardMember } from '@types';
@@ -108,71 +116,43 @@ export const Programs = () => {
   return (
     <>
       <div className="page-container mentorship-page">
-        <section
+        <SubpageHero
           ref={heroAnim.elementRef}
-          className={`mentorship-hero ${heroAnim.isVisible ? 'visible' : ''}`}
-        >
-          <div className="mentorship-hero-background" aria-hidden="true">
-            <img
-              src="/mentorship-gallery/mentorship-gallery-1.jpeg"
-              alt=""
-              className="mentorship-hero-image"
-            />
-          </div>
+          visible={heroAnim.isVisible}
+          backgroundImageSrc="/mentorship-gallery/mentorship-gallery-1.jpeg"
+          eyebrow="Programs / Mentorship"
+          title="Mentorship"
+          lead="A structured way for SJBA members to learn across class years, degree programs, and career stages while building a stronger Jewish community at Stern."
+          actions={
+            <>
+              {configLoaded ? (
+                <LinkButtonSecondary
+                  variant="status"
+                  statusTone={isApplicationOpen ? 'open' : 'closed'}
+                  showStatusDot
+                  onClick={scrollToApply}
+                >
+                  {isApplicationOpen ? 'Application open' : 'Application closed'}
+                </LinkButtonSecondary>
+              ) : null}
 
-          <div className="mentorship-hero-shell">
-            <div className="mentorship-hero-copy">
-              <span className="mentorship-eyebrow">Programs / Mentorship</span>
-              <h1 className="mentorship-title">Mentorship</h1>
-              <p className="mentorship-lead">
-                A structured way for SJBA members to learn across class years, degree programs, and
-                career stages while building a stronger Jewish community at Stern.
-              </p>
-
-              <div className="mentorship-hero-actions">
-                {configLoaded && (
-                  <button
-                    type="button"
-                    className={`mentorship-status-pill ${isApplicationOpen ? 'open' : 'closed'}`}
-                    onClick={scrollToApply}
-                  >
-                    <span
-                      className={`mentorship-status-dot ${isApplicationOpen ? 'open-dot' : 'closed-dot'}`}
-                    />
-                    {isApplicationOpen ? 'Application open' : 'Application closed'}
-                  </button>
-                )}
-
-                {isApplicationOpen ? (
-                  <a
-                    href={applicationUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="mentorship-link-button"
-                  >
-                    View Application
-                    <img
-                      src="/icons/arrow-top-right.png"
-                      alt=""
-                      aria-hidden="true"
-                      className="mentorship-link-arrow"
-                    />
-                  </a>
-                ) : (
-                  <button type="button" className="mentorship-link-button" onClick={scrollToApply}>
-                    View Application
-                    <img
-                      src="/icons/arrow-top-right.png"
-                      alt=""
-                      aria-hidden="true"
-                      className="mentorship-link-arrow"
-                    />
-                  </button>
-                )}
-              </div>
-            </div>
-          </div>
-        </section>
+              {isApplicationOpen ? (
+                <LinkButtonPrimary
+                  variant="subpage"
+                  href={applicationUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  View Application
+                </LinkButtonPrimary>
+              ) : (
+                <LinkButtonPrimary variant="subpage" onClick={scrollToApply}>
+                  View Application
+                </LinkButtonPrimary>
+              )}
+            </>
+          }
+        />
 
         <section
           ref={overviewAnim.elementRef}
@@ -199,27 +179,12 @@ export const Programs = () => {
           </div>
         </section>
 
-        <section
+        <ZigzagView
           ref={tracksAnim.elementRef}
-          className={`mentorship-tracks ${tracksAnim.isVisible ? 'visible' : ''}`}
-        >
-          {MENTORSHIP_TRACKS.map((track, index) => (
-            <article
-              key={track.title}
-              className={`mentorship-track ${index % 2 === 1 ? 'mentorship-track--reverse' : ''}`}
-            >
-              <div className="mentorship-track-media">
-                <img src={track.image} alt={track.alt} />
-              </div>
-
-              <div className="mentorship-track-copy">
-                <span className="mentorship-section-label">{track.eyebrow}</span>
-                <h3>{track.title}</h3>
-                <p>{track.description}</p>
-              </div>
-            </article>
-          ))}
-        </section>
+          className="mentorship-tracks"
+          visible={tracksAnim.isVisible}
+          items={MENTORSHIP_TRACKS}
+        />
 
         <section
           ref={processAnim.elementRef}
@@ -230,17 +195,7 @@ export const Programs = () => {
             <h2>The matching process stays simple, deliberate, and consistent each semester.</h2>
           </div>
 
-          <div className="mentorship-process-list">
-            {PROCESS_STEPS.map((step) => (
-              <div key={step.number} className="mentorship-process-step">
-                <span className="mentorship-process-number">{step.number}</span>
-                <div>
-                  <h3>{step.title}</h3>
-                  <p>{step.description}</p>
-                </div>
-              </div>
-            ))}
-          </div>
+          <NumberedList items={PROCESS_STEPS} />
         </section>
 
         <section
@@ -253,28 +208,9 @@ export const Programs = () => {
             <h2>
               {isApplicationOpen ? (
                 <>
-                  <a
-                    href={applicationUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="mentorship-inline-apply-link"
-                  >
-                    <span>Apply</span>
-                    <svg
-                      className="mentorship-inline-apply-link-arrow"
-                      viewBox="0 0 16 16"
-                      aria-hidden="true"
-                    >
-                      <path
-                        d="M2.5 8h9.5M8.5 4.5L12 8l-3.5 3.5"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="1.75"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                    </svg>
-                  </a>{' '}
+                  <InlineLink href={applicationUrl} target="_blank" rel="noopener noreferrer">
+                    Apply
+                  </InlineLink>{' '}
                   to join the next mentorship cohort.
                 </>
               ) : (

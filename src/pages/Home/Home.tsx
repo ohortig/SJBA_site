@@ -5,7 +5,14 @@ import { dataService } from '@api';
 import type { Event } from '@types';
 import { useCurrentTime, useProgressiveImage, useScrollAnimation } from '@hooks';
 import { HOME_PAGE_SPEAKER_LOGOS } from '@constants';
-import { Footer, LogoGallery, NewsletterSignup, FloatingPopup } from '@components';
+import {
+  Footer,
+  FloatingPopup,
+  LinkButtonPrimary,
+  LinkButtonSecondary,
+  LogoGallery,
+  NewsletterSignup,
+} from '@components';
 import {
   getEventThumbnailUrl,
   getNextUpcomingEvent,
@@ -132,18 +139,12 @@ const HomeHero = () => {
               ref={speakersAnimation.elementRef}
               className={`link-section scale-in ${speakersAnimation.isVisible ? 'visible' : ''}`}
             >
-              <Link to="/events" className="speakers-link">
-                <span>Explore Speakers</span>
-                <img src="/icons/arrow-top-right.png" alt="Arrow" className="speakers-link-arrow" />
-              </Link>
-              <Link to="/our-mission" className="our-mission-link">
-                <span>The SJBA Mission</span>
-                <img
-                  src="/icons/arrow-top-right.png"
-                  alt="Arrow"
-                  className="our-mission-link-arrow"
-                />
-              </Link>
+              <LinkButtonPrimary variant="home" to="/events">
+                Explore Speakers
+              </LinkButtonPrimary>
+              <LinkButtonSecondary variant="home" to="/our-mission" showArrow>
+                The SJBA Mission
+              </LinkButtonSecondary>
             </div>
 
             <div className="gallery-navigation" aria-label="Hero gallery navigation">
