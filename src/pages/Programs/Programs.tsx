@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import {
   Footer,
   InlineLink,
@@ -9,13 +9,111 @@ import {
   ZigzagView,
 } from '@components';
 import { dataService } from '@api';
+import {
+  MENTORSHIP_APPLICATION_CONFIG_DEFAULTS,
+  MENTORSHIP_APPLICATION_CONFIG_STORAGE_KEY,
+  MENTORSHIP_APPLICATION_CONFIG_TTL_MS,
+} from '@constants';
 import { useScrollAnimation } from '@hooks';
 import type { BoardMember } from '@types';
 import './Programs.css';
 
-const DEFAULTS = {
-  mentorship_application_open: 'false',
-  mentorship_application_url: '',
+type ApplicationConfig = {
+  applicationUrl: string;
+  isApplicationOpen: boolean;
+};
+
+type PersistedApplicationConfig = ApplicationConfig & {
+  fetchedAt: number;
+};
+
+let cachedApplicationConfig: ApplicationConfig | null = null;
+let cachedApplicationConfigAt: number | null = null;
+let applicationConfigPromise: Promise<ApplicationConfig> | null = null;
+
+const isFreshApplicationConfig = (fetchedAt: number) =>
+  Date.now() - fetchedAt < MENTORSHIP_APPLICATION_CONFIG_TTL_MS;
+
+const readPersistedApplicationConfig = (): PersistedApplicationConfig | null => {
+  if (typeof window === 'undefined') {
+    return null;
+  }
+
+  try {
+    const rawValue = window.localStorage.getItem(MENTORSHIP_APPLICATION_CONFIG_STORAGE_KEY);
+    if (!rawValue) {
+      return null;
+    }
+
+    const parsedValue = JSON.parse(rawValue) as Partial<PersistedApplicationConfig>;
+    if (
+      typeof parsedValue.fetchedAt !== 'number' ||
+      typeof parsedValue.isApplicationOpen !== 'boolean' ||
+      typeof parsedValue.applicationUrl !== 'string'
+    ) {
+      window.localStorage.removeItem(MENTORSHIP_APPLICATION_CONFIG_STORAGE_KEY);
+      return null;
+    }
+
+    return {
+      fetchedAt: parsedValue.fetchedAt,
+      isApplicationOpen: parsedValue.isApplicationOpen,
+      applicationUrl: parsedValue.applicationUrl,
+    };
+  } catch (error) {
+    console.error('Failed to read mentorship application config cache:', error);
+    return null;
+  }
+};
+
+const writePersistedApplicationConfig = (config: PersistedApplicationConfig) => {
+  if (typeof window === 'undefined') {
+    return;
+  }
+
+  try {
+    window.localStorage.setItem(MENTORSHIP_APPLICATION_CONFIG_STORAGE_KEY, JSON.stringify(config));
+  } catch (error) {
+    console.error('Failed to write mentorship application config cache:', error);
+  }
+};
+
+const clearPersistedApplicationConfig = () => {
+  if (typeof window === 'undefined') {
+    return;
+  }
+
+  try {
+    window.localStorage.removeItem(MENTORSHIP_APPLICATION_CONFIG_STORAGE_KEY);
+  } catch (error) {
+    console.error('Failed to clear mentorship application config cache:', error);
+  }
+};
+
+const getFreshCachedApplicationConfig = () => {
+  if (
+    cachedApplicationConfig !== null &&
+    cachedApplicationConfigAt !== null &&
+    isFreshApplicationConfig(cachedApplicationConfigAt)
+  ) {
+    return cachedApplicationConfig;
+  }
+
+  const persistedConfig = readPersistedApplicationConfig();
+  if (persistedConfig && isFreshApplicationConfig(persistedConfig.fetchedAt)) {
+    cachedApplicationConfig = {
+      isApplicationOpen: persistedConfig.isApplicationOpen,
+      applicationUrl: persistedConfig.applicationUrl,
+    };
+    cachedApplicationConfigAt = persistedConfig.fetchedAt;
+    return cachedApplicationConfig;
+  }
+
+  if (persistedConfig) {
+    clearPersistedApplicationConfig();
+  }
+
+  return null;
 };
 
 const MENTORSHIP_TRACKS = [
@@ -64,35 +162,67 @@ export const Programs = () => {
   const tracksAnim = useScrollAnimation({ threshold: 0.08, rootMargin: '0px 0px -60px 0px' });
   const processAnim = useScrollAnimation({ threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
   const applyAnim = useScrollAnimation({ threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+  const applyHeadingRef = useRef<HTMLHeadingElement | null>(null);
+  const freshCachedApplicationConfig = getFreshCachedApplicationConfig();
 
   const [mentorshipChair, setMentorshipChair] = useState<BoardMember | null>(null);
-  const [isApplicationOpen, setIsApplicationOpen] = useState(false);
-  const [applicationUrl, setApplicationUrl] = useState('');
-  const [configLoaded, setConfigLoaded] = useState(false);
+  const [isApplicationOpen, setIsApplicationOpen] = useState<boolean | null>(
+    freshCachedApplicationConfig?.isApplicationOpen ?? null
+  );
+  const [applicationUrl, setApplicationUrl] = useState(
+    freshCachedApplicationConfig?.applicationUrl ?? ''
+  );
+  const isApplicationStatusReady = isApplicationOpen !== null;
 
   useEffect(() => {
+    const resolveApplicationConfig = async (): Promise<ApplicationConfig> => {
+      const freshCachedConfig = getFreshCachedApplicationConfig();
+      if (freshCachedConfig) {
+        return freshCachedConfig;
+      }
+
+      if (!applicationConfigPromise) {
+        applicationConfigPromise = dataService.siteConfig
+          .getByKeys(['mentorship_application_open', 'mentorship_application_url'])
+          .then((config) => ({
+            isApplicationOpen:
+              (config.mentorship_application_open ??
+                MENTORSHIP_APPLICATION_CONFIG_DEFAULTS.mentorship_application_open) === 'true',
+            applicationUrl:
+              config.mentorship_application_url ??
+              MENTORSHIP_APPLICATION_CONFIG_DEFAULTS.mentorship_application_url,
+          }))
+          .catch((error) => {
+            console.error('Failed to fetch site config:', error);
+            return {
+              isApplicationOpen:
+                MENTORSHIP_APPLICATION_CONFIG_DEFAULTS.mentorship_application_open === 'true',
+              applicationUrl: MENTORSHIP_APPLICATION_CONFIG_DEFAULTS.mentorship_application_url,
+            };
+          })
+          .finally(() => {
+            applicationConfigPromise = null;
+          });
+      }
+
+      const config = await applicationConfigPromise;
+      const fetchedAt = Date.now();
+      cachedApplicationConfig = config;
+      cachedApplicationConfigAt = fetchedAt;
+      writePersistedApplicationConfig({ ...config, fetchedAt });
+      return config;
+    };
+
     const fetchData = async () => {
-      const [configResult, membersResult] = await Promise.allSettled([
-        dataService.siteConfig.getByKeys([
-          'mentorship_application_open',
-          'mentorship_application_url',
-        ]),
+      const [applicationConfig, membersResult] = await Promise.allSettled([
+        resolveApplicationConfig(),
         dataService.boardMembers.getAll(),
       ]);
 
-      if (configResult.status === 'fulfilled') {
-        const config = configResult.value;
-        setIsApplicationOpen(
-          (config.mentorship_application_open ?? DEFAULTS.mentorship_application_open) === 'true'
-        );
-        setApplicationUrl(config.mentorship_application_url ?? DEFAULTS.mentorship_application_url);
-      } else {
-        console.error('Failed to fetch site config:', configResult.reason);
-        setIsApplicationOpen(DEFAULTS.mentorship_application_open === 'true');
-        setApplicationUrl(DEFAULTS.mentorship_application_url);
+      if (applicationConfig.status === 'fulfilled') {
+        setIsApplicationOpen(applicationConfig.value.isApplicationOpen);
+        setApplicationUrl(applicationConfig.value.applicationUrl);
       }
-
-      setConfigLoaded(true);
 
       if (membersResult.status === 'fulfilled') {
         const chair = membersResult.value.find((member) =>
@@ -110,7 +240,8 @@ export const Programs = () => {
   }, []);
 
   const scrollToApply = () => {
-    document.getElementById('apply-section')?.scrollIntoView({ behavior: 'smooth' });
+    const target = applyHeadingRef.current ?? document.getElementById('apply-section');
+    target?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   };
 
   return (
@@ -125,16 +256,23 @@ export const Programs = () => {
           lead="A structured way for SJBA members to learn across class years, degree programs, and career stages while building a stronger Jewish community at Stern."
           actions={
             <>
-              {configLoaded ? (
-                <LinkButtonSecondary
-                  variant="status"
-                  statusTone={isApplicationOpen ? 'open' : 'closed'}
-                  showStatusDot
-                  onClick={scrollToApply}
-                >
-                  {isApplicationOpen ? 'Application open' : 'Application closed'}
-                </LinkButtonSecondary>
-              ) : null}
+              <LinkButtonSecondary
+                className={`programs-application-status${
+                  isApplicationStatusReady ? '' : ' programs-application-status--loading'
+                }`}
+                variant="status"
+                statusTone={
+                  isApplicationStatusReady ? (isApplicationOpen ? 'open' : 'closed') : undefined
+                }
+                showStatusDot={isApplicationStatusReady}
+                onClick={scrollToApply}
+              >
+                {isApplicationStatusReady
+                  ? isApplicationOpen
+                    ? 'Application open'
+                    : 'Application closed'
+                  : 'Checking status'}
+              </LinkButtonSecondary>
 
               {isApplicationOpen ? (
                 <LinkButtonPrimary
@@ -205,7 +343,7 @@ export const Programs = () => {
         >
           <div className="mentorship-apply-copy">
             <span className="mentorship-section-label">Next Step</span>
-            <h2>
+            <h2 ref={applyHeadingRef}>
               {isApplicationOpen ? (
                 <>
                   <InlineLink href={applicationUrl} target="_blank" rel="noopener noreferrer">

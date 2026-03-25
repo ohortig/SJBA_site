@@ -274,6 +274,21 @@
   letter-spacing: -0.03em;
   text-wrap: balance;
   color: var(--color-ink);
+  scroll-margin-top: calc(var(--header-offset) + clamp(1rem, 3vw, 2rem));
+}
+
+.programs-application-status {
+  min-width: 15rem;
+}
+
+.programs-application-status--loading {
+  border-color: rgba(255, 255, 255, 0.18);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.programs-application-status--loading:hover,
+.programs-application-status--loading:focus-visible {
+  transform: none;
 }
 
 .mentorship-overview-body p,
