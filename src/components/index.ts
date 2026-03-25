@@ -9,6 +9,7 @@ export * from './LoadingSpinner';
 export * from './InlineLink';
 export * from './LinkButtonPrimary';
 export * from './LinkButtonSecondary';
+export * from './LogoCloud';
 export * from './LogoGallery';
 export * from './NavButton';
 export * from './NumberedList';
