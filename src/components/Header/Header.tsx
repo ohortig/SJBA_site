@@ -5,7 +5,7 @@ import { useIsMobile } from '@hooks';
 import './Header.css';
 
 const SETTLED_SCROLL_THRESHOLD = 36;
-const OVERLAY_HEADER_ROUTES = new Set(['/', '/mentorship']);
+const OVERLAY_HEADER_ROUTES = new Set(['/', '/mentorship', '/our-mission']);
 const ABOUT_DROPDOWN_ITEMS = [
   { label: 'The SJBA Mission', to: '/our-mission' },
   { label: 'Executive Board', to: '/our-board' },
