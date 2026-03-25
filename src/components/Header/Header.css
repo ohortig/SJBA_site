@@ -269,6 +269,10 @@
   .nav-buttons.active > * {
     align-self: flex-start;
   }
+
+  .nav-buttons.active > .nav-button--primary {
+    align-self: stretch;
+  }
 }
 
 @media (max-width: 640px) {
@@ -285,7 +289,7 @@
   }
 
   .nav-buttons {
-    padding-inline: 2rem 1.25rem;
+    padding-inline: 2rem;
   }
 }
 
