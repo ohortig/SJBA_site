@@ -16,7 +16,7 @@ export const Footer = () => {
         <div className="footer-content">
           <div className="footer-lead">
             <div className="footer-intro">
-              <h2>Stay connected with the Stern Jewish Business Association.</h2>
+              <h2>Connect with the Stern Jewish Business Association.</h2>
               <p>Follow club updates and keep the conversation going.</p>
             </div>
 

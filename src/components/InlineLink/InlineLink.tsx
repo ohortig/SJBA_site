@@ -8,6 +8,7 @@ interface InlineLinkProps {
   rel?: string;
   target?: string;
   to?: string;
+  useArrow?: boolean;
 }
 
 export const InlineLink = ({
@@ -17,21 +18,24 @@ export const InlineLink = ({
   rel,
   target,
   to,
+  useArrow = true,
 }: InlineLinkProps) => {
   const classes = `inline-link ${className}`.trim();
   const content = (
     <>
       <span>{children}</span>
-      <svg className="inline-link__arrow" viewBox="0 0 16 16" aria-hidden="true">
-        <path
-          d="M2.5 8h9.5M8.5 4.5L12 8l-3.5 3.5"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="1.75"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-      </svg>
+      {useArrow && (
+        <svg className="inline-link__arrow" viewBox="0 0 16 16" aria-hidden="true">
+          <path
+            d="M2.5 8h9.5M8.5 4.5L12 8l-3.5 3.5"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.75"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </svg>
+      )}
     </>
   );
 

@@ -40,12 +40,14 @@
   position: relative;
   overflow: hidden;
   box-shadow: var(--shadow-soft);
+  border-radius: 0;
 }
 
 .zigzag-view__media img {
   display: block;
   width: 100%;
   height: auto;
+  border-radius: 0;
   transition:
     transform 700ms ease,
     filter 700ms ease;
