@@ -382,16 +382,16 @@
   gap: 0.42rem;
   font-size: 0.9rem;
   line-height: 1.35;
-  color: #111827;
+  color: var(--color-ink);
   min-width: 0;
 }
 
 .home-next-event-popup-row span {
-  color: #111827;
+  color: var(--color-ink);
 }
 
 .home-next-event-popup-value {
-  color: #1f2937 !important;
+  color: var(--color-ink) !important;
   font-size: 0.97rem;
   line-height: 1.35;
 }
@@ -407,8 +407,8 @@
   width: 14px;
   height: 14px;
   margin-bottom: 0.06rem;
-  filter: brightness(0) saturate(100%) invert(13%) sepia(61%) saturate(3942%) hue-rotate(269deg)
-    brightness(88%) contrast(106%);
+  filter: brightness(0) saturate(100%) invert(11%) sepia(27%) saturate(1919%) hue-rotate(252deg)
+    brightness(94%) contrast(94%);
 }
 
 .home-next-event-popup-cta {
@@ -416,16 +416,22 @@
   align-items: center;
   justify-content: center;
   gap: 0.55rem;
-  padding: 0.58rem 0.95rem;
+  min-height: 2.7rem;
+  padding: 0.58rem 1rem;
+  border: 1px solid var(--cta-primary-border);
   font-size: 0.86rem;
-  font-weight: 700;
-  color: #ffffff;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--cta-primary-text);
   text-decoration: none;
-  background: linear-gradient(135deg, #4c0d7f, #6d2aa5);
-  box-shadow: 0 4px 10px rgba(76, 13, 127, 0.18);
+  background: var(--cta-primary-background);
+  box-shadow: var(--cta-primary-shadow);
   transition:
-    transform 0.2s ease,
-    box-shadow 0.2s ease;
+    transform var(--transition-medium),
+    background-color var(--transition-medium),
+    border-color var(--transition-medium),
+    box-shadow var(--transition-medium);
 }
 
 .home-next-event-popup-cta-arrow {
@@ -436,10 +442,20 @@
 }
 
 .home-next-event-popup-cta:hover {
-  color: #ffffff;
+  color: var(--cta-primary-text);
   text-decoration: none;
   transform: translateY(-1px) translateX(1px);
-  box-shadow: 0 6px 14px rgba(76, 13, 127, 0.22);
+  background: var(--cta-primary-background-hover);
+  box-shadow: var(--cta-primary-shadow-hover);
+}
+
+.home-next-event-popup-cta:focus-visible {
+  outline: none;
+  color: var(--cta-primary-text);
+  text-decoration: none;
+  transform: translateY(-1px) translateX(1px);
+  background: var(--cta-primary-background-hover);
+  box-shadow: var(--cta-primary-shadow-hover), var(--cta-primary-focus-ring);
 }
 
 .home-next-event-popup-cta:hover .home-next-event-popup-cta-arrow {
