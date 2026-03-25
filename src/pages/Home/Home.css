@@ -622,6 +622,16 @@
     font-size: 1.45rem;
   }
 
+  .text-container {
+    max-width: none;
+  }
+
+  .section-title {
+    font-size: clamp(1.85rem, 8.2vw, 2.4rem);
+    line-height: 1.02;
+    text-wrap: pretty;
+  }
+
   .section-note {
     font-size: 0.82rem;
     line-height: 1.6;
