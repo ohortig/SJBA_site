@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import { ArrowIcon } from '@components/ArrowIcon';
 import './InlineLink.css';
 
 interface InlineLinkProps {
@@ -24,18 +25,7 @@ export const InlineLink = ({
   const content = (
     <>
       <span>{children}</span>
-      {useArrow && (
-        <svg className="inline-link__arrow" viewBox="0 0 16 16" aria-hidden="true">
-          <path
-            d="M2.5 8h9.5M8.5 4.5L12 8l-3.5 3.5"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="1.75"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-        </svg>
-      )}
+      {useArrow && <ArrowIcon className="inline-link__arrow" />}
     </>
   );
 
