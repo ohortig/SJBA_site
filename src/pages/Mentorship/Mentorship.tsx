@@ -118,18 +118,18 @@ const getFreshCachedApplicationConfig = () => {
 
 const MENTORSHIP_TRACKS = [
   {
-    eyebrow: 'Cross-Campus Pairings',
-    title: 'Undergraduate students are matched with MBA and JD mentors.',
+    eyebrow: 'Cross-Degree Pairings',
+    title: 'Undergraduate & Graduate Pairings',
     description:
-      'In partnership with the Jewish Student Association, students build relationships with mentors who can speak to academic choices, recruiting timelines, and the transition into professional life.',
+      'In partnership with the Jewish Student Association (JSA), undergraduate students are paired with MBA and JD mentors, creating opportunities to learn directly from those with advanced academic and professional experience.',
     image: '/mentorship-gallery/mentorship-gallery-1.jpeg',
     alt: 'Graduate mentorship pairing',
   },
   {
     eyebrow: 'Peer Guidance',
-    title: 'Upperclassmen help newer students navigate Stern with recent experience.',
+    title: 'Underclassmen & Upperclassmen',
     description:
-      'Freshmen are paired with sophomores, and sophomores with juniors or seniors, so every mentee has access to practical advice from someone who has recently navigated the same questions.',
+      'Guidance is available at every stage of the undergraduate journey. Freshmen are matched with sophomores, and sophomores with juniors or seniors – ensuring that every student has a peer who recently navigated the same challenges and can offer first-hand advice.',
     image: '/mentorship-gallery/mentorship-gallery-2.jpeg',
     alt: 'Undergraduate mentorship pairing',
   },
@@ -140,19 +140,18 @@ const PROCESS_STEPS = [
     number: '01',
     title: 'Apply',
     description:
-      "Share which mentorship track fits you, along with your background, interests, and what you'd like from the relationship.",
+      "Fill out the application form where you'll select which program(s) you're interested in and share your background, interests, and goals.",
   },
   {
     number: '02',
     title: 'Interview',
     description:
-      'After applications close, mentorship leads send interview slots to understand fit, goals, and scheduling preferences.',
+      'Participate in a brief interview. Interview time slots are sent out after the application window closes.',
   },
   {
     number: '03',
     title: 'Match',
-    description:
-      'Pairs are finalized carefully so both sides enter the program with shared expectations and meaningful overlap.',
+    description: 'Pairs are matched thoughtfully to maximize value for both mentors and mentees.',
   },
 ];
 
@@ -250,10 +249,10 @@ export const Mentorship = () => {
         <SubpageHero
           ref={heroAnim.elementRef}
           visible={heroAnim.isVisible}
-          backgroundImageSrc="/mentorship-gallery/mentorship-gallery-1.jpeg"
+          backgroundImageSrc="/mentorship-gallery/mentorship-gallery-3.jpeg"
           eyebrow="Programs / Mentorship"
           title="Mentorship"
-          lead="A structured way for SJBA members to learn across class years, degree programs, and career stages while building a stronger Jewish community at Stern."
+          lead="Participants in our mentorship programs foster lasting relationships, exchange career guidance, and strengthen the Jewish community at NYU Stern across class years and degree levels."
           actions={
             <>
               <LinkButtonSecondary
@@ -300,19 +299,10 @@ export const Mentorship = () => {
             <div className="mentorship-overview-intro">
               <span className="mentorship-section-label">Mentorship Program Overview</span>
               <h2>One program, two mentorship paths.</h2>
-            </div>
-
-            <div className="mentorship-overview-detail">
               <p className="mentorship-overview-lead">
-                The mentorship program is designed to feel personal rather than administrative.
+                SJBA offers two distinct mentorship tracks, each designed to foster meaningful
+                connections and provide tailored guidance to our members.
               </p>
-              <div className="mentorship-overview-body">
-                <p>
-                  Students enter with clear goals, meet with SJBA leadership, and are paired with
-                  mentors who can offer useful perspective on school life, recruiting, and
-                  community.
-                </p>
-              </div>
             </div>
           </div>
         </section>
@@ -330,7 +320,7 @@ export const Mentorship = () => {
         >
           <div className="mentorship-process-header">
             <span className="mentorship-section-label">How It Works</span>
-            <h2>The matching process stays simple, deliberate, and consistent each semester.</h2>
+            <h2>A simple and deliberate matching process.</h2>
           </div>
 
           <NumberedList items={PROCESS_STEPS} />

@@ -1,5 +1,12 @@
-import { useState, useEffect, useMemo, useCallback } from 'react';
-import { Footer, LoadingSpinner, ErrorDisplay, CallToAction } from '@components';
+import { useState, useEffect, useMemo, useCallback, useRef } from 'react';
+import {
+  Footer,
+  LoadingSpinner,
+  ErrorDisplay,
+  CallToAction,
+  SubpageHero,
+  ArrowIcon,
+} from '@components';
 import { semesterSortKey, semesterLabel } from '@utils';
 import { useScrollAnimation } from '@hooks';
 import { dataService } from '@api';
@@ -7,24 +14,28 @@ import type { Member } from '@types';
 import './OurMembers.css';
 
 export const OurMembers = () => {
-  const headerAnimation = useScrollAnimation({
-    threshold: 0.1,
-    rootMargin: '0px 0px -20px 0px',
+  const heroAnimation = useScrollAnimation({ threshold: 0.18 });
+  const overviewAnimation = useScrollAnimation({
+    threshold: 0.12,
+    rootMargin: '0px 0px -40px 0px',
   });
-  const infoAnimation = useScrollAnimation({
-    threshold: 0.1,
-    rootMargin: '0px 0px -50px 0px',
+  const directoryAnimation = useScrollAnimation({
+    threshold: 0.08,
+    rootMargin: '0px 0px -40px 0px',
   });
-
-  const tableAnimation = useScrollAnimation({
-    threshold: 0.05,
-    rootMargin: '0px 0px 0px 0px',
-  });
+  const directoryHeadingRef = useRef<HTMLHeadingElement | null>(null);
+  const tableWrapperRef = useRef<HTMLDivElement | null>(null);
 
   const [members, setMembers] = useState<Member[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [activeSemesterIndex, setActiveSemesterIndex] = useState(0);
+  const [semesterTitleDirection, setSemesterTitleDirection] = useState<'next' | 'prev'>('next');
+  const [scrollIndicator, setScrollIndicator] = useState({
+    isVisible: false,
+    thumbHeight: 0,
+    thumbOffset: 0,
+  });
 
   const fetchMembers = useCallback(async () => {
     try {
@@ -48,6 +59,50 @@ export const OurMembers = () => {
     void fetchMembers();
   }, [fetchMembers]);
 
+  const updateScrollIndicator = useCallback(() => {
+    if (typeof window === 'undefined') {
+      return;
+    }
+
+    const element = tableWrapperRef.current;
+    if (!element) {
+      return;
+    }
+
+    const isDesktop = window.matchMedia('(min-width: 769px)').matches;
+    const { clientHeight, scrollHeight, scrollTop } = element;
+    const hasOverflow = isDesktop && scrollHeight > clientHeight + 1;
+
+    if (!hasOverflow) {
+      setScrollIndicator((previous) =>
+        previous.isVisible ? { isVisible: false, thumbHeight: 0, thumbOffset: 0 } : previous
+      );
+      return;
+    }
+
+    const thumbHeight = Math.max((clientHeight / scrollHeight) * clientHeight, 56);
+    const maxThumbOffset = Math.max(clientHeight - thumbHeight, 0);
+    const maxScrollTop = Math.max(scrollHeight - clientHeight, 1);
+    const thumbOffset = (scrollTop / maxScrollTop) * maxThumbOffset;
+
+    setScrollIndicator({
+      isVisible: true,
+      thumbHeight,
+      thumbOffset,
+    });
+  }, []);
+
+  useEffect(() => {
+    updateScrollIndicator();
+
+    const handleResize = () => {
+      updateScrollIndicator();
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, [updateScrollIndicator, activeSemesterIndex, isLoading, error, members.length]);
+
   // Group members by semester, sorted newest-first
   const groupedMembers = useMemo(() => {
     const map = new Map<string, Member[]>();
@@ -70,155 +125,214 @@ export const OurMembers = () => {
       ([a], [b]) => semesterSortKey(b) - semesterSortKey(a)
     );
 
-    // TEMPORARY HOLD: Do not show Spring 2026 members yet.
-    // We need enough meetings this semester for students to truly be eligible
-    // for membership before displaying this cohort. Remove this filter once
-    // Spring 2026 membership eligibility has been finalized.
-    const filtered = sorted.filter(([semester]) => semester !== 'S26');
-
-    return filtered;
+    return sorted;
   }, [members]);
 
   const canGoPrev = activeSemesterIndex > 0;
   const canGoNext = activeSemesterIndex < groupedMembers.length - 1;
   const activeSemester = groupedMembers[activeSemesterIndex];
+  const activeSemesterLabel = activeSemester ? semesterLabel(activeSemester[0]) : '';
+  const goToPreviousSemester = () => {
+    setSemesterTitleDirection('prev');
+    setActiveSemesterIndex((index) => index - 1);
+  };
+  const goToNextSemester = () => {
+    setSemesterTitleDirection('next');
+    setActiveSemesterIndex((index) => index + 1);
+  };
 
   return (
     <>
-      <div className="page-container">
-        <div className="members-page-content">
-          {/* Header */}
-          <div
-            ref={headerAnimation.elementRef}
-            className={`members-page-header slide-up ${headerAnimation.isVisible ? 'visible' : ''}`}
-          >
-            <h1 className="members-page-title">Our Members</h1>
-            <p className="members-page-subtitle">
-              While all SJBA events are open to every student, membership is awarded for consistent
-              involvement.
+      <div className="page-container members-page">
+        <SubpageHero
+          ref={heroAnimation.elementRef}
+          visible={heroAnimation.isVisible}
+          backgroundImageSrc="/members-gallery/members-gallery-1.jpeg"
+          backgroundImageAlt="SJBA members at a community event"
+          imagePosition="center 42%"
+          title="General Members"
+          lead="Membership reflects sustained involvement in the SJBA community. Every event remains open to all students, while recognition is reserved for those who show up consistently across the semester."
+        />
+
+        <section
+          ref={overviewAnimation.elementRef}
+          className={`members-overview ${overviewAnimation.isVisible ? 'visible' : ''}`}
+        >
+          <div className="members-overview__intro">
+            <span className="members-section-label">Membership Criteria</span>
+            <h2>Recognition is earned through steady participation.</h2>
+            <p className="members-overview__lead">
+              Official membership acknowledges students who consistently invest in SJBA's
+              programming, conversations, and broader community life.
             </p>
           </div>
 
-          {/* Membership Policy Section */}
-          <div
-            ref={infoAnimation.elementRef}
-            className={`members-policy-card slide-up ${infoAnimation.isVisible ? 'visible' : ''}`}
-          >
-            <div className="members-policy-accent" />
-            <h2 className="members-policy-heading">Membership Policy</h2>
-            <p className="members-policy-text">
-              To qualify as an official SJBA member, students must attend:
+          <div className="members-overview__detail">
+            <div className="members-requirements">
+              <h3 className="members-requirements__title">Membership requirements</h3>
+
+              <div className="members-criteria-list" aria-label="Membership requirements">
+                <article className="members-criteria-item">
+                  <p className="members-criteria-item__value" aria-label="4 events required">
+                    <span className="members-criteria-item__count">4</span>
+                    <span className="members-criteria-item__unit">events</span>
+                  </p>
+                  <div className="members-criteria-item__intro">
+                    <p className="members-criteria-item__label">For returning members</p>
+                    <p className="members-criteria-item__body">
+                      Continue your engagement and keep active status.
+                    </p>
+                  </div>
+                </article>
+
+                <article className="members-criteria-item">
+                  <p className="members-criteria-item__value" aria-label="5 events required">
+                    <span className="members-criteria-item__count">5</span>
+                    <span className="members-criteria-item__unit">events</span>
+                  </p>
+                  <div className="members-criteria-item__intro">
+                    <p className="members-criteria-item__label">For new members</p>
+                    <p className="members-criteria-item__body">
+                      Build your initial semester of involvement.
+                    </p>
+                  </div>
+                </article>
+              </div>
+            </div>
+
+            <p className="members-overview__body">
+              Membership recognition helps SJBA direct funding and priority access toward students
+              who actively contribute to resume reviews, mock interviews, speaker programming, and
+              the club's long-term professional community.
             </p>
-            <ul className="members-policy-list">
-              <li>
-                <strong>Five</strong> general meetings or speaker events for prospective members
-              </li>
-              <li>
-                <strong>Four</strong> general meetings or speaker events for existing members
-              </li>
-            </ul>
-            <p className="members-policy-text">
-              Membership status allows the organization to secure funding while ensuring committed
-              members receive priority access to resume reviews, mock interviews, and exclusive
-              speaker programming.
+          </div>
+        </section>
+
+        <section
+          ref={directoryAnimation.elementRef}
+          className={`members-directory ${directoryAnimation.isVisible ? 'visible' : ''}`}
+        >
+          <div className="members-directory__header">
+            <h2 id="members-directory-title" ref={directoryHeadingRef}>
+              Recognized members by semester
+            </h2>
+            <p className="members-directory__intro">
+              Individuals listed below met the attendance threshold and earned official SJBA
+              membership.
             </p>
           </div>
 
-          {/* Members Table Section */}
-          <div
-            ref={tableAnimation.elementRef}
-            className={`members-table-section slide-up ${tableAnimation.isVisible ? 'visible' : ''}`}
-          >
+          <div className="members-directory__content">
             {isLoading ? (
-              <LoadingSpinner />
+              <div className="members-directory__status">
+                <LoadingSpinner />
+              </div>
             ) : error ? (
-              <ErrorDisplay error={error} onRetry={() => void fetchMembers()} />
+              <div className="members-directory__status">
+                <ErrorDisplay error={error} onRetry={() => void fetchMembers()} />
+              </div>
             ) : groupedMembers.length === 0 ? (
-              <p className="members-empty">No members to display yet.</p>
+              <p className="members-empty">No recognized members to display yet.</p>
             ) : (
               <>
-                {/* Table Context Header */}
-                <div className="members-table-header">
-                  <h2 className="members-table-heading">Recognized Members</h2>
-                  <p className="members-table-subtitle">
-                    The members listed below met the attendance requirements during their respective
-                    semesters and earned official SJBA membership.
-                  </p>
-                </div>
-
-                {/* Semester Navigation */}
-                <div className="semester-nav">
-                  <button
-                    className="semester-arrow"
-                    onClick={() => setActiveSemesterIndex((i) => i - 1)}
-                    disabled={!canGoPrev}
-                    aria-label="Previous semester"
-                  >
-                    ‹
-                  </button>
-
-                  <div className="semester-tabs">
-                    {groupedMembers.map(([semester], index) => (
-                      <button
-                        key={semester}
-                        className={`semester-tab ${index === activeSemesterIndex ? 'active' : ''}`}
-                        onClick={() => setActiveSemesterIndex(index)}
-                      >
-                        {semesterLabel(semester)}
-                      </button>
-                    ))}
-                  </div>
-
-                  <button
-                    className="semester-arrow"
-                    onClick={() => setActiveSemesterIndex((i) => i + 1)}
-                    disabled={!canGoNext}
-                    aria-label="Next semester"
-                  >
-                    ›
-                  </button>
-                </div>
-
-                {/* Active Semester Table */}
                 {activeSemester && (
-                  <div className="members-table-card">
-                    <div className="members-table-wrapper">
-                      <table className="members-table">
-                        <thead>
-                          <tr>
-                            <th>Name</th>
-                            <th>Email</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {activeSemester[1].map((member) => (
-                            <tr key={member.id}>
-                              <td className="member-name-cell">
-                                {member.firstName} {member.lastName}
-                              </td>
-                              <td className="member-email-cell">
-                                {member.email ? (
-                                  <a href={`mailto:${member.email}`} className="member-email-link">
-                                    {member.email}
-                                  </a>
-                                ) : (
-                                  <span className="no-email">—</span>
-                                )}
-                              </td>
-                            </tr>
-                          ))}
-                        </tbody>
-                      </table>
+                  <div className="members-directory__surface">
+                    <div className="members-directory__surface-header">
+                      <div
+                        className="members-directory__semester-nav"
+                        aria-label="Semester navigation"
+                      >
+                        <button
+                          type="button"
+                          className="semester-inline-arrow"
+                          onClick={goToPreviousSemester}
+                          aria-label="Previous semester"
+                          disabled={!canGoPrev}
+                        >
+                          <ArrowIcon className="semester-inline-arrow__icon" direction="left" />
+                        </button>
+
+                        <h3>
+                          <span
+                            key={`${activeSemesterLabel}-${activeSemesterIndex}`}
+                            className={`members-directory__semester-title members-directory__semester-title--${semesterTitleDirection}`}
+                          >
+                            {activeSemesterLabel}
+                          </span>
+                        </h3>
+
+                        <button
+                          type="button"
+                          className="semester-inline-arrow"
+                          onClick={goToNextSemester}
+                          aria-label="Next semester"
+                          disabled={!canGoNext}
+                        >
+                          <ArrowIcon className="semester-inline-arrow__icon" />
+                        </button>
+                      </div>
+                      <div className="members-directory__surface-meta">
+                        <p className="members-count">
+                          {activeSemester[1].length} member
+                          {activeSemester[1].length !== 1 ? 's' : ''}
+                        </p>
+                      </div>
                     </div>
-                    <div className="members-count">
-                      {activeSemester[1].length} member{activeSemester[1].length !== 1 ? 's' : ''}
+
+                    <div className="members-table-frame">
+                      <div
+                        ref={tableWrapperRef}
+                        className="members-table-wrapper"
+                        onScroll={updateScrollIndicator}
+                      >
+                        <table className="members-table">
+                          <thead>
+                            <tr>
+                              <th>Name</th>
+                              <th>Email</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {activeSemester[1].map((member) => (
+                              <tr key={member.id}>
+                                <td className="member-name-cell" data-label="Name">
+                                  {member.firstName} {member.lastName}
+                                </td>
+                                <td className="member-email-cell" data-label="Email">
+                                  {member.email ? (
+                                    <a
+                                      href={`mailto:${member.email}`}
+                                      className="member-email-link"
+                                    >
+                                      {member.email}
+                                    </a>
+                                  ) : (
+                                    <span className="no-email">—</span>
+                                  )}
+                                </td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      </div>
+                      {scrollIndicator.isVisible ? (
+                        <div className="members-table-scrollbar" aria-hidden="true">
+                          <span
+                            className="members-table-scrollbar__thumb"
+                            style={{
+                              height: `${scrollIndicator.thumbHeight}px`,
+                              transform: `translateY(${scrollIndicator.thumbOffset}px)`,
+                            }}
+                          />
+                        </div>
+                      ) : null}
                     </div>
                   </div>
                 )}
               </>
             )}
           </div>
-        </div>
+        </section>
 
         <CallToAction
           title="Want to become a member?"

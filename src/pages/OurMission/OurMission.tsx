@@ -65,7 +65,6 @@ export const OurMission = () => {
           visible={heroAnimation.isVisible}
           backgroundImageSrc="/mission-gallery/stern-building.jpg"
           backgroundImageAlt="NYU Stern building"
-          eyebrow={null}
           title="Our Mission"
           lead="The Stern Jewish Business Association is one of the most active and substantive student organizations at the NYU Stern School of Business, open to all who are supportive of the Jewish community and values, regardless of faith."
         />
@@ -98,7 +97,6 @@ export const OurMission = () => {
           <LogoCloud
             visible={logoCloudAnimation.isVisible}
             logos={ALUMNI_LOGOS}
-            eyebrow={null}
             title="Where Our Members End Up"
             body="Our members move into leading firms across finance, consulting, technology, and investing, carrying forward the values cultivated at SJBA."
           />

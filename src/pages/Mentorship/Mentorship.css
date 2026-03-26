@@ -261,13 +261,24 @@
 }
 
 .mentorship-section-label {
+  display: block;
+  width: 100%;
   color: var(--color-brand);
+}
+
+.mentorship-overview-intro {
+  display: grid;
+  grid-column: 1 / -1;
+  gap: 0.9rem;
+  align-content: start;
+  width: 100%;
+  max-width: none;
 }
 
 .mentorship-overview-intro h2,
 .mentorship-process-header h2,
 .mentorship-apply-copy h2 {
-  margin: 0.9rem 0 0;
+  margin: 0;
   font-family: var(--font-display);
   font-size: clamp(2rem, 3.4vw, 3.1rem);
   line-height: 1.02;
@@ -291,31 +302,18 @@
   transform: none;
 }
 
-.mentorship-overview-body p,
 .mentorship-apply-copy p {
   margin: 0;
 }
 
-.mentorship-overview-detail {
-  width: 100%;
-  max-width: none;
-  justify-self: end;
-}
-
 .mentorship-overview-lead {
-  margin-bottom: 1rem;
+  margin: 0;
   font-size: clamp(0.96rem, 1.45vw, 1.08rem);
   line-height: 1.8;
   color: rgba(32, 25, 46, 0.82);
-  white-space: nowrap;
-}
-
-.mentorship-overview-body {
-  display: grid;
-  gap: 1rem;
-  font-size: 1rem;
-  line-height: 1.85;
-  color: var(--color-muted);
+  max-width: 100%;
+  white-space: normal;
+  overflow-wrap: anywhere;
 }
 
 .mentorship-apply-copy p {
@@ -521,10 +519,6 @@
 
   .mentorship-track-copy {
     max-width: none;
-  }
-
-  .mentorship-overview-lead {
-    white-space: normal;
   }
 }
 

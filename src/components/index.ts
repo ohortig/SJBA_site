@@ -1,5 +1,6 @@
 export * from './HeaderDropdown';
 export * from './BoardMemberModal';
+export * from './ArrowIcon';
 export * from './CallToAction';
 export * from './ErrorDisplay';
 export * from './Footer';
