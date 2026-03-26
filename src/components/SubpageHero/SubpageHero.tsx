@@ -6,7 +6,7 @@ interface SubpageHeroProps {
   backgroundImageAlt?: string;
   backgroundImageSrc: string;
   className?: string;
-  eyebrow: React.ReactNode;
+  eyebrow?: React.ReactNode;
   imagePosition?: string;
   lead?: React.ReactNode;
   title: React.ReactNode;
@@ -41,7 +41,7 @@ export const SubpageHero = forwardRef<HTMLElement, SubpageHeroProps>(
 
         <div className="subpage-hero__shell">
           <div className="subpage-hero__copy">
-            <span className="subpage-hero__eyebrow">{eyebrow}</span>
+            {eyebrow ? <span className="subpage-hero__eyebrow">{eyebrow}</span> : null}
             <h1 className="subpage-hero__title">{title}</h1>
             {lead ? <p className="subpage-hero__lead">{lead}</p> : null}
             {actions ? <div className="subpage-hero__actions">{actions}</div> : null}
