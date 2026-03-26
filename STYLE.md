@@ -274,7 +274,8 @@ The site header now has two approved modes.
 Rules:
 
 - Home starts in `overlay` and settles once the page scrolls.
-- Non-home pages should render directly in `settled`.
+- Subpages that open with a full-bleed `SubpageHero` should also start in `overlay` so the header sits on top of the hero image, then settle once the page scrolls.
+- Pages without a full-bleed hero should render directly in `settled`.
 - The header should stay fixed; do not create page-specific alternate navigation shells.
 
 ### Navigation typography
@@ -416,11 +417,14 @@ Mentorship confirms that subpages should use the same core hero language:
 - serif display headline
 - short sans-serif lead
 - one primary action and one quieter supporting action
+- the same vertical hero sizing established by the shared `SubpageHero` default offset, with `--subpage-hero-photo-offset: 15.2rem` as the baseline page setting unless a page has a specific documented reason to differ
 
 Implementation guidance:
 
 - use `SubpageHero` instead of building a one-off hero in the page CSS
-- set `--subpage-hero-photo-offset` on the page root only when the page needs to tune how much of the hero image remains visible below the fold
+- subpages using `SubpageHero` should render the site header in `overlay` mode at the top of the page
+- use `--subpage-hero-photo-offset: 15.2rem` on the page root as the default hero-height tuning for these subpages
+- only change `--subpage-hero-photo-offset` when the page has a specific composition reason to show more or less image below the fold
 - keep hero copy narrow, usually around the existing `36rem` max width
 - keep hero actions in a simple row that wraps on desktop and stacks on mobile
 - use real photography rather than abstract graphics for subpage heroes whenever possible
