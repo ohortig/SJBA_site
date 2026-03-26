@@ -327,26 +327,21 @@ export const Home = () => {
       <section className="home-section split-content-container">
         <div className="content-section">
           <div className="text-container">
-            <h2 className="section-title">
-              A professional Jewish community with real career gravity.
-            </h2>
-            <p className="section-lead">
-              SJBA sits at the intersection of campus life and professional formation, giving Stern
-              students a place to think seriously about business, leadership, and community at the
-              same time.
-            </p>
-
+            <h2 className="section-title">The Jewish impact on the business world</h2>
             <div className="section-content">
               <p>
-                Our programming is designed to feel substantive rather than symbolic. Members hear
-                directly from accomplished operators, investors, founders, and advisors, then carry
-                those conversations into a network of peers who are equally committed to growth.
+                The Jewish community has played a pivotal role in shaping modern business and
+                finance. From pioneering investment banking to revolutionary entrepreneurship,
+                Jewish professionals have left an indelible mark on industries worldwide. At SJBA,
+                we celebrate this rich heritage while building the next generation of Jewish
+                business leaders.
               </p>
-
               <p>
-                That combination matters at Stern. Students want access, but they also want context:
-                how careers unfold, how decisions are made, and how values can remain part of the
-                equation. SJBA creates a home for both the ambition and the belonging.
+                Our organization provides a platform for networking, mentorship, and professional
+                development within NYU's vibrant Jewish community. Through exclusive events, speaker
+                series, and industry connections, we help members understand their cultural legacy
+                while preparing them for successful careers in finance, consulting, technology, and
+                beyond.
               </p>
             </div>
           </div>
