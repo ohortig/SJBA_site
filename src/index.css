@@ -30,8 +30,6 @@
   --cta-primary-border: rgba(32, 25, 46, 0.28);
   --cta-primary-background: var(--color-brand);
   --cta-primary-background-hover: #5b178f;
-  --cta-primary-shadow: 0 12px 24px rgba(76, 13, 127, 0.18);
-  --cta-primary-shadow-hover: 0 16px 28px rgba(76, 13, 127, 0.2);
   --cta-primary-focus-ring: 0 0 0 4px rgba(76, 13, 127, 0.12);
   font-family: var(--font-sans);
   line-height: 1.5;

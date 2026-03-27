@@ -174,7 +174,7 @@
   border: 1px solid var(--cta-primary-border);
   background: var(--cta-primary-background);
   color: var(--cta-primary-text);
-  box-shadow: var(--cta-primary-shadow);
+  box-shadow: none;
   text-decoration: none;
 }
 
@@ -189,13 +189,13 @@
 .mentorship-link-button:focus-visible {
   background: var(--cta-primary-background-hover);
   color: var(--cta-primary-text);
-  box-shadow: var(--cta-primary-shadow-hover);
+  box-shadow: none;
 }
 
 .mentorship-status-pill:focus-visible,
 .mentorship-link-button:focus-visible {
   outline: none;
-  box-shadow: var(--cta-primary-shadow-hover), var(--cta-primary-focus-ring);
+  box-shadow: var(--cta-primary-focus-ring);
 }
 
 .mentorship-link-arrow {

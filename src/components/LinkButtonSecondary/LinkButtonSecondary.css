@@ -80,7 +80,7 @@
 
 .link-button-secondary:focus-visible {
   outline: none;
-  box-shadow: var(--cta-primary-shadow-hover), var(--cta-primary-focus-ring);
+  box-shadow: var(--cta-primary-focus-ring);
 }
 
 .link-button-secondary__arrow {

@@ -1,10 +1,66 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import toast from 'react-hot-toast';
-import { SocialLink } from '@components';
+
 import { dataService } from '@api';
+import { ArrowIcon, SocialLink } from '@components';
+import { useScrollAnimation } from '@hooks';
+
 import './Contact.css';
 
+interface ContactChannel {
+  label: string;
+  value: string;
+  href?: string;
+}
+
+interface ContactSocialLink {
+  href: string;
+  platform: 'linkedin' | 'instagram';
+  name: string;
+  handle: string;
+  iconSrc: string;
+  alt: string;
+}
+
+const CONTACT_CHANNELS: ContactChannel[] = [
+  {
+    label: 'Email',
+    value: 'sjba@stern.nyu.edu',
+    href: 'mailto:sjba@stern.nyu.edu',
+  },
+  {
+    label: 'Visit',
+    value: '44 West 4th Street\nNew York, NY 10012',
+  },
+] as const;
+
+const SOCIAL_LINKS: ContactSocialLink[] = [
+  {
+    href: 'https://www.linkedin.com/company/sjba/',
+    platform: 'linkedin' as const,
+    name: 'LinkedIn',
+    handle: '@sjba',
+    iconSrc: '/icons/linkedin-logo.png',
+    alt: 'LinkedIn',
+  },
+  {
+    href: 'https://www.instagram.com/nyusjba/',
+    platform: 'instagram' as const,
+    name: 'Instagram',
+    handle: '@nyusjba',
+    iconSrc: '/icons/instagram-logo.png',
+    alt: 'Instagram',
+  },
+] as const;
+
 export const Contact = () => {
+  const introAnimation = useScrollAnimation({ threshold: 0.15, rootMargin: '0px 0px -60px 0px' });
+  const detailsAnimation = useScrollAnimation({
+    threshold: 0.08,
+    rootMargin: '0px 0px -40px 0px',
+  });
+  const formAnimation = useScrollAnimation({ threshold: 0.12, rootMargin: '0px 0px -45px 0px' });
+
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -21,51 +77,48 @@ export const Contact = () => {
       ...prev,
       [name]: value,
     }));
-    // Clear error for this field when user starts typing
+
     if (errors[name]) {
       setErrors((prev) => {
-        const newErrors = { ...prev };
-        delete newErrors[name];
-        return newErrors;
+        const nextErrors = { ...prev };
+        delete nextErrors[name];
+        return nextErrors;
       });
     }
   };
 
-  // Email validation helper
   const isValidEmail = (email: string): boolean => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
   };
 
-  // Validate form and return errors
   const validateForm = (): Record<string, string> => {
-    const newErrors: Record<string, string> = {};
+    const nextErrors: Record<string, string> = {};
 
     if (!formData.firstName.trim()) {
-      newErrors.firstName = 'First name is required';
+      nextErrors.firstName = 'First name is required';
     }
 
     if (!formData.lastName.trim()) {
-      newErrors.lastName = 'Last name is required';
+      nextErrors.lastName = 'Last name is required';
     }
 
     if (!formData.email.trim()) {
-      newErrors.email = 'Email is required';
+      nextErrors.email = 'Email is required';
     } else if (!isValidEmail(formData.email.trim())) {
-      newErrors.email = 'Please enter a valid email address';
+      nextErrors.email = 'Please enter a valid email address';
     }
 
     if (!formData.message.trim()) {
-      newErrors.message = 'Message is required';
+      nextErrors.message = 'Message is required';
     }
 
-    return newErrors;
+    return nextErrors;
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    // Validate form
     const validationErrors = validateForm();
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
@@ -76,7 +129,6 @@ export const Contact = () => {
     setErrors({});
 
     try {
-      // Send data to backend
       await dataService.contact.submitContactForm({
         firstName: formData.firstName.trim(),
         lastName: formData.lastName.trim(),
@@ -85,10 +137,8 @@ export const Contact = () => {
         message: formData.message.trim(),
       });
 
-      // Show success toast
       toast.success('Message sent successfully!');
 
-      // Clear the form
       setFormData({
         firstName: '',
         lastName: '',
@@ -101,6 +151,7 @@ export const Contact = () => {
       if (error instanceof Error) {
         message = error.message;
       }
+
       toast.error(message);
       console.error('Contact form submission error:', error);
     } finally {
@@ -109,87 +160,124 @@ export const Contact = () => {
   };
 
   return (
-    <div className="contact-container">
-      <div className="contact-content">
-        <div className="contact-info">
-          <h1 className="contact-title">Contact SJBA</h1>
-          <p>Feel free to contact us if you have any questions or concerns!</p>
-          <p>
-            We are always open to corporate partnerships, events, and outside speakers. Reach out
-            for further details.
-          </p>
-
-          <div className="contact-details">
-            <a href="mailto:sjba@stern.nyu.edu" className="email-link">
-              sjba@stern.nyu.edu
-            </a>
-
-            <div className="address">
-              <p>44 West 4th Street</p>
-              <p>New York, NY 10012</p>
+    <div className="page-container contact-page">
+      <section className="contact-grid" aria-label="Contact page content">
+        <aside
+          ref={detailsAnimation.elementRef}
+          className={`contact-sidebar fade-in ${detailsAnimation.isVisible ? 'visible' : ''}`}
+        >
+          <div
+            ref={introAnimation.elementRef}
+            className={`contact-intro slide-up ${introAnimation.isVisible ? 'visible' : ''}`}
+          >
+            <div className="contact-intro__content">
+              <h1 className="contact-title">Contact SJBA.</h1>
+              <p className="contact-intro__copy">
+                Reach out about partnerships, speakers, events, or general questions.
+              </p>
             </div>
           </div>
 
-          <div className="social-links">
-            <SocialLink
-              href="https://www.linkedin.com/company/sjba/"
-              platform="linkedin"
-              name="LinkedIn"
-              handle="@sjba"
-              iconSrc="/icons/linkedin-logo.png"
-              alt="LinkedIn"
-            />
-            <SocialLink
-              href="https://www.instagram.com/nyusjba/"
-              platform="instagram"
-              name="Instagram"
-              handle="@nyusjba"
-              iconSrc="/icons/instagram-logo.png"
-              alt="Instagram"
-            />
+          <div className="contact-sidebar__section">
+            <span className="contact-section__eyebrow">Email</span>
+            <a href="mailto:sjba@stern.nyu.edu" className="contact-channel__link">
+              sjba@stern.nyu.edu
+            </a>
           </div>
-        </div>
 
-        <div className="contact-form">
+          <div className="contact-sidebar__section">
+            <span className="contact-section__eyebrow">Address</span>
+            <div className="contact-intro__channels" aria-label="Primary contact details">
+              {CONTACT_CHANNELS.filter((channel) => channel.label === 'Visit').map((channel) => (
+                <div key={channel.label} className="contact-intro__channel">
+                  <p className="contact-channel__text">{channel.value}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="contact-sidebar__section">
+            <span className="contact-section__eyebrow">Social</span>
+            <div className="contact-social-links">
+              {SOCIAL_LINKS.map((link) => (
+                <SocialLink key={link.href} {...link} />
+              ))}
+            </div>
+          </div>
+        </aside>
+
+        <div
+          ref={formAnimation.elementRef}
+          className={`contact-form-panel slide-up ${formAnimation.isVisible ? 'visible' : ''}`}
+        >
+          <div className="contact-form-panel__header">
+            <span className="contact-section__eyebrow">Send a note</span>
+            <h2 className="contact-form-panel__title">Share a few details and we'll follow up.</h2>
+          </div>
+
           <form
+            className="contact-form"
             onSubmit={(e) => {
               void handleSubmit(e);
             }}
           >
-            <div className="form-group">
-              <label>
+            <fieldset className="contact-fieldset">
+              <legend className="contact-form__group-title">
                 Name <span className="required">(required)</span>
-              </label>
-              <div className="name-fields">
-                <div className="field-group">
-                  <label htmlFor="firstName">First Name</label>
+              </legend>
+
+              <div className="contact-name-grid">
+                <div className="contact-field">
+                  <label htmlFor="firstName" className="contact-form-label">
+                    First name
+                  </label>
                   <input
                     type="text"
                     id="firstName"
                     name="firstName"
                     value={formData.firstName}
                     onChange={handleInputChange}
-                    className={errors.firstName ? 'input-error' : ''}
+                    placeholder="First"
+                    autoComplete="given-name"
+                    className={`contact-form-input ${errors.firstName ? 'input-error' : ''}`}
                   />
-                  {errors.firstName && <span className="field-error">{errors.firstName}</span>}
+                  <span
+                    className={`field-error ${errors.firstName ? '' : 'field-error--hidden'}`}
+                    aria-live="polite"
+                  >
+                    {errors.firstName ?? ' '}
+                  </span>
                 </div>
-                <div className="field-group">
-                  <label htmlFor="lastName">Last Name</label>
+
+                <div className="contact-field">
+                  <label htmlFor="lastName" className="contact-form-label">
+                    Last name
+                  </label>
                   <input
                     type="text"
                     id="lastName"
                     name="lastName"
                     value={formData.lastName}
                     onChange={handleInputChange}
-                    className={errors.lastName ? 'input-error' : ''}
+                    placeholder="Last"
+                    autoComplete="family-name"
+                    className={`contact-form-input ${errors.lastName ? 'input-error' : ''}`}
                   />
-                  {errors.lastName && <span className="field-error">{errors.lastName}</span>}
+                  <span
+                    className={`field-error ${errors.lastName ? '' : 'field-error--hidden'}`}
+                    aria-live="polite"
+                  >
+                    {errors.lastName ?? ' '}
+                  </span>
                 </div>
               </div>
-            </div>
+            </fieldset>
 
-            <div className="form-group">
-              <label htmlFor="email">
+            <div className="contact-field">
+              <label
+                htmlFor="email"
+                className="contact-form__group-title contact-form__group-label"
+              >
                 Email <span className="required">(required)</span>
               </label>
               <input
@@ -198,43 +286,72 @@ export const Contact = () => {
                 name="email"
                 value={formData.email}
                 onChange={handleInputChange}
-                className={errors.email ? 'input-error' : ''}
+                placeholder="name@company.com"
+                autoComplete="email"
+                className={`contact-form-input ${errors.email ? 'input-error' : ''}`}
               />
-              {errors.email && <span className="field-error">{errors.email}</span>}
+              <span
+                className={`field-error ${errors.email ? '' : 'field-error--hidden'}`}
+                aria-live="polite"
+              >
+                {errors.email ?? ' '}
+              </span>
             </div>
 
-            <div className="form-group">
-              <label htmlFor="company">Company</label>
+            <div className="contact-field">
+              <label
+                htmlFor="company"
+                className="contact-form__group-title contact-form__group-label"
+              >
+                Company or organization
+              </label>
               <input
                 type="text"
                 id="company"
                 name="company"
                 value={formData.company}
                 onChange={handleInputChange}
+                placeholder="Optional"
+                autoComplete="organization"
+                className="contact-form-input"
               />
             </div>
 
-            <div className="form-group">
-              <label htmlFor="message">
+            <div className="contact-field">
+              <label
+                htmlFor="message"
+                className="contact-form__group-title contact-form__group-label"
+              >
                 Message <span className="required">(required)</span>
               </label>
               <textarea
                 id="message"
                 name="message"
-                rows={4}
+                rows={6}
                 value={formData.message}
                 onChange={handleInputChange}
-                className={errors.message ? 'input-error' : ''}
+                placeholder="Tell us about your idea, event, or question."
+                className={`contact-form-input contact-form-input--textarea ${
+                  errors.message ? 'input-error' : ''
+                }`}
               />
-              {errors.message && <span className="field-error">{errors.message}</span>}
+              <span
+                className={`field-error ${errors.message ? '' : 'field-error--hidden'}`}
+                aria-live="polite"
+              >
+                {errors.message ?? ' '}
+              </span>
             </div>
 
-            <button type="submit" className="submit-btn" disabled={isSubmitting}>
-              {isSubmitting ? '...' : '→'}
-            </button>
+            <div className="contact-form__actions">
+              <button type="submit" className="contact-submit-btn" disabled={isSubmitting}>
+                <span>{isSubmitting ? 'Sending...' : 'Send Message'}</span>
+                <ArrowIcon className="contact-submit-btn__arrow" />
+              </button>
+            </div>
           </form>
         </div>
-      </div>
+      </section>
     </div>
   );
 };
