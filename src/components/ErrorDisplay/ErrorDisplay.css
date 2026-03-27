@@ -72,7 +72,6 @@
   border: 1px solid var(--cta-primary-border);
   background: var(--cta-primary-background);
   color: var(--cta-primary-text);
-  box-shadow: var(--cta-primary-shadow);
   font-family: var(--font-sans);
   font-size: 0.88rem;
   font-weight: 600;
@@ -94,13 +93,9 @@
   transform: translateY(-1px);
 }
 
-.error-display__retry:hover {
-  box-shadow: var(--cta-primary-shadow-hover);
-}
-
 .error-display__retry:focus-visible {
   outline: none;
-  box-shadow: var(--cta-primary-shadow-hover), var(--cta-primary-focus-ring);
+  box-shadow: var(--cta-primary-focus-ring);
 }
 
 @media (max-width: 768px) {

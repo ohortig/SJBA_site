@@ -145,13 +145,9 @@ Color rules:
 - `--cta-primary-border`
   - Border tone for primary CTAs.
 - `--cta-primary-background`
-  - Resting gradient surface for primary CTAs.
+  - Resting filled surface for primary CTAs.
 - `--cta-primary-background-hover`
-  - Hover and focus gradient surface for primary CTAs.
-- `--cta-primary-shadow`
-  - Default elevation for primary CTAs.
-- `--cta-primary-shadow-hover`
-  - Hover elevation for primary CTAs.
+  - Hover and focus filled surface for primary CTAs.
 - `--cta-primary-focus-ring`
   - Focus halo for primary CTAs.
 
@@ -166,7 +162,7 @@ The filled purple CTA is now a shared system used by CTA buttons across the webs
 Rules:
 
 - Use the shared CTA tokens from `index.css` instead of inventing one-off purple fills.
-- Keep the resting state as a solid branded purple with restrained shadow and light text.
+- Keep the resting state as a solid branded purple with light text and no ambient shadow.
 - Hover and focus should use the simpler brightened purple button state with a slight lift.
 - Keep sizing contextual to the component, but preserve the same surface language, border, and focus treatment.
 

@@ -178,7 +178,7 @@
   color: var(--cta-primary-text);
   background: var(--cta-primary-background);
   border: 1px solid var(--cta-primary-border);
-  box-shadow: var(--cta-primary-shadow);
+  box-shadow: none;
 }
 
 .our-mission-link {
@@ -199,12 +199,12 @@
 
 .speakers-link:hover {
   background: var(--cta-primary-background-hover);
-  box-shadow: var(--cta-primary-shadow-hover);
+  box-shadow: none;
 }
 
 .speakers-link:focus-visible {
   background: var(--cta-primary-background-hover);
-  box-shadow: var(--cta-primary-shadow-hover), var(--cta-primary-focus-ring);
+  box-shadow: var(--cta-primary-focus-ring);
 }
 
 .our-mission-link:hover,
@@ -419,7 +419,7 @@
   color: var(--cta-primary-text);
   text-decoration: none;
   background: var(--cta-primary-background);
-  box-shadow: var(--cta-primary-shadow);
+  box-shadow: none;
   transition:
     transform var(--transition-medium),
     background-color var(--transition-medium),
@@ -439,7 +439,7 @@
   text-decoration: none;
   transform: translateY(-1px) translateX(1px);
   background: var(--cta-primary-background-hover);
-  box-shadow: var(--cta-primary-shadow-hover);
+  box-shadow: none;
 }
 
 .home-next-event-popup-cta:focus-visible {
@@ -448,7 +448,7 @@
   text-decoration: none;
   transform: translateY(-1px) translateX(1px);
   background: var(--cta-primary-background-hover);
-  box-shadow: var(--cta-primary-shadow-hover), var(--cta-primary-focus-ring);
+  box-shadow: var(--cta-primary-focus-ring);
 }
 
 .home-next-event-popup-cta:hover .home-next-event-popup-cta-arrow {
