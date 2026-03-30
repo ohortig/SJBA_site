@@ -54,7 +54,6 @@ const SOCIAL_LINKS: ContactSocialLink[] = [
 ] as const;
 
 export const Contact = () => {
-  const introAnimation = useScrollAnimation({ threshold: 0.15, rootMargin: '0px 0px -60px 0px' });
   const detailsAnimation = useScrollAnimation({
     threshold: 0.08,
     rootMargin: '0px 0px -40px 0px',
@@ -166,10 +165,7 @@ export const Contact = () => {
           ref={detailsAnimation.elementRef}
           className={`contact-sidebar fade-in ${detailsAnimation.isVisible ? 'visible' : ''}`}
         >
-          <div
-            ref={introAnimation.elementRef}
-            className={`contact-intro slide-up ${introAnimation.isVisible ? 'visible' : ''}`}
-          >
+          <div className="contact-intro">
             <div className="contact-intro__content">
               <h1 className="contact-title">Contact SJBA.</h1>
               <p className="contact-intro__copy">
