@@ -1,19 +1,44 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
-import { Footer, LoadingSpinner, ErrorDisplay, BoardMemberModal, CallToAction } from '@components';
+import {
+  Footer,
+  LoadingSpinner,
+  ErrorDisplay,
+  BoardMemberModal,
+  CallToAction,
+  SubpageHero,
+  ArrowIcon,
+} from '@components';
 import { useScrollAnimation } from '@hooks';
 import { dataService } from '@api';
 import { BOARD_IMAGES_BUCKET, BOARD_THUMBNAILS_BUCKET } from '@constants';
 import type { BoardMember } from '@types';
 import './OurBoard.css';
 
+interface BoardMemberNameProps {
+  fullName: string;
+}
+
+const BoardMemberName = ({ fullName }: BoardMemberNameProps) => {
+  const nameParts = fullName.trim().split(/\s+/);
+  const hasMultipleParts = nameParts.length > 1;
+  const firstLine = hasMultipleParts ? nameParts.slice(0, -1).join(' ') : fullName;
+  const secondLine = hasMultipleParts ? (nameParts[nameParts.length - 1] ?? '') : '\u00A0';
+
+  return (
+    <span className="member-name-text" aria-label={fullName}>
+      <span className="member-name-line">{firstLine}</span>
+      <span className="member-name-line">{secondLine}</span>
+    </span>
+  );
+};
+
 export const OurBoard = () => {
-  const headerAnimation = useScrollAnimation({
-    threshold: 0.1,
-    rootMargin: '0px 0px -20px 0px',
+  const heroAnimation = useScrollAnimation({
+    threshold: 0.18,
   });
   const boardAnimation = useScrollAnimation({
-    threshold: 0.05,
-    rootMargin: '0px 0px 0px 0px',
+    threshold: 0.08,
+    rootMargin: '0px 0px -40px 0px',
   });
 
   const [selectedMember, setSelectedMember] = useState<BoardMember | null>(null);
@@ -24,12 +49,69 @@ export const OurBoard = () => {
   const [error, setError] = useState<string | null>(null);
   const preloadedImagesRef = useRef<Set<string>>(new Set());
 
+  const preloadBoardMemberImage = useCallback(
+    (member: BoardMember) =>
+      new Promise<boolean>((resolve) => {
+        if (!member.headshotFile) {
+          resolve(false);
+          return;
+        }
+
+        const fullSrc = `${BOARD_IMAGES_BUCKET}${member.headshotFile}`;
+
+        if (preloadedImagesRef.current.has(fullSrc)) {
+          resolve(true);
+          return;
+        }
+
+        const img = new Image();
+        img.decoding = 'async';
+
+        const finalize = () => {
+          preloadedImagesRef.current.add(fullSrc);
+          resolve(true);
+        };
+
+        img.onload = () => {
+          if (typeof img.decode === 'function') {
+            void img.decode().then(finalize).catch(finalize);
+            return;
+          }
+
+          finalize();
+        };
+
+        img.onerror = () => {
+          resolve(false);
+        };
+
+        img.src = fullSrc;
+      }),
+    []
+  );
+
   const fetchBoardMembers = useCallback(async () => {
     try {
       setIsLoading(true);
       setError(null);
       const members = await dataService.boardMembers.getAll();
       setBoardMembers(members);
+
+      const preloadResults = await Promise.all(
+        members.map(async (member) => ({
+          memberName: member.fullName,
+          loaded: await preloadBoardMemberImage(member),
+        }))
+      );
+
+      const failedMembers = preloadResults
+        .filter((result) => !result.loaded)
+        .map((result) => result.memberName)
+        .filter(Boolean);
+
+      if (failedMembers.length > 0) {
+        setImageErrors((previous) => new Set([...previous, ...failedMembers]));
+      }
     } catch (error) {
       console.error('Failed to fetch board members:', error);
       let errorMessage = 'Failed to load board members. Please try again later.';
@@ -42,36 +124,12 @@ export const OurBoard = () => {
     } finally {
       setIsLoading(false);
     }
-  }, []);
+  }, [preloadBoardMemberImage]);
 
   // Fetch board members data
   useEffect(() => {
     void fetchBoardMembers();
   }, [fetchBoardMembers]);
-
-  // Preload full-resolution images in the background
-  // so they're already cached when the modal opens
-  useEffect(() => {
-    if (boardMembers.length === 0) return;
-
-    const preloadImages = boardMembers
-      .filter((member) => member.headshotFile && !imageErrors.has(member.fullName))
-      .map((member) => {
-        const img = new Image();
-        const fullSrc = `${BOARD_IMAGES_BUCKET}${member.headshotFile}`;
-        img.src = fullSrc;
-        img.onload = () => {
-          preloadedImagesRef.current.add(fullSrc);
-        };
-        return img;
-      });
-
-    return () => {
-      preloadImages.forEach((img) => {
-        img.onload = null;
-      });
-    };
-  }, [boardMembers, imageErrors]);
 
   // Fallback mechanism for mobile - ensure animations trigger after a delay
   useEffect(() => {
@@ -104,88 +162,119 @@ export const OurBoard = () => {
 
   return (
     <>
-      <div className="page-container">
-        <div
-          ref={headerAnimation.elementRef}
-          className={`board-header slide-up ${headerAnimation.isVisible ? 'visible' : ''}`}
-        >
-          <h1 className="board-title">Executive Board</h1>
-          <p className="board-subtitle">Meet the dedicated leaders driving SJBA's mission.</p>
-        </div>
+      <div className="page-container board-page">
+        <SubpageHero
+          ref={heroAnimation.elementRef}
+          visible={heroAnimation.isVisible}
+          backgroundImageSrc="/board-gallery/board-gallery-1.jpg"
+          backgroundImageAlt="SJBA members gathered at an event"
+          imagePosition="center 42%"
+          title="Executive Board"
+          lead="Meet the students leading SJBA this academic year."
+        />
 
-        <div
+        <section
+          id="board-directory"
           ref={boardAnimation.elementRef}
-          className={`board-section slide-up ${boardAnimation.isVisible || forceVisible ? 'visible' : ''}`}
+          className={`board-directory ${boardAnimation.isVisible || forceVisible ? 'visible' : ''}`}
+          aria-labelledby="board-directory-title"
         >
           {isLoading ? (
-            <LoadingSpinner />
+            <div className="board-directory__status">
+              <LoadingSpinner />
+            </div>
           ) : error ? (
-            <ErrorDisplay error={error} onRetry={() => void fetchBoardMembers()} />
+            <div className="board-directory__status">
+              <ErrorDisplay error={error} onRetry={() => void fetchBoardMembers()} />
+            </div>
           ) : (
             <div
               className={`board-grid stagger-children ${boardAnimation.isVisible || forceVisible ? 'visible' : ''}`}
+              role="list"
             >
               {boardMembers
                 .filter((member) => member && member.fullName)
-                .map((member, index) => (
-                  <div
-                    key={index}
+                .map((member) => (
+                  <article
+                    key={member.id}
                     className="board-member-card stagger-item"
-                    onClick={() => openModal(member)}
+                    role="listitem"
                   >
-                    <div className="member-photo">
-                      {shouldShowPlaceholder(member) ? (
-                        <div className="photo-placeholder">
-                          <span>
-                            {member.fullName
-                              .split(' ')
-                              .map((n: string) => n[0])
-                              .join('')}
-                          </span>
-                        </div>
-                      ) : (
-                        <img
-                          src={`${BOARD_THUMBNAILS_BUCKET}${member.headshotFile?.replace(/\.(png|webp|jpeg)$/i, '.jpg')}`}
-                          alt={`${member.fullName} headshot`}
-                          className="member-headshot"
-                          onError={() => handleImageError(member.fullName)}
-                        />
-                      )}
-                    </div>
-                    <div className="member-info">
-                      <div className="member-name-row">
-                        <h3 className="member-name">{member.fullName}</h3>
-                        <div className="member-icon-buttons">
-                          <a
-                            href={`mailto:${member.email}`}
-                            className="member-icon-btn email-icon"
-                            title="Send Email"
-                            onClick={(e) => e.stopPropagation()}
-                          >
-                            <img src="/icons/email-icon.png" alt="Email" />
-                          </a>
-                          {member.linkedinUrl && (
-                            <a
-                              href={member.linkedinUrl}
-                              className="member-icon-btn linkedin-icon"
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              title="Connect on LinkedIn"
-                              onClick={(e) => e.stopPropagation()}
-                            >
-                              <img src="/icons/linkedin-logo.png" alt="LinkedIn" />
-                            </a>
-                          )}
-                        </div>
+                    <button
+                      type="button"
+                      className="board-member-trigger"
+                      onClick={() => openModal(member)}
+                      aria-label={`Open ${member.fullName}'s board profile`}
+                    >
+                      <div className="member-top-row">
+                        <p className="member-position">{member.position}</p>
+                        <span className="member-open-indicator" aria-hidden="true">
+                          <ArrowIcon className="member-open-indicator__icon" />
+                        </span>
                       </div>
-                      <h4 className="member-position">{member.position}</h4>
-                      <p className="member-details">{member.major}</p>
-                    </div>
-                  </div>
+
+                      <div className="member-photo">
+                        {shouldShowPlaceholder(member) ? (
+                          <div className="photo-placeholder">
+                            <span>
+                              {member.fullName
+                                .split(' ')
+                                .map((n: string) => n[0])
+                                .join('')}
+                            </span>
+                          </div>
+                        ) : (
+                          <img
+                            src={`${BOARD_THUMBNAILS_BUCKET}${member.headshotFile?.replace(/\.(png|webp|jpeg)$/i, '.jpg')}`}
+                            alt={`${member.fullName} headshot`}
+                            className="member-headshot"
+                            onError={() => handleImageError(member.fullName)}
+                          />
+                        )}
+                      </div>
+
+                      <div className="member-info">
+                        <div className="member-header">
+                          <div className="member-name-row">
+                            <h3 className="member-name">
+                              <BoardMemberName fullName={member.fullName} />
+                            </h3>
+                            <div
+                              className="member-actions"
+                              aria-label={`${member.fullName} contact actions`}
+                            >
+                              <a
+                                href={`mailto:${member.email}`}
+                                className="member-action-link"
+                                title={`Email ${member.fullName}`}
+                              >
+                                <img src="/icons/email-icon.png" alt="" aria-hidden="true" />
+                              </a>
+                              {member.linkedinUrl && (
+                                <a
+                                  href={member.linkedinUrl}
+                                  className="member-action-link"
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  title={`View ${member.fullName} on LinkedIn`}
+                                >
+                                  <img src="/icons/linkedin-logo.png" alt="" aria-hidden="true" />
+                                </a>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+                        <p className="member-details">
+                          <span className="member-details-year">{member.year}</span>
+                          <span className="member-details-major">{member.major}</span>
+                        </p>
+                      </div>
+                    </button>
+                  </article>
                 ))}
             </div>
           )}
-        </div>
+        </section>
 
         <CallToAction
           title="Interested in Joining Our Board?"
