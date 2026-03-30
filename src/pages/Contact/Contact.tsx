@@ -174,30 +174,32 @@ export const Contact = () => {
             </div>
           </div>
 
-          <div className="contact-sidebar__section">
-            <span className="contact-section__eyebrow">Email</span>
-            <a href="mailto:sjba@stern.nyu.edu" className="contact-channel__link">
-              sjba@stern.nyu.edu
-            </a>
-          </div>
-
-          <div className="contact-sidebar__section">
-            <span className="contact-section__eyebrow">Address</span>
-            <div className="contact-intro__channels" aria-label="Primary contact details">
-              {CONTACT_CHANNELS.filter((channel) => channel.label === 'Visit').map((channel) => (
-                <div key={channel.label} className="contact-intro__channel">
-                  <p className="contact-channel__text">{channel.value}</p>
-                </div>
-              ))}
+          <div className="contact-sidebar__details">
+            <div className="contact-sidebar__section">
+              <span className="contact-section__eyebrow">Email</span>
+              <a href="mailto:sjba@stern.nyu.edu" className="contact-channel__link">
+                sjba@stern.nyu.edu
+              </a>
             </div>
-          </div>
 
-          <div className="contact-sidebar__section">
-            <span className="contact-section__eyebrow">Social</span>
-            <div className="contact-social-links">
-              {SOCIAL_LINKS.map((link) => (
-                <SocialLink key={link.href} {...link} />
-              ))}
+            <div className="contact-sidebar__section">
+              <span className="contact-section__eyebrow">Address</span>
+              <div className="contact-intro__channels" aria-label="Primary contact details">
+                {CONTACT_CHANNELS.filter((channel) => channel.label === 'Visit').map((channel) => (
+                  <div key={channel.label} className="contact-intro__channel">
+                    <p className="contact-channel__text">{channel.value}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="contact-sidebar__section">
+              <span className="contact-section__eyebrow">Social</span>
+              <div className="contact-social-links">
+                {SOCIAL_LINKS.map((link) => (
+                  <SocialLink key={link.href} {...link} />
+                ))}
+              </div>
             </div>
           </div>
         </aside>

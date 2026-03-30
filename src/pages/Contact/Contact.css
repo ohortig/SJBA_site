@@ -116,6 +116,11 @@
   padding-right: clamp(0.5rem, 1vw, 0.9rem);
 }
 
+.contact-sidebar__details {
+  display: grid;
+  gap: 0.85rem;
+}
+
 .contact-sidebar__section {
   display: grid;
   gap: 0.35rem;
@@ -396,12 +401,25 @@
     min-height: auto;
   }
 
+  .contact-grid {
+    display: flex;
+    flex-direction: column;
+  }
+
   .contact-sidebar {
-    height: auto;
-    padding-right: 0;
-    padding-block: 0;
-    justify-content: flex-start;
-    gap: 1rem;
+    display: contents;
+  }
+
+  .contact-intro {
+    order: 1;
+  }
+
+  .contact-form-panel {
+    order: 2;
+  }
+
+  .contact-sidebar__details {
+    order: 3;
   }
 }
 
