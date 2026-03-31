@@ -3,12 +3,13 @@ import {
   useCallback,
   useDeferredValue,
   useEffect,
+  useLayoutEffect,
   useMemo,
   useRef,
   useState,
 } from 'react';
-import { useSearchParams } from 'react-router-dom';
-import { ErrorDisplay, Footer, LoadingSpinner, SubpageHero } from '@components';
+import { useLocation, useSearchParams } from 'react-router-dom';
+import { ArrowIcon, ErrorDisplay, Footer, LoadingSpinner, SubpageHero } from '@components';
 import { dataService } from '@api';
 import { useCurrentTime, useScrollAnimation } from '@hooks';
 import { EVENT_FLYERS_BUCKET } from '@constants';
@@ -27,6 +28,9 @@ import './Events.css';
 const UPCOMING_EVENTS_LIMIT = 3;
 const ARCHIVE_PAGE_SIZE = 8;
 const SEARCH_DEBOUNCE_MS = 260;
+const DESKTOP_SEMESTER_WINDOW_SIZE = 3;
+const MOBILE_SEMESTER_WINDOW_SIZE = 2;
+const DESKTOP_SEMESTER_MEDIA_QUERY = '(min-width: 1200px)';
 const DEFAULT_IMAGE_WIDTH = 960;
 const DEFAULT_IMAGE_HEIGHT = 1280;
 
@@ -45,8 +49,16 @@ interface EventFlyerProps {
 }
 
 interface EventCardProps extends EventFlyerProps {
+  active?: boolean;
   event: Event;
+  expanded?: boolean;
+  masked?: boolean;
   now: Date;
+  railDirection?: 'down' | 'up';
+  registerBodyRef?: (eventId: string, element: HTMLDivElement | null) => void;
+  registerCopyRef?: (eventId: string, element: HTMLDivElement | null) => void;
+  onToggleExpand?: (eventId: string) => void;
+  registerCardRef?: (eventId: string, element: HTMLElement | null) => void;
   variant: 'upcoming' | 'archive';
 }
 
@@ -105,6 +117,82 @@ const getLoadedArchivePages = (entry: ArchiveCacheEntry): number => {
   return loadedPages;
 };
 
+const getRootFontSize = (): number => {
+  if (typeof window === 'undefined') {
+    return 16;
+  }
+
+  const computed = window.getComputedStyle(document.documentElement).fontSize;
+  const parsed = Number.parseFloat(computed);
+  return Number.isFinite(parsed) && parsed > 0 ? parsed : 16;
+};
+
+const getCollapsedArchiveBodyMaxHeight = (): number => {
+  if (typeof window === 'undefined') {
+    return 0;
+  }
+
+  const rem = getRootFontSize();
+  const isMobile = window.matchMedia('(max-width: 768px)').matches;
+  const remCap = (isMobile ? 23 : 29) * rem;
+  const viewportOffset = window.innerHeight - (isMobile ? 15 : 17) * rem;
+  return Math.min(remCap, viewportOffset);
+};
+
+const getCollapsedUpcomingCopyMaxHeight = (): number => {
+  if (typeof window === 'undefined') {
+    return 0;
+  }
+
+  const rem = getRootFontSize();
+  const isMobile = window.matchMedia('(max-width: 768px)').matches;
+  const remCap = (isMobile ? 20 : 24) * rem;
+  const viewportOffset = window.innerHeight - (isMobile ? 18 : 22) * rem;
+  return Math.min(remCap, viewportOffset);
+};
+
+const getHeaderOffset = (): number => {
+  if (typeof window === 'undefined') {
+    return 0;
+  }
+
+  const rootStyles = window.getComputedStyle(document.documentElement);
+  const rawOffset = rootStyles.getPropertyValue('--header-offset').trim();
+  if (!rawOffset) {
+    return 0;
+  }
+
+  if (rawOffset.endsWith('rem')) {
+    return Number.parseFloat(rawOffset) * getRootFontSize();
+  }
+
+  if (rawOffset.endsWith('px')) {
+    return Number.parseFloat(rawOffset);
+  }
+
+  const parsed = Number.parseFloat(rawOffset);
+  return Number.isFinite(parsed) ? parsed : 0;
+};
+
+const scrollEventCardIntoView = (targetElement: HTMLElement): void => {
+  const headerOffset = getHeaderOffset();
+  const viewportHeight = window.innerHeight;
+  const elementHeight = targetElement.offsetHeight;
+  const absoluteTop = targetElement.getBoundingClientRect().top + window.scrollY;
+  const visibleHeight = Math.max(viewportHeight - headerOffset, 0);
+  const minimumTopOffset = 16;
+  const preferredTopOffset =
+    headerOffset + Math.max((visibleHeight - elementHeight) / 2, minimumTopOffset);
+  const top = Math.max(absoluteTop - preferredTopOffset, 0);
+
+  document.documentElement.scrollTop = top;
+  document.body.scrollTop = top;
+  window.scrollTo({
+    top,
+    behavior: 'auto',
+  });
+};
+
 const EventFlyer = ({
   event,
   imageErrors,
@@ -160,20 +248,66 @@ const EventFlyer = ({
 };
 
 const EventCard = ({
+  active = false,
   event,
+  expanded = false,
   imageErrors,
+  masked = false,
   now,
   onImageError,
   onOpen,
   onPreload,
+  railDirection = 'down',
+  registerBodyRef,
+  registerCopyRef,
+  onToggleExpand,
+  registerCardRef,
   registerFlyerButton,
   variant,
 }: EventCardProps) => {
   const description = normalizeEventDescription(event.description);
   const isPastEvent = isEventPast(event, now);
+  const isExpandableCard = Boolean(onToggleExpand);
+
+  const handleToggleExpand = useCallback(
+    (target: EventTarget | null) => {
+      if (!isExpandableCard || !onToggleExpand) {
+        return;
+      }
+
+      if (
+        target instanceof Element &&
+        target.closest('a, button, input, textarea, select, label, summary')
+      ) {
+        return;
+      }
+
+      onToggleExpand(event.id);
+    },
+    [event.id, isExpandableCard, onToggleExpand]
+  );
 
   return (
-    <article className={`event-card event-card--${variant}`}>
+    <article
+      id={`event-${event.id}`}
+      ref={(element) => registerCardRef?.(event.id, element)}
+      className={`event-card event-card--${variant} ${active ? 'is-active-rail' : ''} ${
+        railDirection === 'up' ? 'rail-from-bottom' : 'rail-from-top'
+      } ${expanded ? 'is-expanded' : ''} ${masked ? 'has-overflow-mask' : ''} ${
+        isExpandableCard ? 'event-card--interactive' : ''
+      }`}
+      aria-expanded={isExpandableCard ? expanded : undefined}
+      onClick={(clickEvent) => handleToggleExpand(clickEvent.target)}
+      onKeyDown={(keyboardEvent) => {
+        if (!isExpandableCard || (keyboardEvent.key !== 'Enter' && keyboardEvent.key !== ' ')) {
+          return;
+        }
+
+        keyboardEvent.preventDefault();
+        handleToggleExpand(keyboardEvent.target);
+      }}
+      tabIndex={isExpandableCard ? 0 : undefined}
+    >
       <EventFlyer
         event={event}
         imageErrors={imageErrors}
@@ -183,27 +317,37 @@ const EventCard = ({
         registerFlyerButton={registerFlyerButton}
       />
 
-      <div className="event-card__body">
-        <div className="event-card__meta">
-          <span className="event-card__semester">{semesterLabel(event.semester)}</span>
-          {event.company ? <span className="event-card__company">{event.company}</span> : null}
-        </div>
-
-        <div className="event-card__copy">
-          <h3 className="event-card__title">{event.title}</h3>
+      <div ref={(element) => registerBodyRef?.(event.id, element)} className="event-card__body">
+        <div ref={(element) => registerCopyRef?.(event.id, element)} className="event-card__copy">
+          <div className="event-card__header">
+            <h3 className="event-card__title">{event.title}</h3>
+            <div className="event-card__meta">
+              <span className="event-card__semester">{semesterLabel(event.semester)}</span>
+              {event.company ? <span className="event-card__company">{event.company}</span> : null}
+            </div>
+          </div>
 
           <dl className="event-card__details">
             <div className="event-card__detail">
-              <dt>Date</dt>
+              <dt>
+                <img src="/icons/calendar.svg" alt="" className="event-card__detail-icon" />
+                <span>Date</span>
+              </dt>
               <dd>{formatEventDateOnly(event.startTime)}</dd>
             </div>
             <div className="event-card__detail">
-              <dt>Time</dt>
+              <dt>
+                <img src="/icons/clock.svg" alt="" className="event-card__detail-icon" />
+                <span>Time</span>
+              </dt>
               <dd>{formatEventTimeOnly(event.startTime, event.endTime)}</dd>
             </div>
             {event.location ? (
               <div className="event-card__detail">
-                <dt>Location</dt>
+                <dt>
+                  <img src="/icons/location-pin.svg" alt="" className="event-card__detail-icon" />
+                  <span>Location</span>
+                </dt>
                 <dd>{event.location}</dd>
               </div>
             ) : null}
@@ -220,7 +364,13 @@ const EventCard = ({
               rel="noopener noreferrer"
               className="event-card__cta"
             >
-              RSVP
+              <span>RSVP</span>
+              <img
+                src="/icons/arrow-top-right.png"
+                alt=""
+                aria-hidden="true"
+                className="event-card__cta-arrow"
+              />
             </a>
           ) : null}
         </div>
@@ -240,6 +390,7 @@ export const Events = () => {
     rootMargin: '0px 0px -30px 0px',
   });
 
+  const location = useLocation();
   const [searchParams, setSearchParams] = useSearchParams();
   const now = useCurrentTime();
   const archiveCutoffRef = useRef(new Date().toISOString());
@@ -247,6 +398,12 @@ export const Events = () => {
   const archiveRequestTokenRef = useRef(0);
   const preloadedImagesRef = useRef<Set<string>>(new Set());
   const flyerButtonRefs = useRef(new Map<string, HTMLButtonElement>());
+  const archiveBodyRefs = useRef(new Map<string, HTMLDivElement>());
+  const upcomingCopyRefs = useRef(new Map<string, HTMLDivElement>());
+  const eventCardRefs = useRef(new Map<string, HTMLElement>());
+  const lastScrollYRef = useRef(0);
+  const lastScrolledHashRef = useRef<string | null>(null);
+  const lastAutoExpandedHashRef = useRef<string | null>(null);
 
   const [searchInput, setSearchInput] = useState(() => searchParams.get('search') ?? '');
   const deferredSearchInput = useDeferredValue(searchInput);
@@ -261,11 +418,27 @@ export const Events = () => {
   const [upcomingError, setUpcomingError] = useState<string | null>(null);
   const [archiveError, setArchiveError] = useState<string | null>(null);
   const [archiveLoadMoreError, setArchiveLoadMoreError] = useState<string | null>(null);
+  const [activeRailEventId, setActiveRailEventId] = useState<string | null>(null);
+  const [activeRailDirection, setActiveRailDirection] = useState<'down' | 'up'>('down');
+  const [maskedArchiveEventIds, setMaskedArchiveEventIds] = useState<Set<string>>(new Set());
+  const [maskedUpcomingEventIds, setMaskedUpcomingEventIds] = useState<Set<string>>(new Set());
   const [imageErrors, setImageErrors] = useState<Set<string>>(new Set());
   const [modalFlyer, setModalFlyer] = useState<FlyerModalState | null>(null);
   const [upcomingRetryNonce, setUpcomingRetryNonce] = useState(0);
   const [archiveRetryNonce, setArchiveRetryNonce] = useState(0);
   const [archiveLoadedPages, setArchiveLoadedPages] = useState(0);
+  const [semesterWindowStart, setSemesterWindowStart] = useState(0);
+  const [semesterWindowSize, setSemesterWindowSize] = useState(() => {
+    if (typeof window === 'undefined') {
+      return DESKTOP_SEMESTER_WINDOW_SIZE;
+    }
+
+    return window.matchMedia(DESKTOP_SEMESTER_MEDIA_QUERY).matches
+      ? DESKTOP_SEMESTER_WINDOW_SIZE
+      : MOBILE_SEMESTER_WINDOW_SIZE;
+  });
+  const [expandedUpcomingEventId, setExpandedUpcomingEventId] = useState<string | null>(null);
+  const [expandedArchiveEventId, setExpandedArchiveEventId] = useState<string | null>(null);
   const [archivePagination, setArchivePagination] = useState({
     page: 1,
     totalPages: 1,
@@ -275,11 +448,18 @@ export const Events = () => {
   const activeSearch = searchParams.get('search')?.trim() ?? '';
   const activeSemester = searchParams.get('semester')?.trim() ?? '';
   const loadedArchivePages = parsePositiveInteger(searchParams.get('page'), 1);
+  const maxSemesterWindowStart = Math.max(availableSemesters.length - semesterWindowSize, 0);
   const hasActiveArchiveFilters = activeSearch.length > 0 || activeSemester.length > 0;
   const currentArchiveKey = useMemo(
     () => getArchiveCacheKey(activeSearch, activeSemester),
     [activeSearch, activeSemester]
   );
+  const visibleSemesters = useMemo(
+    () => availableSemesters.slice(semesterWindowStart, semesterWindowStart + semesterWindowSize),
+    [availableSemesters, semesterWindowSize, semesterWindowStart]
+  );
+  const canGoToPreviousSemesterWindow = semesterWindowStart > 0;
+  const canGoToNextSemesterWindow = semesterWindowStart < maxSemesterWindowStart;
 
   const updateSearchParams = useCallback(
     (
@@ -377,6 +557,33 @@ export const Events = () => {
     }
 
     flyerButtonRefs.current.delete(eventId);
+  }, []);
+
+  const registerEventCardRef = useCallback((eventId: string, element: HTMLElement | null) => {
+    if (element) {
+      eventCardRefs.current.set(eventId, element);
+      return;
+    }
+
+    eventCardRefs.current.delete(eventId);
+  }, []);
+
+  const registerArchiveBodyRef = useCallback((eventId: string, element: HTMLDivElement | null) => {
+    if (element) {
+      archiveBodyRefs.current.set(eventId, element);
+      return;
+    }
+
+    archiveBodyRefs.current.delete(eventId);
+  }, []);
+
+  const registerUpcomingCopyRef = useCallback((eventId: string, element: HTMLDivElement | null) => {
+    if (element) {
+      upcomingCopyRefs.current.set(eventId, element);
+      return;
+    }
+
+    upcomingCopyRefs.current.delete(eventId);
   }, []);
 
   useEffect(() => {
@@ -495,6 +702,58 @@ export const Events = () => {
       }
     );
   }, [activeSemester, availableSemesters, updateSearchParams]);
+
+  useEffect(() => {
+    if (typeof window === 'undefined') {
+      return;
+    }
+
+    const mediaQuery = window.matchMedia(DESKTOP_SEMESTER_MEDIA_QUERY);
+    const updateSemesterWindowSize = () => {
+      setSemesterWindowSize(
+        mediaQuery.matches ? DESKTOP_SEMESTER_WINDOW_SIZE : MOBILE_SEMESTER_WINDOW_SIZE
+      );
+    };
+
+    updateSemesterWindowSize();
+    mediaQuery.addEventListener('change', updateSemesterWindowSize);
+
+    return () => mediaQuery.removeEventListener('change', updateSemesterWindowSize);
+  }, []);
+
+  useEffect(() => {
+    if (availableSemesters.length === 0) {
+      setSemesterWindowStart(0);
+      return;
+    }
+
+    const activeSemesterIndex = activeSemester ? availableSemesters.indexOf(activeSemester) : -1;
+
+    if (activeSemesterIndex === -1) {
+      setSemesterWindowStart((current) => Math.min(current, maxSemesterWindowStart));
+      return;
+    }
+
+    if (
+      activeSemesterIndex >= semesterWindowStart &&
+      activeSemesterIndex < semesterWindowStart + semesterWindowSize
+    ) {
+      return;
+    }
+
+    const centeredStart = Math.min(
+      Math.max(activeSemesterIndex - 1, 0),
+      Math.max(availableSemesters.length - semesterWindowSize, 0)
+    );
+
+    setSemesterWindowStart(centeredStart);
+  }, [
+    activeSemester,
+    availableSemesters,
+    maxSemesterWindowStart,
+    semesterWindowSize,
+    semesterWindowStart,
+  ]);
 
   useEffect(() => {
     let isCancelled = false;
@@ -624,6 +883,14 @@ export const Events = () => {
 
   const isArchiveLoadingMore = isArchiveLoading && loadedArchivePages > archiveLoadedPages;
 
+  const handleToggleArchiveEventExpand = useCallback((eventId: string) => {
+    setExpandedArchiveEventId((current) => (current === eventId ? null : eventId));
+  }, []);
+
+  const handleToggleUpcomingEventExpand = useCallback((eventId: string) => {
+    setExpandedUpcomingEventId((current) => (current === eventId ? null : eventId));
+  }, []);
+
   useEffect(() => {
     if (isArchiveLoading) {
       return;
@@ -675,6 +942,10 @@ export const Events = () => {
     () => [...upcomingEvents, ...archiveEvents].filter((event) => event.flyerFile),
     [archiveEvents, upcomingEvents]
   );
+  const renderedEventIds = useMemo(
+    () => [...upcomingEvents, ...archiveEvents].map((event) => event.id),
+    [archiveEvents, upcomingEvents]
+  );
 
   useEffect(() => {
     if (displayedEvents.length === 0) {
@@ -714,6 +985,206 @@ export const Events = () => {
     return () => observer.disconnect();
   }, [displayedEvents, preloadFullImage]);
 
+  useEffect(() => {
+    if (archiveEvents.length === 0) {
+      setMaskedArchiveEventIds(new Set());
+      return;
+    }
+
+    const updateMaskedCards = () => {
+      const collapsedMaxHeight = getCollapsedArchiveBodyMaxHeight();
+      const nextMaskedIds = new Set<string>();
+
+      archiveEvents.forEach((event) => {
+        const element = archiveBodyRefs.current.get(event.id);
+        if (!element) {
+          return;
+        }
+
+        if (element.scrollHeight > collapsedMaxHeight + 1) {
+          nextMaskedIds.add(event.id);
+        }
+      });
+
+      setMaskedArchiveEventIds(nextMaskedIds);
+    };
+
+    const handleResize = () => {
+      window.requestAnimationFrame(updateMaskedCards);
+    };
+
+    handleResize();
+    window.addEventListener('resize', handleResize);
+
+    return () => window.removeEventListener('resize', handleResize);
+  }, [archiveEvents, expandedArchiveEventId]);
+
+  useEffect(() => {
+    if (upcomingEvents.length === 0) {
+      setMaskedUpcomingEventIds(new Set());
+      return;
+    }
+
+    const updateMaskedCards = () => {
+      const collapsedMaxHeight = getCollapsedUpcomingCopyMaxHeight();
+      const nextMaskedIds = new Set<string>();
+
+      upcomingEvents.forEach((event) => {
+        const element = upcomingCopyRefs.current.get(event.id);
+        if (!element) {
+          return;
+        }
+
+        if (element.scrollHeight > collapsedMaxHeight + 1) {
+          nextMaskedIds.add(event.id);
+        }
+      });
+
+      setMaskedUpcomingEventIds(nextMaskedIds);
+    };
+
+    const handleResize = () => {
+      window.requestAnimationFrame(updateMaskedCards);
+    };
+
+    handleResize();
+    window.addEventListener('resize', handleResize);
+
+    return () => window.removeEventListener('resize', handleResize);
+  }, [expandedUpcomingEventId, upcomingEvents]);
+
+  useEffect(() => {
+    if (renderedEventIds.length === 0) {
+      setActiveRailEventId(null);
+      return;
+    }
+
+    const updateActiveRail = () => {
+      const viewportHeight = window.innerHeight;
+      const targetY = Math.min(Math.max(viewportHeight * 0.34, 140), viewportHeight - 140);
+
+      let nextActiveId: string | null = null;
+      let bestDistance = Number.POSITIVE_INFINITY;
+
+      renderedEventIds.forEach((eventId) => {
+        const element = eventCardRefs.current.get(eventId);
+        if (!element) {
+          return;
+        }
+
+        const rect = element.getBoundingClientRect();
+        if (rect.bottom <= 0 || rect.top >= viewportHeight) {
+          return;
+        }
+
+        const nearestPoint = Math.min(Math.max(targetY, rect.top), rect.bottom);
+        const distance = Math.abs(nearestPoint - targetY);
+        if (distance < bestDistance) {
+          bestDistance = distance;
+          nextActiveId = eventId;
+        }
+      });
+
+      if (!nextActiveId) {
+        renderedEventIds.forEach((eventId) => {
+          const element = eventCardRefs.current.get(eventId);
+          if (!element) {
+            return;
+          }
+
+          const rect = element.getBoundingClientRect();
+          const distance = Math.abs(rect.top - targetY);
+          if (distance < bestDistance) {
+            bestDistance = distance;
+            nextActiveId = eventId;
+          }
+        });
+      }
+
+      setActiveRailEventId((current) => (current === nextActiveId ? current : nextActiveId));
+    };
+
+    const handleViewportChange = () => {
+      const nextScrollY = window.scrollY;
+      if (nextScrollY !== lastScrollYRef.current) {
+        setActiveRailDirection(nextScrollY > lastScrollYRef.current ? 'down' : 'up');
+        lastScrollYRef.current = nextScrollY;
+      }
+
+      window.requestAnimationFrame(updateActiveRail);
+    };
+
+    lastScrollYRef.current = window.scrollY;
+    handleViewportChange();
+    window.addEventListener('scroll', handleViewportChange, { passive: true });
+    window.addEventListener('resize', handleViewportChange);
+
+    return () => {
+      window.removeEventListener('scroll', handleViewportChange);
+      window.removeEventListener('resize', handleViewportChange);
+    };
+  }, [renderedEventIds]);
+
+  useLayoutEffect(() => {
+    if (!location.hash.startsWith('#event-')) {
+      lastScrolledHashRef.current = null;
+      lastAutoExpandedHashRef.current = null;
+      return;
+    }
+
+    const targetEventId = decodeURIComponent(location.hash.slice('#event-'.length));
+    const isUpcomingTarget = upcomingEvents.some((event) => event.id === targetEventId);
+    const needsUpcomingExpansion =
+      isUpcomingTarget &&
+      expandedUpcomingEventId !== targetEventId &&
+      lastAutoExpandedHashRef.current !== location.hash;
+
+    if (needsUpcomingExpansion) {
+      lastAutoExpandedHashRef.current = location.hash;
+      lastScrolledHashRef.current = null;
+      setExpandedUpcomingEventId(targetEventId);
+      return;
+    }
+
+    const targetElement = eventCardRefs.current.get(targetEventId);
+    if (!targetElement || lastScrolledHashRef.current === location.hash) {
+      return;
+    }
+
+    lastScrolledHashRef.current = location.hash;
+
+    const timeoutIds: number[] = [];
+    let nestedAnimationFrameId = 0;
+
+    scrollEventCardIntoView(targetElement);
+
+    const animationFrameId = window.requestAnimationFrame(() => {
+      nestedAnimationFrameId = window.requestAnimationFrame(() => {
+        scrollEventCardIntoView(targetElement);
+      });
+    });
+
+    timeoutIds.push(
+      window.setTimeout(() => {
+        scrollEventCardIntoView(targetElement);
+      }, 80)
+    );
+
+    timeoutIds.push(
+      window.setTimeout(() => {
+        scrollEventCardIntoView(targetElement);
+      }, 220)
+    );
+
+    return () => {
+      window.cancelAnimationFrame(animationFrameId);
+      if (nestedAnimationFrameId) {
+        window.cancelAnimationFrame(nestedAnimationFrameId);
+      }
+      timeoutIds.forEach((timeoutId) => window.clearTimeout(timeoutId));
+    };
+  }, [expandedUpcomingEventId, location.hash, renderedEventIds, upcomingEvents]);
+
   return (
     <>
       <div className="page-container events-page">
@@ -737,7 +1208,7 @@ export const Events = () => {
             <div className="events-section-heading events-section-heading--archive">
               <div>
                 <span className="events-section__eyebrow">Upcoming Events</span>
-                <h2 id="events-upcoming-title">The next conversations on deck.</h2>
+                {/* <h2 id="events-upcoming-title">Upcoming</h2> */}
               </div>
             </div>
 
@@ -758,12 +1229,24 @@ export const Events = () => {
                 {upcomingEvents.map((event) => (
                   <EventCard
                     key={event.id}
+                    active={activeRailEventId === event.id}
+                    expanded={expandedUpcomingEventId === event.id}
                     event={event}
                     imageErrors={imageErrors}
+                    masked={maskedUpcomingEventIds.has(event.id)}
                     now={now}
                     onImageError={handleImageError}
                     onOpen={handleOpenFlyer}
                     onPreload={preloadFullImage}
+                    onToggleExpand={
+                      maskedUpcomingEventIds.has(event.id)
+                        ? handleToggleUpcomingEventExpand
+                        : undefined
+                    }
+                    railDirection={activeRailDirection}
+                    registerBodyRef={registerArchiveBodyRef}
+                    registerCardRef={registerEventCardRef}
+                    registerCopyRef={registerUpcomingCopyRef}
                     registerFlyerButton={registerFlyerButton}
                     variant="upcoming"
                   />
@@ -780,6 +1263,10 @@ export const Events = () => {
           >
             <div className="events-overview" aria-label="Events page controls">
               <div className="events-overview__panel">
+                <div className="events-overview__eyebrow">
+                  <span className="events-section__eyebrow">Previous Events</span>
+                </div>
+
                 <form
                   className="events-search"
                   role="search"
@@ -788,45 +1275,48 @@ export const Events = () => {
                   <label htmlFor="events-search-input" className="events-visually-hidden">
                     Search events
                   </label>
-                  <input
-                    id="events-search-input"
-                    name="search"
-                    type="search"
-                    inputMode="search"
-                    autoComplete="off"
-                    value={searchInput}
-                    onChange={(event) => {
-                      const { value } = event.target;
-                      startTransition(() => {
-                        setSearchInput(value);
-                      });
-                    }}
-                    placeholder="Search previous events…"
-                    className="events-search__input"
-                  />
-                  {searchInput ? (
-                    <button
-                      type="button"
-                      className="events-search__clear"
-                      onClick={() => {
+                  <div className="events-search__field">
+                    <input
+                      id="events-search-input"
+                      name="search"
+                      type="search"
+                      inputMode="search"
+                      autoComplete="off"
+                      value={searchInput}
+                      onChange={(event) => {
+                        const { value } = event.target;
                         startTransition(() => {
-                          setSearchInput('');
+                          setSearchInput(value);
                         });
                       }}
-                      aria-label="Clear search"
-                    >
-                      Clear
-                    </button>
-                  ) : null}
+                      placeholder="Search previous events"
+                      className="events-search__input"
+                    />
+                    {searchInput ? (
+                      <button
+                        type="button"
+                        className="events-search__clear"
+                        onClick={() => {
+                          startTransition(() => {
+                            setSearchInput('');
+                          });
+                        }}
+                        aria-label="Clear search"
+                      >
+                        Clear
+                      </button>
+                    ) : null}
+                  </div>
                 </form>
 
                 <div className="events-semesters">
                   <div className="events-semesters__header">
-                    <span className="events-section__eyebrow">Filter by Semester</span>
-                    {activeSemester ? (
+                    <div className="events-semesters__nav" aria-label="Semester navigation">
                       <button
                         type="button"
-                        className="events-semesters__reset"
+                        className={`events-semesters__reset events-semesters__link ${
+                          activeSemester ? '' : 'is-active'
+                        }`}
                         onClick={() =>
                           updateSearchParams({
                             semester: null,
@@ -834,52 +1324,65 @@ export const Events = () => {
                           })
                         }
                       >
-                        Reset
+                        All Semesters
                       </button>
-                    ) : null}
-                  </div>
 
-                  <div className="events-semesters__rail" role="list" aria-label="Semester filters">
-                    <button
-                      type="button"
-                      className={`events-semesters__chip ${!activeSemester ? 'is-active' : ''}`}
-                      onClick={() =>
-                        updateSearchParams({
-                          semester: null,
-                          page: '1',
-                        })
-                      }
-                    >
-                      All Semesters
-                    </button>
-
-                    {availableSemesters.map((semester) => (
                       <button
-                        key={semester}
                         type="button"
-                        className={`events-semesters__chip ${activeSemester === semester ? 'is-active' : ''}`}
+                        className="events-semesters__arrow events-semesters__link"
                         onClick={() =>
-                          updateSearchParams({
-                            semester: semester,
-                            page: '1',
-                          })
+                          setSemesterWindowStart((current) => Math.max(current - 1, 0))
                         }
+                        aria-label="Previous semesters"
+                        disabled={!canGoToPreviousSemesterWindow}
                       >
-                        {semesterLabel(semester)}
+                        <ArrowIcon className="events-semesters__arrow-icon" direction="left" />
                       </button>
-                    ))}
+
+                      <div
+                        className="events-semesters__window"
+                        role="list"
+                        aria-label="Semester filters"
+                      >
+                        {visibleSemesters.map((semester) => (
+                          <button
+                            key={semester}
+                            type="button"
+                            className={`events-semesters__chip events-semesters__link ${
+                              activeSemester === semester ? 'is-active' : ''
+                            }`}
+                            onClick={() =>
+                              updateSearchParams({
+                                semester: semester,
+                                page: '1',
+                              })
+                            }
+                          >
+                            {semesterLabel(semester)}
+                          </button>
+                        ))}
+                      </div>
+
+                      <button
+                        type="button"
+                        className="events-semesters__arrow events-semesters__link"
+                        onClick={() =>
+                          setSemesterWindowStart((current) =>
+                            Math.min(current + 1, maxSemesterWindowStart)
+                          )
+                        }
+                        aria-label="Next semesters"
+                        disabled={!canGoToNextSemesterWindow}
+                      >
+                        <ArrowIcon className="events-semesters__arrow-icon" />
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
 
             <div className={`events-archive ${archiveAnimation.isVisible ? 'visible' : ''}`}>
-              <div className="events-section-heading events-section-heading--archive">
-                <div>
-                  <span className="events-section__eyebrow">Previous Events</span>
-                </div>
-              </div>
-
               {isArchiveLoading && archiveEvents.length === 0 ? (
                 <div className="events-status">
                   <LoadingSpinner />
@@ -902,12 +1405,19 @@ export const Events = () => {
                     {archiveEvents.map((event) => (
                       <EventCard
                         key={event.id}
+                        active={activeRailEventId === event.id}
                         event={event}
                         imageErrors={imageErrors}
+                        masked={maskedArchiveEventIds.has(event.id)}
                         now={now}
                         onImageError={handleImageError}
                         onOpen={handleOpenFlyer}
                         onPreload={preloadFullImage}
+                        railDirection={activeRailDirection}
+                        expanded={expandedArchiveEventId === event.id}
+                        registerBodyRef={registerArchiveBodyRef}
+                        onToggleExpand={handleToggleArchiveEventExpand}
+                        registerCardRef={registerEventCardRef}
                         registerFlyerButton={registerFlyerButton}
                         variant="archive"
                       />
@@ -929,27 +1439,26 @@ export const Events = () => {
                         </div>
                       ) : (
                         <>
-                          <button
-                            type="button"
-                            className="events-load-more"
-                            disabled={isArchiveLoadingMore}
-                            aria-busy={isArchiveLoadingMore}
-                            onClick={() =>
-                              updateSearchParams(
-                                {
-                                  page: String(archivePagination.page + 1),
-                                },
-                                {
-                                  preventScrollReset: true,
-                                }
-                              )
-                            }
-                          >
-                            {isArchiveLoadingMore ? 'Loading More…' : 'Load More Events'}
-                          </button>
                           {isArchiveLoadingMore ? (
-                            <span className="events-archive__load-status">Adding more events…</span>
-                          ) : null}
+                            <LoadingSpinner />
+                          ) : (
+                            <button
+                              type="button"
+                              className="events-load-more"
+                              onClick={() =>
+                                updateSearchParams(
+                                  {
+                                    page: String(archivePagination.page + 1),
+                                  },
+                                  {
+                                    preventScrollReset: true,
+                                  }
+                                )
+                              }
+                            >
+                              <span className="events-load-more__label">Load More Events</span>
+                            </button>
+                          )}
                         </>
                       )}
                     </div>
