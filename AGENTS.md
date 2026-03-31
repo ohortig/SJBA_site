@@ -2,9 +2,12 @@
 
 ## Project Overview
 - React + Vite + TypeScript frontend for the Stern Jewish Business Association website
-- Production site: `https://nyu-sjba.com`
-- Backend API docs: `https://api.nyu-sjba.org/docs.json`
-     - Fetch backend docs with: `curl -L https://api.nyu-sjba.org/docs.json`
+- Production site: `https://nyu-sjba.org`
+- Backend API
+     - Production URL: `https://api.nyu-sjba.org`
+     - Development URL: `http://localhost:3000`
+- Backend API docs: `http://localhost:3000/docs.json`
+     - Fetch up-to-date backend docs with: `curl -L http://localhost:3000/docs.json`
 - This frontend is deployed using Vercel
 
 ## Styling & Design System
