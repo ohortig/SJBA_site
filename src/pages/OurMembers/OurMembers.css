@@ -192,7 +192,7 @@
   width: min(100%, 58rem);
   margin-inline: auto;
   border: 1px solid var(--border-subtle);
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.78) 0%, rgba(247, 242, 233, 0.84) 100%);
+  background: var(--surface-gradient-editorial);
   box-shadow: var(--shadow-panel);
   overflow: hidden;
 }

@@ -79,25 +79,40 @@ class ApiClient {
 
         if (error.response) {
           status = error.response.status;
-          const responseData = error.response.data as {
-            error?: { message?: string; code?: string };
-            message?: string;
-            code?: string;
-          };
-          const errorData = responseData?.error ?? responseData;
+          const responseData = error.response.data as
+            | {
+                error?: { message?: string; code?: string } | string;
+                message?: string;
+                code?: string;
+              }
+            | string;
+
+          const normalizedResponseData =
+            typeof responseData === 'string' ? { message: responseData } : responseData;
+          const rawErrorData = normalizedResponseData?.error ?? normalizedResponseData;
+          const errorData =
+            typeof rawErrorData === 'string' ? { message: rawErrorData } : rawErrorData;
+
+          const resolvedMessage =
+            errorData?.message ||
+            normalizedResponseData?.message ||
+            error.message ||
+            `HTTP ${status}: ${error.response.statusText}`;
+          const resolvedCode = errorData?.code || normalizedResponseData?.code;
 
           if (status >= 500) {
             message = 'Services are temporarily unavailable.';
+          } else if (status === 429) {
+            message = resolvedMessage || 'Too many requests. Please try again later.';
           } else if (status === 404) {
             message = 'The requested resource could not be found.';
           } else if (status === 401 || status === 403) {
             message = 'You do not have permission to access this resource.';
           } else {
-            message =
-              errorData?.message || error.message || `HTTP ${status}: ${error.response.statusText}`;
+            message = resolvedMessage;
           }
 
-          code = errorData?.code;
+          code = resolvedCode;
         } else if (error.request) {
           message = 'Network error. Please check your connection and try again.';
           status = 0;

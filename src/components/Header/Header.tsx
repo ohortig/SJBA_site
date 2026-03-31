@@ -11,6 +11,7 @@ const OVERLAY_HEADER_ROUTES = new Set([
   '/our-mission',
   '/our-members',
   '/our-board',
+  '/events',
 ]);
 const ABOUT_DROPDOWN_ITEMS = [
   { label: 'The SJBA Mission', to: '/our-mission' },

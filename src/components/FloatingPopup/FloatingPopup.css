@@ -86,7 +86,6 @@
   aspect-ratio: 4 / 5;
   overflow: hidden;
   border: 1px solid rgba(76, 13, 127, 0.12);
-  border-radius: 1rem;
   background: linear-gradient(180deg, rgba(76, 13, 127, 0.08), rgba(196, 168, 106, 0.08));
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.45);
 }

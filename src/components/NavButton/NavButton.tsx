@@ -1,4 +1,4 @@
-import { NavLink } from 'react-router-dom';
+import { NavLink, useLocation } from 'react-router-dom';
 import './NavButton.css';
 
 interface NavButtonProps {
@@ -16,9 +16,19 @@ export const NavButton = ({
   className = '',
   onClick,
 }: NavButtonProps) => {
+  const location = useLocation();
+  const destination =
+    location.pathname === to
+      ? {
+          pathname: to,
+          search: location.search,
+          hash: location.hash,
+        }
+      : to;
+
   return (
     <NavLink
-      to={to}
+      to={destination}
       className={({ isActive }) =>
         `nav-button nav-button--${variant} ${isActive ? 'is-active' : ''} ${className}`.trim()
       }
