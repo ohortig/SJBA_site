@@ -233,10 +233,14 @@ const HomeNextEventPopup = () => {
 
     const fetchNextEvent = async () => {
       try {
-        const fetchedEvents = await dataService.events.getUpcoming(1);
+        const { events } = await dataService.events.getAll({
+          startDate: new Date().toISOString(),
+          sort: 'startTime:asc',
+          limit: 1,
+        });
         if (!isCancelled) {
           startTransition(() => {
-            setNextEvent(fetchedEvents[0] ?? null);
+            setNextEvent(events[0] ?? null);
           });
         }
       } catch (error) {
