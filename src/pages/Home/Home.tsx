@@ -233,11 +233,7 @@ const HomeNextEventPopup = () => {
 
     const fetchNextEvent = async () => {
       try {
-        const { events } = await dataService.events.getAll({
-          startDate: new Date().toISOString(),
-          sort: 'startTime:asc',
-          limit: 1,
-        });
+        const events = await dataService.events.getUpcoming(1);
         if (!isCancelled) {
           startTransition(() => {
             setNextEvent(events[0] ?? null);
@@ -294,7 +290,7 @@ const HomeNextEventPopup = () => {
             </p>
           </div>
           <Link
-            to={`/events#event-${nextEvent.id}`}
+            to={`/events#event-${encodeURIComponent(nextEvent.id)}`}
             className="home-next-event-popup-cta home-next-event-popup-cta-inline"
             onClick={handlePopupClose}
           >
