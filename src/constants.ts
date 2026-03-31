@@ -1,4 +1,9 @@
-export const BACKEND_URL = import.meta.env.VITE_BACKEND_URL as string;
+const configuredBackendUrl = import.meta.env.VITE_BACKEND_URL as string;
+
+export const BACKEND_URL =
+  import.meta.env.DEV && configuredBackendUrl === 'http://localhost:3000/v1'
+    ? '/v1'
+    : configuredBackendUrl;
 export const BOARD_IMAGES_BUCKET = import.meta.env.VITE_BOARD_IMAGES_BUCKET as string;
 export const BOARD_THUMBNAILS_BUCKET = `${BOARD_IMAGES_BUCKET}thumbnails/`;
 export const EVENT_FLYERS_BUCKET = import.meta.env.VITE_EVENT_FLYERS_BUCKET as string;
