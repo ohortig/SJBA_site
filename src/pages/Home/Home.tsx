@@ -14,7 +14,6 @@ import {
 } from '@components';
 import {
   getEventThumbnailUrl,
-  getNextUpcomingEvent,
   formatEventDateOnly,
   formatEventTimeOnly,
   getCurrentSiteDateKey,
@@ -199,12 +198,11 @@ const HomeHero = () => {
 };
 
 const HomeNextEventPopup = () => {
-  const [events, setEvents] = useState<Event[]>([]);
+  const [nextEvent, setNextEvent] = useState<Event | null>(null);
   const [lastDismissedDate, setLastDismissedDate] = useState<string | null>(null);
   const [isDismissalStateReady, setIsDismissalStateReady] = useState(false);
   const now = useCurrentTime();
 
-  const nextEvent = useMemo(() => getNextUpcomingEvent(events, now), [events, now]);
   const nextEventThumbnail = useMemo(() => {
     if (!nextEvent?.flyerFile) return undefined;
     return getEventThumbnailUrl(nextEvent.flyerFile);
@@ -233,12 +231,12 @@ const HomeNextEventPopup = () => {
   useEffect(() => {
     let isCancelled = false;
 
-    const fetchEvents = async () => {
+    const fetchNextEvent = async () => {
       try {
-        const { events: fetchedEvents } = await dataService.events.getAll({ limit: 100 });
+        const fetchedEvents = await dataService.events.getUpcoming(1);
         if (!isCancelled) {
           startTransition(() => {
-            setEvents(fetchedEvents);
+            setNextEvent(fetchedEvents[0] ?? null);
           });
         }
       } catch (error) {
@@ -246,7 +244,7 @@ const HomeNextEventPopup = () => {
       }
     };
 
-    void fetchEvents();
+    void fetchNextEvent();
 
     return () => {
       isCancelled = true;
