@@ -107,6 +107,9 @@ Rule:
   - Default subtle border for refined light surfaces.
 - `--surface-highlight`
   - Inner highlight for light panels that need separation without a heavy frame.
+- `--surface-gradient-editorial`
+  - Shared editorial light-surface gradient.
+  - Use for refined containers like the Members directory surface and Events page content surfaces when they should feel like part of the same family.
 
 Color rules:
 
@@ -165,6 +168,7 @@ Rules:
 - Keep the resting state as a solid branded purple with light text and no ambient shadow.
 - Hover and focus should use the simpler brightened purple button state with a slight lift.
 - Keep sizing contextual to the component, but preserve the same surface language, border, and focus treatment.
+- When a button includes the arrow icon, that arrow is a navigation signifier: it tells users the CTA will take them to another SJBA page or to an external website.
 
 ## Typography Rules
 

@@ -18,6 +18,11 @@
   --color-white: #ffffff;
   --border-subtle: rgba(76, 13, 127, 0.18);
   --surface-highlight: rgba(255, 255, 255, 0.5);
+  --surface-gradient-editorial: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.78) 0%,
+    rgba(247, 242, 233, 0.84) 100%
+  );
   --page-gutter: clamp(1.4rem, 6vw, 15vw);
   --content-max-width: 78rem;
   --header-compact-height: 5rem;
