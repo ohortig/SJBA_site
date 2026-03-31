@@ -87,76 +87,76 @@ export const NewsletterSignup = () => {
   };
 
   return (
-    <div className="newsletter-section">
+    <div className="newsletter-section newsletter-section-expanded">
       <div className="newsletter-content">
-        <div className="newsletter-header">
-          <img src="/sjba/sjba-logo-clear.png" alt="SJBA Logo" className="newsletter-logo" />
-          <h2>Join Our Newsletter</h2>
-        </div>
-        <p>
-          Stay connected with SJBA and receive updates about upcoming events, speaker series, and
-          opportunities exclusively for NYU students.
-        </p>
-
-        <form
-          onSubmit={(e) => {
-            void handleSubmit(e);
-          }}
-          className="newsletter-form"
-        >
-          <div className="form-row">
-            <div className="form-group">
-              <label htmlFor="newsletter-firstName" className="visually-hidden">
-                First Name
-              </label>
-              <input
-                type="text"
-                id="newsletter-firstName"
-                name="firstName"
-                value={formData.firstName}
-                onChange={handleInputChange}
-                placeholder="First name"
-                className={`form-input ${errors.firstName ? 'input-error' : ''}`}
-              />
-              {errors.firstName && <span className="field-error">{errors.firstName}</span>}
-            </div>
-            <div className="form-group">
-              <label htmlFor="newsletter-lastName" className="visually-hidden">
-                Last Name
-              </label>
-              <input
-                type="text"
-                id="newsletter-lastName"
-                name="lastName"
-                value={formData.lastName}
-                onChange={handleInputChange}
-                placeholder="Last name"
-                className={`form-input ${errors.lastName ? 'input-error' : ''}`}
-              />
-              {errors.lastName && <span className="field-error">{errors.lastName}</span>}
-            </div>
+        <div className="newsletter-layout">
+          <div className="newsletter-heading-group">
+            <span className="newsletter-eyebrow">SJBA Newsletter</span>
+            <h2>Receive the next invitation before it circulates.</h2>
+            <p className="newsletter-description">
+              Updates on speakers, programs, and SJBA at Stern.
+            </p>
           </div>
-          <div className="form-group email-group">
-            <label htmlFor="newsletter-email" className="visually-hidden">
-              Email Address
-            </label>
-            <div className="input-wrapper">
-              <input
-                type="email"
-                id="newsletter-email"
-                name="email"
-                value={formData.email}
-                onChange={handleInputChange}
-                placeholder="Email address"
-                className={`form-input email-input ${errors.email ? 'input-error' : ''}`}
-              />
+          <div className="newsletter-form-column">
+            <form
+              onSubmit={(e) => {
+                void handleSubmit(e);
+              }}
+              className="newsletter-form"
+            >
+              <div className="form-row">
+                <div className="form-group">
+                  <label htmlFor="newsletter-firstName" className="form-label">
+                    First name
+                  </label>
+                  <input
+                    type="text"
+                    id="newsletter-firstName"
+                    name="firstName"
+                    value={formData.firstName}
+                    onChange={handleInputChange}
+                    placeholder="First name"
+                    className={`form-input ${errors.firstName ? 'input-error' : ''}`}
+                  />
+                  {errors.firstName && <span className="field-error">{errors.firstName}</span>}
+                </div>
+                <div className="form-group">
+                  <label htmlFor="newsletter-lastName" className="form-label">
+                    Last name
+                  </label>
+                  <input
+                    type="text"
+                    id="newsletter-lastName"
+                    name="lastName"
+                    value={formData.lastName}
+                    onChange={handleInputChange}
+                    placeholder="Last name"
+                    className={`form-input ${errors.lastName ? 'input-error' : ''}`}
+                  />
+                  {errors.lastName && <span className="field-error">{errors.lastName}</span>}
+                </div>
+              </div>
+              <div className="form-group email-group">
+                <label htmlFor="newsletter-email" className="form-label">
+                  Email address
+                </label>
+                <input
+                  type="email"
+                  id="newsletter-email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleInputChange}
+                  placeholder="Email address"
+                  className={`form-input ${errors.email ? 'input-error' : ''}`}
+                />
+                {errors.email && <span className="field-error">{errors.email}</span>}
+              </div>
               <button type="submit" className="newsletter-submit-btn" disabled={isSubmitting}>
-                {isSubmitting ? '...' : '→'}
+                {isSubmitting ? 'Joining...' : 'Join the List'}
               </button>
-            </div>
-            {errors.email && <span className="field-error">{errors.email}</span>}
+            </form>
           </div>
-        </form>
+        </div>
       </div>
     </div>
   );

@@ -1,27 +1,67 @@
-import { Link } from 'react-router-dom';
-import { useState, useEffect } from 'react';
-import { NavButton, AboutDropdown } from '@components';
+import { useEffect, useState } from 'react';
+import { Link, useLocation } from 'react-router-dom';
+import { Dropdown, NavButton } from '@components';
+import { useIsMobile } from '@hooks';
 import './Header.css';
 
+const SETTLED_SCROLL_THRESHOLD = 36;
+const OVERLAY_HEADER_ROUTES = new Set([
+  '/',
+  '/mentorship',
+  '/our-mission',
+  '/our-members',
+  '/our-board',
+  '/events',
+]);
+const ABOUT_DROPDOWN_ITEMS = [
+  { label: 'The SJBA Mission', to: '/our-mission' },
+  { label: 'Executive Board', to: '/our-board' },
+  { label: 'General Members', to: '/our-members' },
+];
+
 export const Header = () => {
+  const location = useLocation();
+  const isMobile = useIsMobile(1024);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  const usesOverlayHeader = OVERLAY_HEADER_ROUTES.has(location.pathname);
+  const isSettled = !usesOverlayHeader || isScrolled || isMenuOpen;
+  const mobileLogoSrc = isSettled
+    ? '/sjba/sjba-logo-clear-no-text.png'
+    : '/sjba/sjba-logo-clear-inverted.png';
 
   useEffect(() => {
-    // Prevent body scrolling when mobile menu is open
-    if (isMenuOpen) {
-      document.body.classList.add('menu-open');
-    } else {
-      document.body.classList.remove('menu-open');
-    }
+    const syncScrollState = () => {
+      setIsScrolled(window.scrollY > SETTLED_SCROLL_THRESHOLD);
+    };
 
-    // Cleanup function to restore scrolling when component unmounts
+    syncScrollState();
+    window.addEventListener('scroll', syncScrollState, { passive: true });
+
+    return () => window.removeEventListener('scroll', syncScrollState);
+  }, []);
+
+  useEffect(() => {
+    if (!isMobile && isMenuOpen) {
+      setIsMenuOpen(false);
+    }
+  }, [isMobile, isMenuOpen]);
+
+  useEffect(() => {
+    setIsMenuOpen(false);
+  }, [location.pathname]);
+
+  useEffect(() => {
+    document.body.classList.toggle('menu-open', isMenuOpen);
+
     return () => {
       document.body.classList.remove('menu-open');
     };
   }, [isMenuOpen]);
 
   const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
+    setIsMenuOpen((previousState) => !previousState);
   };
 
   const closeMenu = () => {
@@ -29,37 +69,55 @@ export const Header = () => {
   };
 
   return (
-    <header className={`header ${isMenuOpen ? 'menu-open' : ''}`}>
-      <nav className="nav-container">
+    <header
+      className={`header ${isSettled ? 'header--settled' : 'header--overlay'} ${
+        isMenuOpen ? 'menu-open' : ''
+      }`}
+    >
+      <nav className="nav-container" aria-label="Primary">
         <div className="logo">
-          <Link to="/" onClick={closeMenu}>
+          <Link to="/" onClick={closeMenu} className="logo-link" aria-label="SJBA home">
+            <img
+              src="/sjba/sjba-logo-full-inverted.png"
+              alt="SJBA Logo"
+              className="logo-image logo-image--overlay"
+            />
             <img
               src="/sjba/sjba-logo-full.png"
               alt="SJBA Logo"
-              className="logo-image logo-desktop"
+              className="logo-image logo-image--settled"
             />
-            <img
-              src="/sjba/sjba-logo-clear.png"
-              alt="SJBA Logo"
-              className="logo-image logo-mobile"
-            />
+            <img src={mobileLogoSrc} alt="SJBA Logo" className="logo-image logo-image--mobile" />
           </Link>
         </div>
 
-        <button className="mobile-menu-button" onClick={toggleMenu}>
-          <span className="menu-icon"></span>
+        <button
+          type="button"
+          className="mobile-menu-button"
+          onClick={toggleMenu}
+          aria-expanded={isMenuOpen}
+          aria-controls="primary-navigation"
+          aria-label={isMenuOpen ? 'Close navigation menu' : 'Open navigation menu'}
+        >
+          <span className="menu-icon" aria-hidden="true"></span>
         </button>
 
-        <div className={`nav-buttons ${isMenuOpen ? 'active' : ''}`}>
+        <div className={`nav-buttons ${isMenuOpen ? 'active' : ''}`} id="primary-navigation">
           <NavButton to="/events" onClick={closeMenu}>
-            EVENTS
+            Events
           </NavButton>
-          <NavButton to="/programs" onClick={closeMenu}>
-            PROGRAMS
+          <NavButton to="/mentorship" onClick={closeMenu}>
+            Programs
           </NavButton>
-          <AboutDropdown onClose={closeMenu} />
+          <Dropdown
+            label="About"
+            items={ABOUT_DROPDOWN_ITEMS}
+            activeRoutes={ABOUT_DROPDOWN_ITEMS.map((item) => item.to)}
+            menuId="about-dropdown-menu"
+            onClose={closeMenu}
+          />
           <NavButton to="/contact" variant="primary" onClick={closeMenu}>
-            CONTACT US
+            Contact
           </NavButton>
         </div>
       </nav>

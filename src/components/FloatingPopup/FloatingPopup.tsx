@@ -35,7 +35,7 @@ export const FloatingPopup = ({
 
   const hiddenAnimation = shouldReduceMotion
     ? { opacity: 0 }
-    : { opacity: 0, y: 32, x: isMobile ? 0 : 16, scale: 0.97 };
+    : { opacity: 0, y: 24, x: isMobile ? 0 : 12, scale: 0.985 };
   const visibleAnimation = shouldReduceMotion
     ? { opacity: 1 }
     : { opacity: 1, y: 0, x: 0, scale: 1 };
@@ -54,12 +54,6 @@ export const FloatingPopup = ({
             .filter(Boolean)
             .join(' ')}
         >
-          {eyebrow && (
-            <div className="floating-popup__topbar">
-              <p className="floating-popup__eyebrow">{eyebrow}</p>
-            </div>
-          )}
-
           <button
             type="button"
             className="floating-popup__close"
@@ -77,8 +71,13 @@ export const FloatingPopup = ({
             )}
 
             <div className="floating-popup__main">
-              <h3 className="floating-popup__title">{title}</h3>
-              {subtitle && <p className="floating-popup__subtitle">{subtitle}</p>}
+              {(eyebrow || title || subtitle) && (
+                <div className="floating-popup__header">
+                  {eyebrow && <p className="floating-popup__eyebrow">{eyebrow}</p>}
+                  <h3 className="floating-popup__title">{title}</h3>
+                  {subtitle && <p className="floating-popup__subtitle">{subtitle}</p>}
+                </div>
+              )}
 
               {children && <div className="floating-popup__body">{children}</div>}
               {footer && <div className="floating-popup__footer">{footer}</div>}
