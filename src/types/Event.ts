@@ -17,6 +17,8 @@ export interface EventsQueryParams {
   page?: number;
   limit?: number;
   search?: string;
+  semester?: string;
   startDate?: string;
   endDate?: string;
+  sort?: 'startTime:asc' | 'startTime:desc';
 }

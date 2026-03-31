@@ -9,6 +9,7 @@ import type {
   NewsletterSignupResponse,
   ContactFormData,
   ContactFormResponse,
+  Semester,
   SiteConfigEntry,
 } from '@types';
 
@@ -90,6 +91,15 @@ const membersService = {
   },
 };
 
+/* Semesters Service */
+
+const semestersService = {
+  async getAll(): Promise<Semester[]> {
+    const response = await apiClient.get<ApiResponse<Semester[]>>('/semesters');
+    return response.data;
+  },
+};
+
 /* Contact Form Service */
 
 const contactService = {
@@ -119,6 +129,7 @@ export const dataService = {
   newsletter: newsletterService,
   events: eventsService,
   members: membersService,
+  semesters: semestersService,
   contact: contactService,
   siteConfig: siteConfigService,
 };
