@@ -1,6 +1,6 @@
 {
   "name": "sjba-site",
-  "version": "0.2.0",
+  "version": "1.0.0",
   "private": true,
   "description": "Frontend application for SJBA website",
   "type": "module",

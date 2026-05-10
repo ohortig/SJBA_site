@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react';
+import { useIsMobile } from '@hooks';
 import type { Logo } from '../LogoGallery';
 import './LogoCloud.css';
 
@@ -51,45 +52,60 @@ export const LogoCloud = ({
   title,
   visible = false,
 }: LogoCloudProps) => {
+  const isMobile = useIsMobile();
   const frameRef = useRef<HTMLDivElement | null>(null);
   const logoRefs = useRef<Array<HTMLDivElement | null>>([]);
   const bodiesRef = useRef<LogoBody[]>([]);
   const animationFrameRef = useRef<number | null>(null);
+  const frameSizeRef = useRef({ width: 0, height: 0 });
   const lastTimestampRef = useRef<number | null>(null);
   const reducedMotionRef = useRef(false);
 
   useEffect(() => {
     reducedMotionRef.current = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-    const initializeBodies = () => {
+    const initializeBodies = ({ preserveExisting = false } = {}) => {
       const frame = frameRef.current;
       if (!frame) return;
 
       const frameRect = frame.getBoundingClientRect();
       const frameWidth = frameRect.width;
       const frameHeight = frameRect.height;
+      const previousFrameSize = frameSizeRef.current;
 
       bodiesRef.current = logos.map((_, index) => {
         const element = logoRefs.current[index];
         const rect = element?.getBoundingClientRect();
         const width = rect?.width ?? 140;
         const height = rect?.height ?? 76;
+        const existingBody = preserveExisting ? bodiesRef.current[index] : undefined;
         const drift = createRandomDrift();
 
         const body: LogoBody = {
-          dragging: false,
+          dragging: existingBody?.dragging ?? false,
           height,
-          hidden: false,
-          pointerId: null,
-          throwVelocityX: 0,
-          throwVelocityY: 0,
-          thrown: false,
-          velocityX: drift.x,
-          velocityY: drift.y,
+          hidden: existingBody?.hidden ?? false,
+          pointerId: existingBody?.pointerId ?? null,
+          throwVelocityX: existingBody?.throwVelocityX ?? 0,
+          throwVelocityY: existingBody?.throwVelocityY ?? 0,
+          thrown: existingBody?.thrown ?? false,
+          velocityX: existingBody?.velocityX ?? drift.x,
+          velocityY: existingBody?.velocityY ?? drift.y,
           width,
-          x: randomBetween(-width * 0.25, Math.max(frameWidth - width * 0.75, 1)),
-          y: randomBetween(-height * 0.2, Math.max(frameHeight - height * 0.8, 1)),
+          x: existingBody
+            ? Math.max(-width, Math.min(existingBody.x, frameWidth))
+            : randomBetween(-width * 0.25, Math.max(frameWidth - width * 0.75, 1)),
+          y: existingBody
+            ? Math.max(-height, Math.min(existingBody.y, frameHeight))
+            : randomBetween(-height * 0.2, Math.max(frameHeight - height * 0.8, 1)),
         };
+
+        if (existingBody && previousFrameSize.width > 0 && frameWidth !== previousFrameSize.width) {
+          body.x = Math.max(
+            -width,
+            Math.min(existingBody.x * (frameWidth / previousFrameSize.width), frameWidth)
+          );
+        }
 
         if (element) {
           element.style.transform = `translate3d(${body.x}px, ${body.y}px, 0)`;
@@ -97,6 +113,11 @@ export const LogoCloud = ({
 
         return body;
       });
+
+      frameSizeRef.current = {
+        width: frameWidth,
+        height: frameHeight,
+      };
     };
 
     const isInsideFrame = (body: LogoBody, frameWidth: number, frameHeight: number) =>
@@ -227,7 +248,7 @@ export const LogoCloud = ({
     };
 
     const handleResize = () => {
-      initializeBodies();
+      initializeBodies({ preserveExisting: true });
       lastTimestampRef.current = null;
     };
 
@@ -239,11 +260,14 @@ export const LogoCloud = ({
       window.removeEventListener('resize', handleResize);
       if (animationFrameRef.current !== null) {
         window.cancelAnimationFrame(animationFrameRef.current);
+        animationFrameRef.current = null;
       }
     };
   }, [logos]);
 
   const handlePointerDown = (index: number, event: React.PointerEvent<HTMLDivElement>) => {
+    if (isMobile) return;
+
     const frame = frameRef.current;
     const element = logoRefs.current[index];
     const body = bodiesRef.current[index];
@@ -328,7 +352,7 @@ export const LogoCloud = ({
                 logoRefs.current[index] = element;
               }}
               className="logo-cloud__logo"
-              onPointerDown={(event) => handlePointerDown(index, event)}
+              onPointerDown={isMobile ? undefined : (event) => handlePointerDown(index, event)}
             >
               {logo.hasImage !== false ? (
                 <>
