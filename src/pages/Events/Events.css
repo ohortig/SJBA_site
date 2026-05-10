@@ -925,7 +925,7 @@
 .events-upcoming .events-empty-state p {
   margin: 0;
   font-family: var(--font-display);
-  font-size: clamp(2rem, 3.4vw, 3.1rem);
+  font-size: clamp(1.75rem, 2.8vw, 2.55rem);
   line-height: 1.02;
   letter-spacing: -0.03em;
   text-wrap: balance;
