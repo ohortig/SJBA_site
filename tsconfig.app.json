@@ -18,40 +18,39 @@
     "noEmit": true,
     "jsx": "react-jsx",
     /* Path mapping */
-    "baseUrl": "./src",
     "paths": {
       "@hooks": [
-        "./hooks/index.ts"
+        "./src/hooks/index.ts"
       ],
       "@hooks/*": [
-        "./hooks/*"
+        "./src/hooks/*"
       ],
       "@components": [
-        "./components/index.tsx"
+        "./src/components/index.tsx"
       ],
       "@components/*": [
-        "./components/*"
+        "./src/components/*"
       ],
       "@api": [
-        "./api/index.ts"
+        "./src/api/index.ts"
       ],
       "@api/*": [
-        "./api/*"
+        "./src/api/*"
       ],
       "@types": [
-        "./types/index.ts"
+        "./src/types/index.ts"
       ],
       "@types/*": [
-        "./types/*"
+        "./src/types/*"
       ],
       "@constants": [
-        "./constants.ts"
+        "./src/constants.ts"
       ],
       "@utils": [
-        "./utils/index.ts"
+        "./src/utils/index.ts"
       ],
       "@utils/*": [
-        "./utils/*"
+        "./src/utils/*"
       ]
     },
     /* Linting */
