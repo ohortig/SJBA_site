@@ -107,6 +107,8 @@
   text-align: center;
   backdrop-filter: blur(14px);
   transform: translate(-50%, -50%);
+  -webkit-user-select: none;
+  user-select: none;
 }
 
 .logo-cloud__eyebrow {
@@ -161,6 +163,8 @@
   box-shadow: 0 10px 22px rgba(32, 25, 46, 0.06);
   cursor: grab;
   touch-action: none;
+  -webkit-user-drag: none;
+  -webkit-user-select: none;
   user-select: none;
   will-change: transform;
   transition:
@@ -185,6 +189,9 @@
   height: auto;
   object-fit: contain;
   pointer-events: none;
+  -webkit-user-drag: none;
+  -webkit-user-select: none;
+  user-select: none;
   filter: grayscale(1) saturate(0) opacity(0.62);
   transition:
     filter var(--transition-medium),
@@ -208,6 +215,8 @@
   text-align: center;
   color: var(--color-muted);
   pointer-events: none;
+  -webkit-user-select: none;
+  user-select: none;
 }
 
 @media (max-width: 1024px) {
