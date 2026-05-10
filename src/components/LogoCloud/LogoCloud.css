@@ -232,6 +232,10 @@
     padding: 0.85rem 0;
   }
 
+  .logo-cloud__logos {
+    pointer-events: none;
+  }
+
   .logo-cloud__copy {
     width: min(100%, 15rem);
     padding: 0.95rem 0.9rem;
@@ -252,10 +256,23 @@
     max-width: 6.8rem;
     padding: 0.45rem 0.5rem;
     border-radius: 0.9rem;
+    cursor: default;
+    pointer-events: none;
+    touch-action: auto;
+  }
+
+  .logo-cloud__logo:hover {
+    box-shadow: 0 10px 22px rgba(32, 25, 46, 0.06);
+    background: rgba(255, 255, 255, 0.62);
   }
 
   .logo-cloud__image {
     max-height: 1.8rem;
+  }
+
+  .logo-cloud__logo:hover .logo-cloud__image {
+    filter: grayscale(1) saturate(0) opacity(0.62);
+    transform: none;
   }
 
   .logo-cloud__fallback,
