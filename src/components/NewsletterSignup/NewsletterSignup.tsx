@@ -29,7 +29,7 @@ export const NewsletterSignup = () => {
   };
 
   const validateNYUEmail = (email: string): boolean => {
-    const nyuEmailPattern = /^[a-zA-Z0-9._%+-]+@(.*\.)?nyu\.edu$/;
+    const nyuEmailPattern = /^[a-zA-Z0-9._%+-]+@(.*\.)?nyu\.edu$/i;
     return nyuEmailPattern.test(email);
   };
 
