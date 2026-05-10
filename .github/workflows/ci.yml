@@ -7,8 +7,8 @@ on:
     branches: [main]
 
 jobs:
-  quality:
-    name: Quality Checks
+  prepare:
+    name: Prepare workspace
     runs-on: ubuntu-latest
 
     steps:
@@ -24,14 +24,76 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Upload prepared workspace
+        uses: actions/upload-artifact@v4
+        with:
+          name: prepared-workspace
+          path: |
+            .
+            !.git
+            !.env
+            !.env.*
+            !dist
+            !coverage
+          retention-days: 1
+          include-hidden-files: true
+
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    needs: prepare
+
+    steps:
+      - name: Download prepared workspace
+        uses: actions/download-artifact@v4
+        with:
+          name: prepared-workspace
+          path: .
+
       - name: Run ESLint
         run: npm run lint
+
+  format:
+    name: Format
+    runs-on: ubuntu-latest
+    needs: prepare
+
+    steps:
+      - name: Download prepared workspace
+        uses: actions/download-artifact@v4
+        with:
+          name: prepared-workspace
+          path: .
 
       - name: Check Prettier formatting
         run: npm run format:check
 
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    needs: prepare
+
+    steps:
+      - name: Download prepared workspace
+        uses: actions/download-artifact@v4
+        with:
+          name: prepared-workspace
+          path: .
+
       - name: Run tests
         run: npm run test
+
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    needs: prepare
+
+    steps:
+      - name: Download prepared workspace
+        uses: actions/download-artifact@v4
+        with:
+          name: prepared-workspace
+          path: .
 
       - name: Build production bundle
         run: npm run build
