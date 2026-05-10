@@ -231,7 +231,7 @@
   align-items: center;
   gap: clamp(0.6rem, 1.3vw, 1rem);
   min-width: 0;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
 }
 
 .events-semesters__window {
@@ -304,9 +304,11 @@
   font-size: clamp(1.05rem, 1.7vw, 1.25rem);
   letter-spacing: -0.02em;
   text-transform: none;
+  flex: 0 0 auto;
 }
 
 .events-semesters__arrow {
+  flex: 0 0 auto;
   min-width: 1.5rem;
 }
 
@@ -337,6 +339,7 @@
   font-size: clamp(1.05rem, 1.7vw, 1.25rem);
   letter-spacing: -0.02em;
   text-transform: none;
+  flex: 0 1 auto;
 }
 
 .events-semesters__chip.is-active {
@@ -624,6 +627,7 @@
   min-height: 1.8rem;
   width: 100%;
   padding: 0.28rem 0.56rem;
+  line-height: 1.25;
   font-size: 0.68rem;
   font-weight: 700;
   letter-spacing: 0.11em;
@@ -1134,15 +1138,18 @@
   .events-semesters__nav {
     width: 100%;
     justify-content: space-between;
+    gap: clamp(0.35rem, 2.1vw, 0.75rem);
   }
 
   .events-semesters__window {
-    gap: 1rem;
+    flex: 1 1 auto;
+    gap: clamp(0.45rem, 2.2vw, 0.75rem);
     justify-content: center;
   }
 
+  .events-semesters__reset,
   .events-semesters__chip {
-    font-size: 0.98rem;
+    font-size: clamp(0.84rem, 4.15vw, 0.98rem);
   }
 
   .event-card::before {
@@ -1196,10 +1203,12 @@
   .event-card__meta {
     flex-direction: row;
     width: 100%;
+    align-items: stretch;
   }
 
   .event-card__semester,
   .event-card__company {
+    align-self: stretch;
     flex: 1 1 0;
     width: auto;
   }
