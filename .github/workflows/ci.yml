@@ -24,19 +24,22 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Upload prepared workspace
+      - name: Archive prepared workspace
+        run: |
+          tar \
+            --exclude='.git' \
+            --exclude='.env' \
+            --exclude='.env.*' \
+            --exclude='dist' \
+            --exclude='coverage' \
+            -czf prepared-workspace.tar.gz .
+
+      - name: Upload prepared workspace archive
         uses: actions/upload-artifact@v4
         with:
           name: prepared-workspace
-          path: |
-            .
-            !.git
-            !.env
-            !.env.*
-            !dist
-            !coverage
+          path: prepared-workspace.tar.gz
           retention-days: 1
-          include-hidden-files: true
 
   lint:
     name: Lint
@@ -49,6 +52,9 @@ jobs:
         with:
           name: prepared-workspace
           path: .
+
+      - name: Extract prepared workspace
+        run: tar -xzf prepared-workspace.tar.gz
 
       - name: Run ESLint
         run: npm run lint
@@ -65,6 +71,9 @@ jobs:
           name: prepared-workspace
           path: .
 
+      - name: Extract prepared workspace
+        run: tar -xzf prepared-workspace.tar.gz
+
       - name: Check Prettier formatting
         run: npm run format:check
 
@@ -80,6 +89,9 @@ jobs:
           name: prepared-workspace
           path: .
 
+      - name: Extract prepared workspace
+        run: tar -xzf prepared-workspace.tar.gz
+
       - name: Run tests
         run: npm run test
 
@@ -94,6 +106,9 @@ jobs:
         with:
           name: prepared-workspace
           path: .
+
+      - name: Extract prepared workspace
+        run: tar -xzf prepared-workspace.tar.gz
 
       - name: Build production bundle
         run: npm run build
