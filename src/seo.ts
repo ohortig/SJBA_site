@@ -1,5 +1,6 @@
 export const SITE_URL = 'https://nyu-sjba.org';
 export const SITE_NAME = 'NYU Stern Jewish Business Association';
+export const SITE_SHORT_NAME = 'SJBA';
 export const SITE_DESCRIPTION =
   'The NYU Stern Jewish Business Association connects Jewish students at NYU Stern School of Business through professional development, networking, and community events.';
 export const DEFAULT_SOCIAL_IMAGE = `${SITE_URL}/home-gallery/sjba-gallery-1.JPG`;
@@ -23,7 +24,7 @@ export const PUBLIC_SEO_ROUTES: SeoRoute[] = [
   },
   {
     path: '/our-mission',
-    title: `Our Mission | ${SITE_NAME}`,
+    title: `Our Mission | ${SITE_SHORT_NAME}`,
     description:
       'Learn how and why SJBA builds a value-driven Jewish business community at NYU Stern.',
     image: `${SITE_URL}/mission-gallery/stern-building.jpg`,
@@ -31,21 +32,21 @@ export const PUBLIC_SEO_ROUTES: SeoRoute[] = [
   },
   {
     path: '/our-board',
-    title: `Executive Board | ${SITE_NAME}`,
+    title: `Executive Board | ${SITE_SHORT_NAME}`,
     description: 'Meet the student leaders powering the Stern Jewish Business Association.',
     image: `${SITE_URL}/board-gallery/board-gallery-1.jpg`,
     imageAlt: 'SJBA executive board members gathered at an event',
   },
   {
     path: '/our-members',
-    title: `General Members | ${SITE_NAME}`,
+    title: `General Members | ${SITE_SHORT_NAME}`,
     description: "Meet SJBA's recognized members.",
     image: `${SITE_URL}/members-gallery/members-gallery-1.jpeg`,
     imageAlt: 'SJBA members at a community event',
   },
   {
     path: '/mentorship',
-    title: `Mentorship | ${SITE_NAME}`,
+    title: `Mentorship | ${SITE_SHORT_NAME}`,
     description:
       'Explore SJBA mentorship programs connecting undergraduate, graduate, underclass, and upperclass students.',
     image: `${SITE_URL}/mentorship-gallery/mentorship-gallery-3.jpeg`,
@@ -53,14 +54,14 @@ export const PUBLIC_SEO_ROUTES: SeoRoute[] = [
   },
   {
     path: '/events',
-    title: `Events | ${SITE_NAME}`,
+    title: `Events | ${SITE_SHORT_NAME}`,
     description: 'Explore upcoming SJBA speaker sessions and professional networking events.',
     image: `${SITE_URL}/events-gallery/events-gallery-1.jpeg`,
     imageAlt: 'SJBA members at an event',
   },
   {
     path: '/contact',
-    title: `Contact | ${SITE_NAME}`,
+    title: `Contact | ${SITE_SHORT_NAME}`,
     description: 'Contact NYU SJBA.',
     imageAlt: 'NYU Stern Jewish Business Association logo',
   },
@@ -68,7 +69,7 @@ export const PUBLIC_SEO_ROUTES: SeoRoute[] = [
 
 export const NOT_FOUND_SEO: SeoRoute = {
   path: '/404',
-  title: `Page Not Found | ${SITE_NAME}`,
+  title: `Page Not Found | ${SITE_SHORT_NAME}`,
   description: 'The requested page could not be found.',
   imageAlt: 'NYU Stern Jewish Business Association logo',
   noindex: true,
