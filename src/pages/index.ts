@@ -5,3 +5,4 @@ export * from './OurBoard';
 export * from './OurMission';
 export * from './OurMembers';
 export * from './Mentorship';
+export * from './NotFound';
