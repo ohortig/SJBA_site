@@ -13,6 +13,7 @@ import { ArrowIcon, ErrorDisplay, Footer, LoadingSpinner, SubpageHero } from '@c
 import { dataService } from '@api';
 import { useCurrentTime, useScrollAnimation } from '@hooks';
 import { EVENT_FLYERS_BUCKET } from '@constants';
+import { SITE_NAME, SITE_URL } from '@seo';
 import {
   compareEventStarts,
   formatEventDateOnly,
@@ -99,6 +100,36 @@ const normalizeEventDescription = (description: string | null): string => {
   if (!description) return '';
   return description.replace(/\\n/g, '\n').trim();
 };
+
+const getEventJsonLd = (event: Event) => ({
+  '@context': 'https://schema.org',
+  '@type': 'Event',
+  name: event.title,
+  startDate: event.startTime,
+  ...(event.endTime ? { endDate: event.endTime } : {}),
+  ...(event.description ? { description: normalizeEventDescription(event.description) } : {}),
+  ...(event.flyerFile ? { image: `${EVENT_FLYERS_BUCKET}${event.flyerFile}` } : {}),
+  eventStatus: 'https://schema.org/EventScheduled',
+  eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
+  url: `${SITE_URL}/events#event-${encodeURIComponent(event.id)}`,
+  location: {
+    '@type': 'Place',
+    name: event.location ?? 'NYU Stern School of Business',
+    address: {
+      '@type': 'PostalAddress',
+      streetAddress: '44 West 4th Street',
+      addressLocality: 'New York',
+      addressRegion: 'NY',
+      postalCode: '10012',
+      addressCountry: 'US',
+    },
+  },
+  organizer: {
+    '@type': 'Organization',
+    name: SITE_NAME,
+    url: SITE_URL,
+  },
+});
 
 const getArchiveCacheKey = (search: string, semester: string): string =>
   `${search.toLowerCase()}::${semester}`;
@@ -651,6 +682,37 @@ export const Events = () => {
       isCancelled = true;
     };
   }, [upcomingRetryNonce]);
+
+  useEffect(() => {
+    const scriptId = 'events-jsonld';
+    let script = document.getElementById(scriptId) as HTMLScriptElement | null;
+
+    if (upcomingEvents.length === 0) {
+      script?.remove();
+      return;
+    }
+
+    if (!script) {
+      script = document.createElement('script');
+      script.id = scriptId;
+      script.type = 'application/ld+json';
+      document.head.appendChild(script);
+    }
+
+    script.textContent = JSON.stringify({
+      '@context': 'https://schema.org',
+      '@type': 'ItemList',
+      itemListElement: upcomingEvents.map((event, index) => ({
+        '@type': 'ListItem',
+        position: index + 1,
+        item: getEventJsonLd(event),
+      })),
+    });
+
+    return () => {
+      script?.remove();
+    };
+  }, [upcomingEvents]);
 
   useEffect(() => {
     let isCancelled = false;

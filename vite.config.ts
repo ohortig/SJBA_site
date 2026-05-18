@@ -13,6 +13,7 @@ export default defineConfig({
       '@types': path.resolve(__dirname, './src/types'),
       '@constants': path.resolve(__dirname, './src/constants.ts'),
       '@utils': path.resolve(__dirname, './src/utils'),
+      '@seo': path.resolve(__dirname, './src/seo.ts'),
     },
   },
   server: {
@@ -43,7 +44,7 @@ export default defineConfig({
       ],
     },
     env: {
-      VITE_BACKEND_URL: 'http://localhost:3000/v1',
+      VITE_BACKEND_URL: '/v1',
       VITE_BOARD_IMAGES_BUCKET: 'https://cdn.example.com/board/',
       VITE_EVENT_FLYERS_BUCKET: 'https://cdn.example.com/events/',
     },

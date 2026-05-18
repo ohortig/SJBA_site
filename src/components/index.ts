@@ -16,6 +16,7 @@ export * from './NavButton';
 export * from './NumberedList';
 export * from './SocialLink';
 export * from './ScrollToTop';
+export * from './Seo';
 export * from './NewsletterSignup';
 export * from './SubpageHero';
 export * from './ConstructionNotice';

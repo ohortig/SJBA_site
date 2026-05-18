@@ -46,6 +46,9 @@
       "@constants": [
         "./src/constants.ts"
       ],
+      "@seo": [
+        "./src/seo.ts"
+      ],
       "@utils": [
         "./src/utils/index.ts"
       ],
