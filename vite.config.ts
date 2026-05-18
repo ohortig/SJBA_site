@@ -44,7 +44,7 @@ export default defineConfig({
       ],
     },
     env: {
-      VITE_BACKEND_URL: 'http://localhost:3000/v1',
+      VITE_BACKEND_URL: '/v1',
       VITE_BOARD_IMAGES_BUCKET: 'https://cdn.example.com/board/',
       VITE_EVENT_FLYERS_BUCKET: 'https://cdn.example.com/events/',
     },

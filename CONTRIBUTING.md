@@ -36,7 +36,9 @@
 
    **Backend URL Options:**
    - **Production**: `https://api.nyu-sjba.org/v1`
-   - **Local Development**: `http://localhost:3000/v1`
+   - **Local Development**: `/v1`
+
+   Local development requests to `/v1` are proxied to `http://localhost:3000` by Vite.
 
    > See: [SJBA Backend Repository](https://github.com/ohortig/SJBA_site_backend)
 
